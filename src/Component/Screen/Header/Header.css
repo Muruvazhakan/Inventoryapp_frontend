@@ -1,0 +1,29 @@
+.header{
+   
+  
+}
+
+.header-title{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+.header-option{
+    align-items: end;
+    display: ruby;
+    cursor: pointer;
+    list-style-type: none;
+    display: flex;
+    flex-direction: row-reverse;
+    margin-right: 40px;
+    margin-top: -5%;
+}
+.list-name{
+   
+    padding-right: 20px;
+   
+}
+.button{
+    user-select: none;
+}

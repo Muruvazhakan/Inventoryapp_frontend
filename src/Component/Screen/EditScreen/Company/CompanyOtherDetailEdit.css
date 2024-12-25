@@ -1,0 +1,14 @@
+.companyotherdeta{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.companyindex{
+    justify-items: center;
+}
+.isvisible{
+    padding-right: 1%;
+}
+.notetext{
+    color: rgb(159, 19, 47);
+}

@@ -1,0 +1,66 @@
+.generaldetails {
+    display: flex;
+    align-items: center;
+    text-align: justify;
+    justify-content: space-between;
+    margin: -2% 1% 0 0;
+    font-size: small;
+}
+.allestimatedisplay{
+   
+    /* display: flex;
+    align-items: center;
+    text-align: justify; */
+    /* justify-content: space-evenly; */
+    /* margin: -2% 1% 0 0; */
+    font-size: medium;
+    padding-right: 2%;
+}
+.nameheigh{
+    font-weight: bolder;
+    font-size: larger;
+    padding: 2px;
+}
+.details {
+
+    list-style-type: none;
+    /* margin-top: -1px; */
+
+}
+
+.invoicedetails {
+    margin-right: 20px;
+}
+
+.companyname {
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.estimatedetails {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.big {
+    margin-top: 5%;
+    font-size: x-large;
+
+}
+
+.gap {
+    margin-top: 10px;
+}
+.tagline{
+    color: rgb(189, 81, 62);
+}
+.estimateheader{
+    padding-bottom: 5px;
+   
+}
+.estimateheadercenter{
+    display: flex;
+    justify-content: center;
+}

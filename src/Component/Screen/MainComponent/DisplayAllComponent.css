@@ -1,0 +1,49 @@
+.displayscreenname {
+  cursor: pointer;
+  border-radius: 20px;
+  display: flex;
+  /* width: 400px;
+  height: 300px; */
+  align-items: center;
+  background-color: #4f4f4f;
+  color: aliceblue;
+  justify-content: center;
+  /* flex-direction: column; */
+
+  /* height: 100px; */
+}
+
+.displayelements {
+  display: flex;
+  align-items: stretch;
+  justify-content: start;
+  /* margin-top: 1%; */
+  padding-top: 5px;
+  flex-flow: wrap;
+  /* flex-direction: column; */
+}
+
+.linkdecor {
+  text-decoration: none;
+  color: rgb(238, 193, 56);
+}
+
+.cardline {
+  position: absolute;
+  margin-top: 1%;
+  font-weight: bolder;
+}
+
+.displaysmalldata {
+  margin-top: 3px;
+  color: brown;
+  font-size: smaller;
+}
+
+.spinnerstyle {
+  margin-top: 20%;
+  margin-left: 50%;
+  display: flex;
+  position: absolute;
+
+}

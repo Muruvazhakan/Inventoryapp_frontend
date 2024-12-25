@@ -1,0 +1,17 @@
+.tableyellow{
+    background-color: rgb(210, 210, 53);
+}
+.tableblue{
+    background-color: rgb(93, 194, 237);
+}
+.tabledis{
+    background-color:  rgb(204 204 100 / 64%);
+}
+.buttonspace{
+    margin: 10px;
+    padding: 2px;
+   
+}
+.sortbutton{
+    margin-bottom: 5px;
+}

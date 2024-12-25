@@ -1,0 +1,13 @@
+.cards{
+    background: rgb(9, 9, 9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    border-radius: 10px;
+  }  
+  .notcharge{
+    font-weight: 600;
+    color: red;
+    margin: 5px;
+  }
+  .button-warn{
+    margin: 1%;
+  }

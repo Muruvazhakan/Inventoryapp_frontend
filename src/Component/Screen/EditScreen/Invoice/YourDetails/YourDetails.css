@@ -1,0 +1,38 @@
+.client-details-edit{
+    justify-content: space-around;
+    /* display: flex; */
+    padding: 1%;
+    /* padding-left: 25px; */
+}
+.date-field{
+    font-size: large;
+    align-items: center;
+    margin: 1.5%;
+    
+    justify-content: center;
+}
+.invoicegen{
+    color: green;
+    text-decoration: solid;
+    font-weight: bold;
+   
+}
+.gen-invoice{
+    margin-right:25px;
+    margin-right: 5px;
+    margin: 1%;
+    padding: 1%;
+}
+.itemtitle{
+    padding-bottom: 10px;
+}
+.img-style{
+    width: 200px;
+    height: 200px;
+}
+.img-container {
+    margin: 15px;
+}
+.imageselector{
+    margin-left: 10px;
+}
