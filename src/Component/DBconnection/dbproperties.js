@@ -1,8 +1,8 @@
 export const isbackendconnect = true;
 
 export const imageBaseUrl = "https://storage.googleapis.com/helpone-9bf33.appspot.com";
-// export const backendUrl = "http://localhost:4000";
-export const backendUrl = "https://billedgebackend.onrender.com";
+export const backendUrl = "http://localhost:4000";
+// export const backendUrl = "https://billedgebackend.onrender.com";
 export const userLoginUrl = `${backendUrl}/user/login`;
 export const userSigninUrl = `${backendUrl}/user/signin`;
 
@@ -22,17 +22,19 @@ export const saveEstimateUrl = `${backendUrl}/estimate/createorupateestimate`;
 export const getEstimationIdUrl = `${backendUrl}/estimate/getestimationid`;
 export const saveEstimationIdUrl = `${backendUrl}/estimate/saveestimationid`;
 
-export const getInvoiceUrl = `${backendUrl}/invoice`;
-export const saveInvoiceUrl = `${backendUrl}/invoice/createorupdateinvoice`;
+export const getAllStockUrl = `${backendUrl}/stock/getallstocks`;
+export const getStockHistoryUrl = `${backendUrl}/stock/getallstocks`;
+// export const saveInvoiceUrl = `${backendUrl}/invoice/createorupdateinvoice`;
 
-export const getInvoiceIdUrl = `${backendUrl}/invoice/getinvoiceid`;
-export const saveInvoiceIdUrl = `${backendUrl}/invoice/saveinvoiceid`;
+export const getStockidUrl = `${backendUrl}/stock/getstockid`;
+export const saveStockIdUrl = `${backendUrl}/stock/savestockid`;
 
+export const saveStockUrl = `${backendUrl}/stock/savestock`;
 
 
 // router.post('/:userid',invoicecont.getallinvoice);
 // router.post('/createorupdateinvoice/:userid',invoicecont.createorupdateinvoice);
-// router.post('/getinvoiceid/:userid',invoicecont.getInvoiceid);
+// router.post('/getStockid/:userid',invoicecont.getStockid);
 // router.post('/saveinvoiceid/:userid',invoicecont.incremeantinvoiceid);
 
 // app.use('/user/',userRoure);

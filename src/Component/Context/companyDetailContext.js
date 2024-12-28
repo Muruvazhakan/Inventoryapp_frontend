@@ -6,8 +6,10 @@ import * as localstore from './localStorageData';
 import * as companyDetailsDB from '../DBconnection/companyDetailsDB';
 import * as estimateDetailsDb from '../DBconnection/estimateDetailsDB';
 import * as invoiceDetailsDb from '../DBconnection/invoiceDetailBD';
+import * as stockDetailBD from '../DBconnection/stockDetailBD';
 import { estimateState } from "./EstimatestateContext";
 import { AllState } from "./allStateContext";
+import { Stocks } from "./StocksContex";
 import { isbackendconnect, imageBaseUrl } from "../DBconnection/dbproperties";
 import axios from "axios";
 export const CompanyDetail = createContext();
@@ -18,6 +20,7 @@ const CompanyDetailContext = ({ children }) => {
 
     const estdetail = useContext(estimateState);
     const invociedetail = useContext(AllState);
+    const stockDetail = useContext(Stocks);
 
 
     // const [companyName, setcompanyName] = useState('JR MODULAR ENTERPRISES');
@@ -324,7 +327,7 @@ const CompanyDetailContext = ({ children }) => {
         localstore.addOrUpdateCompanyHandler('', 'remove');
         localstore.addOrUpdateCompanyTermsAndConditionHandler('', 'remove');
         localstore.addOrGetCompanyBankDetailHandler('', 'remove');
-        localstore.addOrGetInvoiceHistoryData('', 'remove');
+        localstore.addOrGetstockHistoryData('', 'remove');
         localstore.addOrGetEstimateHistoryData('', 'remove');
         setloginstatus(false);
         setloginuserid(null);
@@ -386,7 +389,7 @@ const CompanyDetailContext = ({ children }) => {
                 //     estdetail.setestimateHistoryData(getestimatefromdb.data);
                 // }
 
-                // let estimatedetailscontext = localstorage.addOrGetInvoiceHistoryData('', 'get');
+                // let estimatedetailscontext = localstorage.addOrGetstockHistoryData('', 'get');
                 //console.log('estimatedetailscontext ****');
                 //console.log(estimatedetailscontext);
 
@@ -466,37 +469,38 @@ const CompanyDetailContext = ({ children }) => {
                 toast.warning(companyTermsAndConditionDetailsfromDB.data);
             }
 
-            let invoiceidcounter = localstore.addOrGetInvoiceid('', "get");
-            //console.log(invoiceidcounter + 'invoiceidcounter');
-            let getInvoiceIdfromDb = await invoiceDetailsDb.getInvoiceId(loginuserid);
-
-            if (getInvoiceIdfromDb.status === 200 && invoiceidcounter < getInvoiceIdfromDb.data) {
-                localstore.addOrGetInvoiceid(getInvoiceIdfromDb.data, "save");
-                invociedetail.setinvoiceidount(getInvoiceIdfromDb.data);
-                //console.log('saving setinvoiceidount ' + getInvoiceIdfromDb.data);
+            let stockidcounter = localstore.addOrGetStockid('', "get");
+            console.log(stockidcounter + ' addOrGetStockid');
+            let getStockfromDb = await stockDetailBD.getStockidDB(loginuserid);
+            console.log( 'getStockfromDb.data');
+            console.log(getStockfromDb );
+            if (getStockfromDb.status === 200 && stockidcounter < getStockfromDb.data) {
+                localstore.addOrGetStockid(getStockfromDb.data, "save");
+                stockDetail.setstockidcount(getStockfromDb.data);
+                console.log('saving setinvoiceidount ' + getStockfromDb.data);
 
             }
 
-            let invoiceHistoryData = localstore.addOrGetInvoiceHistoryData('', 'get');
+            let allStockData = localstore.addOrGetAllStockData('', 'get');
 
-            let getinvoicefromdb = await invoiceDetailsDb.getInvoiceDB(loginuserid);
-            //console.log('invoiceHistoryData ' + invoiceHistoryData);
-            //console.log(invoiceHistoryData);
-            //console.log(getinvoicefromdb);
-            if (getinvoicefromdb.status === 200) {
+            let getstockfromdb = await stockDetailBD.getStockDB(loginuserid);
+            console.log('allStockData ' + allStockData);
+            console.log(allStockData);
+            console.log(getstockfromdb);
+            if (getstockfromdb.status === 200) {
 
-                // if (invoiceHistoryData === null || (invoiceHistoryData.length <= getinvoicefromdb.data.length)) {
-                //console.log(getinvoicefromdb.data);
-                //console.log('inside setinvoiceHistoryData');
-                localstore.addOrGetInvoiceHistoryData(getinvoicefromdb.data, 'save');
-                invociedetail.setinvoiceHistoryData(getinvoicefromdb.data);
+                // if (allStockData === null || (allStockData.length <= getstockfromdb.data.length)) {
+                //console.log(getstockfromdb.data);
+                //console.log('inside setallStockData');
+                localstore.addOrGetAllStockData(getstockfromdb.data, 'save');
+                stockDetail.setallStockData(getstockfromdb.data);
                 refreshdata = true;
                 // }
                 // else {
-                //     estdetail.setinvoiceHistoryData(getinvoicefromdb.data);
+                //     estdetail.setstockHistoryData(getstockfromdb.data);
                 // }
 
-                // let invoicedetailscontext = localstorage.addOrGetInvoiceHistoryData('', 'get');
+                // let invoicedetailscontext = localstorage.addOrGetstockHistoryData('', 'get');
                 //console.log('invoicedetailscontext ****');
                 // console.log(invoicedetailscontext);
 

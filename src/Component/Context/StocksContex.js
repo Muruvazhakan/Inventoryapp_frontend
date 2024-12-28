@@ -7,7 +7,7 @@ import * as XLSX from "xlsx";
 
 import * as localstorage from '../Context/localStorageData';
 import * as invoiceDb from '../DBconnection/invoiceDetailBD';
-
+import * as stockDb from '../DBconnection/stockDetailBD';
 
 export const Stocks = createContext();
 
@@ -18,11 +18,13 @@ const StocksContext = ({ children }) => {
 
   const [singlestockitem, setsinglestockitem] = useState({
     id: 1,
+    productid:'',
     desc: '',
     quantity: 0,
     rate: 0,
     amount: 0
   });
+  const [productid, setproductid] = useState('');
   const [list, setList] = useState([]);
   const [totalamt, settotalamt] = useState(0);
   const [desc, setdesc] = useState('');
@@ -42,20 +44,20 @@ const StocksContext = ({ children }) => {
   const [per, setper] = useState('');
   const [disc, setdisc] = useState(15);
   
-  const [header, setheader] = useState('invoicerequest');
+  const [header, setheader] = useState('stockrequest');
   const [clientName, setclientName] = useState('');
   const [clientPhno, setclientPhno] = useState('');
   const [clientAdd, setclientAdd] = useState('');
 
-  const [invoiceid, setinvoiceid] = useState('');
+  const [stockid, setstockid] = useState('');
   const [cleardetailoption, setcleardetailoption] = useState(true);
   const [gstincluded, setgstincluded] = useState(true);
   const [displayhsntable, setdisplayhsntable] = useState(false);
-  const [invoiceidcount, setinvoiceidount] = useState(1000);
+  const [stockidcount, setstockidcount] = useState(1000);
   const [invoicedate, setinvoicedate] = useState('');
   const [paymentmode, setpaymentmode] = useState('');
   const [paymentdate, setpaymentdate] = useState('');
-
+  const [loginuser,setloginuser] = useState(localstorage.addOrGetUserdetail('', 'userid', 'get'));
   const [gstCgstitem, setgstCgstitem] = useState([{
     desc: 'OUTPUTCGST9%',
     name: 'cgst',
@@ -91,8 +93,8 @@ const StocksContext = ({ children }) => {
   const [otherdesc, setotherdesc] = useState('');
   const [ischargedinhsn, setischargedinhsn] = useState(true);
   const [otherdescamt, setotherdescamt] = useState(0);
-
-  const [invoiceHistoryData, setinvoiceHistoryData] = useState([]);
+  const [allStockData, setallStockData] = useState([]);
+  const [stockHistoryData, setstockHistoryData] = useState([]);
   const [invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag] = useState(false);
 
   const setval = (e, fun) => {
@@ -133,6 +135,7 @@ const StocksContext = ({ children }) => {
     });
     
     if (type === "update") {
+      setproductid(item.productid);
       setdesc(item.desc);
       setquantity(item.quantity);
       setrate(item.rate);
@@ -205,20 +208,10 @@ const StocksContext = ({ children }) => {
 
 
   useEffect(() => {
-    if (hsnlist.length == 0 && list.length == 0 && otherchargedetail.length == 0) {
+    if (list.length == 0 ) {
       settotalamt(0);
-      setsubtotalamt(0);
-      settotalcentaxamt(0);
-      settotalhsnamt(0);
-      settotalstatetaxamt(0);
-      settotaltaxvalueamt(0);
-      settotalamtwords('');
-      settotalhsnamtwords('');
     }
-    if (list.length == 0) {
-      setsubtotalamt(0);
-    }
-  }, [list, otherchargedetail]);
+  }, [list]);
 
  
   const addOrUpdateItemHandler = (opt) => {
@@ -232,6 +225,7 @@ const StocksContext = ({ children }) => {
 
         let singleitem = {
           id: uuidv4(),
+          productid:productid,
           desc: desc,
           quantity: quantity,
           rate: rate,
@@ -259,6 +253,7 @@ const StocksContext = ({ children }) => {
   const clearlistcontent = () => {
     setdesc('');
     sethsn('');
+    setproductid('');
     setquantity(0);
     setrateinctax('');
     setrate(0);
@@ -281,143 +276,101 @@ const StocksContext = ({ children }) => {
     setischargedinhsn(true);
   }
 
-  const saveLocalInvoice = (singleinvoice) => {
+  const saveLocalStock = (singlestock) => {
 
-    if (invoiceHistoryData !== null) {
+    if (stockHistoryData !== null) {
       let iscontains = false;
-      invoiceHistoryData.map((item) => {
-        if (item.invoiceid === invoiceid) {
-
+      stockHistoryData.map((item) => {
+        if (item.stockid === stockid) {
           item.invoicedate = invoicedate;
-          item.paymentdate = paymentdate;
           item.paymentmode = paymentmode;
           item.list = list;
-          item.hsnlist = hsnlist;
-          item.otherchargedetail = otherchargedetail;
-          item.totalcentaxamt = totalcentaxamt;
-          item.totalstatetaxamt = totalstatetaxamt;
-          item.totalsubamt = totalsubamt;
           item.totalamt = totalamt;
-          item.totalamtwords = totalamtwords;
-          item.totaltaxvalueamt = totaltaxvalueamt;
-          item.totalhsnamt = totalhsnamt;
-          item.totalhsnamtwords = totalhsnamtwords;
           item.clientAdd = clientAdd;
           item.clientName = clientName;
           item.clientPhno = clientPhno;
+          item.userid=loginuser;
           iscontains = true;
         }
         return item;
       });
       if (iscontains === false) {
-        setinvoiceHistoryData([
-          ...invoiceHistoryData, singleinvoice
+        setstockHistoryData([
+          ...stockHistoryData, singlestock
         ]);
-        toast.success('Invoice Details are added');
+        toast.success('Stock Details are added');
       }
       else {
-        toast.success('Invoice Details are updated');
+        toast.success('Stock Details are updated');
       }
       // console.log('estimateHistoryData');
       // console.log(estimateHistoryData);
 
     } else {
       // console.log('inside else');
-      setinvoiceHistoryData([
-        singleinvoice
+      setstockHistoryData([
+        singlestock
       ]);
     }
-    localstorage.addOrGetInvoiceHistoryData(invoiceHistoryData, "save");
+    localstorage.addOrGetstockHistoryData(stockHistoryData, "save");
   }
-  const saevStock = async () => {
-    console.log('saevStock');
-    let loginuserid = localstorage.addOrGetUserdetail('', 'userid', 'get');
+  const saveStock = async () => {
+    console.log('saveStock');
     console.log('loginuserid + loginuserid');
+    if(stockid == '' || list.length ==0 ){
+      toast.warn("Please add the stock or Generate the Stockid");
+      return;
+    }
     let datas = {
       authorization: header,
-      ctrate: ctrate,
-      strate: strate,
-      invoiceid: invoiceid,
-      invoicedate: invoicedate,
-      invoicedate1: invoicedate,
-      paymentdate: paymentdate,
-      paymentdate1: paymentdate,
-      paymentmode: paymentmode,
-      list: list,
-      hsnlist: hsnlist,
-      otherchargedetail: otherchargedetail,
-      totalcentaxamt: totalcentaxamt,
-      totalstatetaxamt: totalstatetaxamt,
-      totalsubamt: totalsubamt,
-      totalamt: totalamt,
-      totalamtwords: totalamtwords,
-      totaltaxvalueamt: totaltaxvalueamt,
-      totalhsnamt: totalhsnamt,
-      totalhsnamtwords: totalhsnamtwords,
+      stockid:stockid,
+      stocklist:list,
+      totalamt:totalamt,
       clientAdd: clientAdd,
       clientName: clientName,
       clientPhno: clientPhno,
+      stockidcount:stockidcount
     }
     console.log(datas);
-    saveLocalInvoice(datas);
+    saveLocalStock(datas);
 
-    let savedataresponse = await invoiceDb.saveInvoiceBD(datas, loginuserid);
+    let savedataresponse = await stockDb.saveStockBD(datas, loginuser);
     if (savedataresponse.status !== 200) {
-      toast.warn("Issue in saving Invoice");
+      toast.warn("Issue in saving Stock");
       return;
     }
     console.log('savedataresponse');
     console.log(savedataresponse);
 
-    localstorage.addOrGetInvoiceid(invoiceidcount, "save");
-    console.log(invoiceidcount + ' invoiceidcount');
-    let saveinvoiceidcountdataresponse = await invoiceDb.saveInvoiceId(invoiceidcount, loginuserid);
-    if (saveinvoiceidcountdataresponse.status !== 200) {
-      toast.warn("Issue in Update");
-      return;
-    }
-    console.log('saveinvoiceidcountdataresponse');
-    console.log(saveinvoiceidcountdataresponse);
+    // localstorage.addOrGetstockid(stockidcount, "save");
+    // console.log(stockidcount + ' stockidcount');
+    // let savestockidcountdataresponse = await stockDb.savestockid(stockidcount, loginuserid);
+    // if (savestockidcountdataresponse.status !== 200) {
+    //   toast.warn("Issue in Update");
+    //   return;
+    // }
+    // console.log('savestockidcountdataresponse');
+    // console.log(savestockidcountdataresponse);
 
-    toast.success("Invoice saved");
+    toast.success("New Stock saved");
 
   }
 
-  const selectedInvoiceEdit = (props) => {
+  const selectedStockEdit = (props) => {
     console.log(props);
 
-    let singleinvoice = props;
-    setinvoicedate(singleinvoice.invoicedate);
-    setinvoiceid(singleinvoice.invoiceid);
-    // setinvoicedate1(singleinvoice.invoicedate1);
-    setpaymentdate(singleinvoice.paymentdate);
-    // setpaymentdate1(singleinvoice.paymentdate1);
-    setpaymentmode(singleinvoice.paymentmode);
-    setList(singleinvoice.list);
-    sethsnList(singleinvoice.hsnlist);
-    setOtherchargedetail(singleinvoice.otherchargedetail);
-    settotalcentaxamt(singleinvoice.totalcentaxamt);
-    settotalstatetaxamt(singleinvoice.totalstatetaxamt);
-    setsubtotalamt(singleinvoice.totalsubamt);
-    settotalamt(singleinvoice.totalamt);
-    settotalamtwords(singleinvoice.totalamtwords);
-    settotaltaxvalueamt(singleinvoice.totaltaxvalueamt);
-    settotalhsnamt(singleinvoice.totalhsnamt);
-    settotalhsnamtwords(singleinvoice.totalhsnamtwords);
-    setclientAdd(singleinvoice.clientAdd);
-    setclientName(singleinvoice.clientName);
-    setclientPhno(singleinvoice.clientPhno);
+    let singlestock = props;
+    setinvoicedate(singlestock.invoicedate);
+    setstockid(singlestock.stockid);
+    // setinvoicedate1(singlestock.invoicedate1);
+    // setpaymentdate1(singlestock.paymentdate1);
+    setpaymentmode(singlestock.paymentmode);
+    setList(singlestock.list);
+    settotalamt(singlestock.totalamt);
+    setclientAdd(singlestock.clientAdd);
+    setclientName(singlestock.clientName);
+    setclientPhno(singlestock.clientPhno);
     console.log('inside ctrate ');
-    if (singleinvoice.ctrate) {
-      let ctratelocal = singleinvoice.ctrate * 1;
-      console.log('inside ctrate ' + ctratelocal);
-      setctrate(ctratelocal);
-    }
-    if (singleinvoice.strate) {
-      let stratelocal = singleinvoice.strate * 1;
-      console.log('inside ctrate ' + stratelocal);
-      setstrate(stratelocal);
-    }
 
     // setcolumns(singleinvoice.columns);  
 
@@ -426,10 +379,10 @@ const StocksContext = ({ children }) => {
 
   const handleInvoiceExportXlsx = () => {
 
-    let filtercolumn = invoiceHistoryData.map(data => {
+    let filtercolumn = stockHistoryData.map(data => {
       return {
        
-        Invoice_id: data.invoiceid,
+        Invoice_id: data.stockid,
         Invoice_date: data.invoicedate,
         Payment_date: data.paymentdate,
         Payment_mode: data.paymentmode,
@@ -468,19 +421,19 @@ const StocksContext = ({ children }) => {
     const year = today.getFullYear();
     const date = today.getDate();
 
-    todaydate = `IN${year}${month}${date}${invoiceidcount}`;
-    let count = invoiceidcount * 1;
-    setinvoiceid(todaydate);
-    setinvoiceidount(++count);
-    // console.log("invoiceidcount: " + count);
+    todaydate = `ST${year}${month}${date}${stockidcount}`;
+    let count = stockidcount * 1;
+    setstockid(todaydate);
+    setstockidcount(++count);
+    // console.log("stockidcount: " + count);
     // console.log("todaydate: " + todaydate);
-    // setinvoiceid()
+    // setstockid()
   }
 
   const cleartallStock = () => {
 
     setinvoicedate('');
-    setinvoiceid('');
+    setstockid('');
     // setinvoicedate1(singleinvoice.invoicedate1);
     setpaymentdate('');
     // setpaymentdate1(singleinvoice.paymentdate1);
@@ -502,7 +455,14 @@ const StocksContext = ({ children }) => {
 
   }
 
-
+  useEffect(() => {
+    // //console.log('local invoice history');
+    let count = localstorage.addOrGetStockid('', 'get');
+    if (count !== null) {
+      setstockidcount(count);
+    }
+    // console.log(count + 'invoice count');
+  }, []);
   useEffect(() => {
     console.log('amount');
 
@@ -515,17 +475,18 @@ const StocksContext = ({ children }) => {
   useEffect(() =>{
     settotalamt(((collect(list.map((item) => item.amount)).sum())).toFixed(2));
   },[list])
+
   const context = {
     list, setList, totalamt, settotalamt, totalamtwords, settotalamtwords, singlehsnitem, setsinglehsnitem, setval, setboxColors, cleardetailoption, setcleardetailoption,
     hsn, sethsn, quantity, setquantity, rateinctax, setrateinctax, rate, setrate, per, setper, disc, setdisc, amount, setamount, otherdesc, setotherdesc, ischargedinhsn, setischargedinhsn, otherdescamt, setotherdescamt,
-    totalhsnamt, settotalhsnamt, hsnlist, sethsnList, totalhsnamtwords, settotalhsnamtwords, totalsubamt, saevStock, addOrUpdateItemHandler, clearlistcontent, clearOtherDetails, addOtherItems,
+    totalhsnamt, settotalhsnamt, hsnlist, sethsnList, totalhsnamtwords, settotalhsnamtwords, totalsubamt, saveStock, addOrUpdateItemHandler, clearlistcontent, clearOtherDetails, addOtherItems,
     setsubtotalamt, gstCgstitem, setgstCgstitem, ctrate, setctrate, strate, setstrate, ctatm, setctatm, statm, setstatm, totaltaxvalueamt, settotaltaxvalueamt, dateHandler,gstincluded, setgstincluded,
     totalcentaxamt, settotalcentaxamt, totalstatetaxamt, settotalstatetaxamt, isinstallationcharge, setisinstallationcharge, otherchargedetail, setOtherchargedetail, editListRows, addOrEditOtherItems,
-    invoiceid, setinvoiceid, invoicedate, setinvoicedate, paymentmode, setpaymentmode, paymentdate, setpaymentdate, invoiceidcount, setinvoiceidount, clientName, setclientName, clientPhno, setclientPhno, clientAdd, setclientAdd,
-    invoiceHistoryData, setinvoiceHistoryData, invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag, selectedInvoiceEdit, cleartallStock, handleInvoiceExportXlsx,displayhsntable, setdisplayhsntable,
+    stockid, setstockid, invoicedate, setinvoicedate, paymentmode, setpaymentmode, paymentdate, setpaymentdate, stockidcount, setstockidcount, clientName, setclientName, clientPhno, setclientPhno, clientAdd, setclientAdd,
+    stockHistoryData, setstockHistoryData, invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag, selectedStockEdit, cleartallStock, handleInvoiceExportXlsx,displayhsntable, setdisplayhsntable,
 
 
-    singlestockitem, setsinglestockitem,desc, setdesc
+    singlestockitem, setsinglestockitem,desc, setdesc,productid, setproductid,allStockData, setallStockData
   };
   return <Stocks.Provider value={context}>{children}</Stocks.Provider>;
 }

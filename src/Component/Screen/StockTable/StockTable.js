@@ -25,6 +25,7 @@ const StockTable = (props) => {
                     <TableHead sx={{ fontWeight: 1130, color: "white" }}>
                         <TableRow className="table-header">
                             <TableCell sx={{ fontWeight: 700 }}>S.No</TableCell>
+                            <TableCell sx={{ fontWeight: 700 }}>Product Id</TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Description of Goods </TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Quantity</TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Purchace Rate</TableCell>
@@ -49,6 +50,7 @@ const StockTable = (props) => {
                                 // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell align='center' className="table-header-td">{index + 1}</TableCell>
+                                    <TableCell className="table-header-td">{item.productid}</TableCell>
                                     <TableCell className="table-header-td">{item.desc}</TableCell>
                                     <TableCell align='center' className="table-header-td">{item.quantity}</TableCell>
                                     <TableCell className="table-header-td">{item.rate}</TableCell>
@@ -73,6 +75,7 @@ const StockTable = (props) => {
                             <TableCell></TableCell>
                             <TableCell sx={{ fontSize: 18, fontWeight: 700 }} >Total</TableCell>
                             <TableCell ></TableCell>
+                            <TableCell></TableCell>
                             <TableCell ></TableCell>
                             <TableCell sx={{ fontSize: 18, fontWeight: 700 }} className="table-amount">₹{Intl.NumberFormat("en-IN", digit2options).format(tabledetails.totalamt)}</TableCell>
                         </TableRow>

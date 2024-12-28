@@ -26,7 +26,11 @@ const AddStocksForm = () => {
                     <Card>
                         <h3>Add Stocks details below</h3>
                         <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '20ch' } }}>
-
+                        <TextField required id="outlined-required" label="Product Id" value={tabledet.productid}
+                                onChange={(e) => tabledet.setval(e, tabledet.setproductid)}
+                                color={tabledet.setboxColors(tabledet.productid, 'color')}
+                                error={tabledet.setboxColors(tabledet.productid, 'error')}
+                            />
                             <TextField required id="outlined-required" label="Item description" value={tabledet.desc}
                                 onChange={(e) => tabledet.setval(e, tabledet.setdesc)}
                                 color={tabledet.setboxColors(tabledet.desc, 'color')}

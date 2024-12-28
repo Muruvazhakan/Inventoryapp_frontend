@@ -46,10 +46,10 @@ const AddStocksGenDetails = () => {
                     </h3>
                     <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '15ch', height: '5ch' } }} >
 
-                        {stockdet.invoiceid.length == 0 ?
-                            <div><Button className="gen-invoice" variant="outlined" endIcon={<FaRegIdCard />} onClick={stockdet.dateHandler}>Generate Stock Id</Button> </div> : <div className="invoicegen"> Stock Id Generated</div>}
+                        {stockdet.stockid.length == 0 ?
+                            <div><Button className="gen-invoice" variant="outlined" endIcon={<FaRegIdCard />} onClick={stockdet.dateHandler}>Generate Stock Id</Button> </div> : <div className="invoicegen"> Stock Id Generated: {stockdet.stockid}</div>}
                         Bought date:
-                        <input type="date" className="date-field" onChange={(e) => stockdet.setval(e, stockdet.setinvoicedate)} title="payement" size={210} id="dateDefault" value={stockdet.invoicedate} aria-label="invoice" />
+                        <input type="date" className="date-field" onChange={(e) => stockdet.setval(e, stockdet.setinvoicedate)} title="payement" size={210} id="dateDefault" value={stockdet.invoicedate} aria-label="stock" />
                         <TextField id="outlined-required" label="Payment Mode" value={stockdet.paymentmode}
                             onChange={(e) => stockdet.setval(e, stockdet.setpaymentmode)}
                             color={stockdet.setboxColors(stockdet.paymentmode, 'color')}
@@ -62,7 +62,7 @@ const AddStocksGenDetails = () => {
 
                         <div className="button-warn">
                             <Button variant="contained" color="success" size="medium" endIcon={<FaFileInvoice />}
-                                onClick={stockdet.saevStock}>Save Stocks</Button>
+                                onClick={stockdet.saveStock}>Save Stocks</Button>
                         </div>
 
                         <div className="button-warn buttonspace">

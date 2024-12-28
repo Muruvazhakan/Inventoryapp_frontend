@@ -524,54 +524,54 @@ const AllStateContext = ({ children }) => {
     setischargedinhsn(true);
   }
 
-  const saveLocalInvoice = (singleinvoice) => {
+  // const saveLocalInvoice = (singleinvoice) => {
 
-    if (invoiceHistoryData !== null) {
-      let iscontains = false;
-      invoiceHistoryData.map((item) => {
-        if (item.invoiceid === invoiceid) {
+  //   if (invoiceHistoryData !== null) {
+  //     let iscontains = false;
+  //     invoiceHistoryData.map((item) => {
+  //       if (item.invoiceid === invoiceid) {
 
-          item.invoicedate = invoicedate;
-          item.paymentdate = paymentdate;
-          item.paymentmode = paymentmode;
-          item.list = list;
-          item.hsnlist = hsnlist;
-          item.otherchargedetail = otherchargedetail;
-          item.totalcentaxamt = totalcentaxamt;
-          item.totalstatetaxamt = totalstatetaxamt;
-          item.totalsubamt = totalsubamt;
-          item.totalamt = totalamt;
-          item.totalamtwords = totalamtwords;
-          item.totaltaxvalueamt = totaltaxvalueamt;
-          item.totalhsnamt = totalhsnamt;
-          item.totalhsnamtwords = totalhsnamtwords;
-          item.clientAdd = clientAdd;
-          item.clientName = clientName;
-          item.clientPhno = clientPhno;
-          iscontains = true;
-        }
-        return item;
-      });
-      if (iscontains === false) {
-        setinvoiceHistoryData([
-          ...invoiceHistoryData, singleinvoice
-        ]);
-        toast.success('Invoice Details are added');
-      }
-      else {
-        toast.success('Invoice Details are updated');
-      }
-      // console.log('estimateHistoryData');
-      // console.log(estimateHistoryData);
+  //         item.invoicedate = invoicedate;
+  //         item.paymentdate = paymentdate;
+  //         item.paymentmode = paymentmode;
+  //         item.list = list;
+  //         item.hsnlist = hsnlist;
+  //         item.otherchargedetail = otherchargedetail;
+  //         item.totalcentaxamt = totalcentaxamt;
+  //         item.totalstatetaxamt = totalstatetaxamt;
+  //         item.totalsubamt = totalsubamt;
+  //         item.totalamt = totalamt;
+  //         item.totalamtwords = totalamtwords;
+  //         item.totaltaxvalueamt = totaltaxvalueamt;
+  //         item.totalhsnamt = totalhsnamt;
+  //         item.totalhsnamtwords = totalhsnamtwords;
+  //         item.clientAdd = clientAdd;
+  //         item.clientName = clientName;
+  //         item.clientPhno = clientPhno;
+  //         iscontains = true;
+  //       }
+  //       return item;
+  //     });
+  //     if (iscontains === false) {
+  //       setinvoiceHistoryData([
+  //         ...invoiceHistoryData, singleinvoice
+  //       ]);
+  //       toast.success('Invoice Details are added');
+  //     }
+  //     else {
+  //       toast.success('Invoice Details are updated');
+  //     }
+  //     // console.log('estimateHistoryData');
+  //     // console.log(estimateHistoryData);
 
-    } else {
-      // console.log('inside else');
-      setinvoiceHistoryData([
-        singleinvoice
-      ]);
-    }
-    localstorage.addOrGetInvoiceHistoryData(invoiceHistoryData, "save");
-  }
+  //   } else {
+  //     // console.log('inside else');
+  //     setinvoiceHistoryData([
+  //       singleinvoice
+  //     ]);
+  //   }
+  //   localstorage.addOrGetstockHistoryData(invoiceHistoryData, "save");
+  // }
   const saveInvoice = async () => {
     console.log('saveInvoice');
     let loginuserid = localstorage.addOrGetUserdetail('', 'userid', 'get');
@@ -602,25 +602,25 @@ const AllStateContext = ({ children }) => {
       clientPhno: clientPhno,
     }
     console.log(datas);
-    saveLocalInvoice(datas);
+    // saveLocalInvoice(datas);
 
-    let savedataresponse = await invoiceDb.saveInvoiceBD(datas, loginuserid);
-    if (savedataresponse.status !== 200) {
-      toast.warn("Issue in saving Invoice");
-      return;
-    }
-    console.log('savedataresponse');
-    console.log(savedataresponse);
+    // let savedataresponse = await invoiceDb.saveInvoiceBD(datas, loginuserid);
+    // if (savedataresponse.status !== 200) {
+    //   toast.warn("Issue in saving Invoice");
+    //   return;
+    // }
+    // console.log('savedataresponse');
+    // console.log(savedataresponse);
 
-    localstorage.addOrGetInvoiceid(invoiceidcount, "save");
-    console.log(invoiceidcount + ' invoiceidcount');
-    let saveinvoiceidcountdataresponse = await invoiceDb.saveInvoiceId(invoiceidcount, loginuserid);
-    if (saveinvoiceidcountdataresponse.status !== 200) {
-      toast.warn("Issue in Update");
-      return;
-    }
-    console.log('saveinvoiceidcountdataresponse');
-    console.log(saveinvoiceidcountdataresponse);
+    // localstorage.addOrGetInvoiceid(invoiceidcount, "save");
+    // console.log(invoiceidcount + ' invoiceidcount');
+    // // let saveinvoiceidcountdataresponse = await invoiceDb.saveInvoiceId(invoiceidcount, loginuserid);
+    // if (saveinvoiceidcountdataresponse.status !== 200) {
+    //   toast.warn("Issue in Update");
+    //   return;
+    // }
+    // console.log('saveinvoiceidcountdataresponse');
+    // console.log(saveinvoiceidcountdataresponse);
 
     toast.success("Invoice saved");
 
@@ -761,7 +761,7 @@ const AllStateContext = ({ children }) => {
 
   useEffect(() => {
     // //console.log('local invoice history');
-    let count = localstorage.addOrGetInvoiceid('', 'get');
+    let count = localstorage.addOrGetStockid('', 'get');
     if (count !== null) {
       setinvoiceidount(count);
     }

@@ -75,20 +75,20 @@ export const addOrGetCompanyBankDetailHandler = (props, type) => {
     }
 }
 
-export const addOrGetInvoiceHistoryData = (props, type) => {
+export const addOrGetstockHistoryData = (props, type) => {
     // console.log(props);
 
     if (type === 'save') {
-        localStorage.setItem('companyinvoicehistory', JSON.stringify(props));
+        localStorage.setItem('companystockhistory', JSON.stringify(props));
         //  console.log('companyinvoicehistory details');
         // let sto = JSON.parse(localStorage.getItem('companyinvoicehistory'));
         // console.log(sto);
     }
     else if (type === 'get') {
-        return JSON.parse(localStorage.getItem('companyinvoicehistory'));
+        return JSON.parse(localStorage.getItem('companystockhistory'));
     }
     else {
-        localStorage.removeItem('companyinvoicehistory');
+        localStorage.removeItem('companystockhistory');
     }
 }
 
@@ -120,22 +120,39 @@ export const addOrGetEstimateid = (props, type) => {
     }
 }
 
-export const addOrGetInvoiceid = (props, type) => {
+export const addOrGetStockid = (props, type) => {
     //console.log(props);
     if (type === 'save') {
-        localStorage.setItem('companyinvoiceid', JSON.stringify(props));
+        localStorage.setItem('stocksid', JSON.stringify(props));
     }
     else if (type === 'get') {
-        return JSON.parse(localStorage.getItem('companyinvoiceid'));
+        return JSON.parse(localStorage.getItem('stocksid'));
     }
 }
 
 export const addOrGetCompanyImage = (props, type) => {
     //console.log(props);
     if (type === 'save') {
-        localStorage.setItem('companyinvoiceid', JSON.stringify(props));
+        localStorage.setItem('stocksid', JSON.stringify(props));
     }
     else if (type === 'get') {
-        return JSON.parse(localStorage.getItem('companyinvoiceid'));
+        return JSON.parse(localStorage.getItem('stocksid'));
+    }
+}
+
+export const addOrGetAllStockData = (props, type) => {
+    // console.log(props);
+
+    if (type === 'save') {
+        localStorage.setItem('allStockData', JSON.stringify(props));
+        //  console.log('companyinvoicehistory details');
+        // let sto = JSON.parse(localStorage.getItem('companyinvoicehistory'));
+        // console.log(sto);
+    }
+    else if (type === 'get') {
+        return JSON.parse(localStorage.getItem('allStockData'));
+    }
+    else {
+        localStorage.removeItem('allStockData');
     }
 }
