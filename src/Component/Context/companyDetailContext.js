@@ -351,6 +351,9 @@ const CompanyDetailContext = ({ children }) => {
             logoutHandler();
         }, delayDuration);
     };
+
+
+    
     const getAlldataFromDB = async () => {
 
 
@@ -501,9 +504,9 @@ const CompanyDetailContext = ({ children }) => {
                 // }
 
                 // let invoicedetailscontext = localstorage.addOrGetstockHistoryData('', 'get');
-                //console.log('invoicedetailscontext ****');
-                // console.log(invoicedetailscontext);
-
+                console.log('getstockfromdb ****');
+                console.log(stockDetail.allStockData);
+               
             }
         }
 

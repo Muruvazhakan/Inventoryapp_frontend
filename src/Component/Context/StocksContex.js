@@ -31,7 +31,7 @@ const StocksContext = ({ children }) => {
   const [quantity, setquantity] = useState(0);
   const [rate, setrate] = useState(0);
   const [amount, setamount] = useState(0);
- 
+ const [productIdList, setproductIdList] = useState([]);
   const [totalsubamt, setsubtotalamt] = useState(0);
   
   const [totaltaxvalueamt, settotaltaxvalueamt] = useState(0);
@@ -486,7 +486,7 @@ const StocksContext = ({ children }) => {
     stockHistoryData, setstockHistoryData, invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag, selectedStockEdit, cleartallStock, handleInvoiceExportXlsx,displayhsntable, setdisplayhsntable,
 
 
-    singlestockitem, setsinglestockitem,desc, setdesc,productid, setproductid,allStockData, setallStockData
+    singlestockitem, setsinglestockitem,desc, setdesc,productid, setproductid,allStockData, setallStockData,productIdList, setproductIdList
   };
   return <Stocks.Provider value={context}>{children}</Stocks.Provider>;
 }
