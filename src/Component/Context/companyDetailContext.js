@@ -508,6 +508,32 @@ const CompanyDetailContext = ({ children }) => {
                 console.log(stockDetail.allStockData);
                
             }
+
+            let allClientData = localstore.addOrGetAllStockData('', 'get');
+
+            let getallClientDatafromdb = await stockDetailBD.getClientDB(loginuserid);
+            console.log('allClientData ' + allClientData);
+           
+            console.log(allClientData);
+            console.log(getallClientDatafromdb);
+            if (getallClientDatafromdb.status === 200) {
+
+                // if (allClientData === null || (allClientData.length <= getallClientDatafromdb.data.length)) {
+                //console.log(getallClientDatafromdb.data);
+                //console.log('inside setallStockData');
+                localstore.addOrGetAllStockData(getallClientDatafromdb.data, 'save');
+                stockDetail.setclientList(getallClientDatafromdb.data);
+                refreshdata = true;
+                // }
+                // else {
+                //     estdetail.setstockHistoryData(getallClientDatafromdb.data);
+                // }
+
+                // let invoicedetailscontext = localstorage.addOrGetstockHistoryData('', 'get');
+                console.log('getallClientDatafromdb ****');
+                console.log(stockDetail.clientList);
+               
+            }
         }
 
         if (refreshdata === true) {

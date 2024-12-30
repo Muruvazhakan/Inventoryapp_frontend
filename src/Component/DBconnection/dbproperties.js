@@ -23,6 +23,7 @@ export const getEstimationIdUrl = `${backendUrl}/estimate/getestimationid`;
 export const saveEstimationIdUrl = `${backendUrl}/estimate/saveestimationid`;
 
 export const getAllStockUrl = `${backendUrl}/stock/getallstocks`;
+export const getAllClientUrl = `${backendUrl}/stock/getallclient`;
 export const getStockHistoryUrl = `${backendUrl}/stock/getallstocks`;
 // export const saveInvoiceUrl = `${backendUrl}/invoice/createorupdateinvoice`;
 

@@ -18,7 +18,7 @@ const StocksContext = ({ children }) => {
 
   const [singlestockitem, setsinglestockitem] = useState({
     id: 1,
-    productid:'',
+    productid: '',
     desc: '',
     quantity: 0,
     rate: 0,
@@ -31,25 +31,27 @@ const StocksContext = ({ children }) => {
   const [quantity, setquantity] = useState(0);
   const [rate, setrate] = useState(0);
   const [amount, setamount] = useState(0);
- const [productIdList, setproductIdList] = useState([]);
+  const [productIdList, setproductIdList] = useState([]);
+  const [clientList, setclientList] = useState([]);
   const [totalsubamt, setsubtotalamt] = useState(0);
-  
+
   const [totaltaxvalueamt, settotaltaxvalueamt] = useState(0);
   const [totalamtwords, settotalamtwords] = useState('');
-  
+
   const [hsn, sethsn] = useState(0);
-  
+
   const [rateinctax, setrateinctax] = useState(0);
-  
+
   const [per, setper] = useState('');
   const [disc, setdisc] = useState(15);
-  
+
   const [header, setheader] = useState('stockrequest');
   const [clientName, setclientName] = useState('');
   const [clientPhno, setclientPhno] = useState('');
   const [clientAdd, setclientAdd] = useState('');
 
   const [stockid, setstockid] = useState('');
+  const [clientid, setclientid] = useState(null);
   const [cleardetailoption, setcleardetailoption] = useState(true);
   const [gstincluded, setgstincluded] = useState(true);
   const [displayhsntable, setdisplayhsntable] = useState(false);
@@ -57,7 +59,7 @@ const StocksContext = ({ children }) => {
   const [invoicedate, setinvoicedate] = useState('');
   const [paymentmode, setpaymentmode] = useState('');
   const [paymentdate, setpaymentdate] = useState('');
-  const [loginuser,setloginuser] = useState(localstorage.addOrGetUserdetail('', 'userid', 'get'));
+  const [loginuser, setloginuser] = useState(localstorage.addOrGetUserdetail('', 'userid', 'get'));
   const [gstCgstitem, setgstCgstitem] = useState([{
     desc: 'OUTPUTCGST9%',
     name: 'cgst',
@@ -133,7 +135,7 @@ const StocksContext = ({ children }) => {
     const removedist = list.filter((alllist) => {
       return alllist.id != item.id;
     });
-    
+
     if (type === "update") {
       setproductid(item.productid);
       setdesc(item.desc);
@@ -208,14 +210,14 @@ const StocksContext = ({ children }) => {
 
 
   useEffect(() => {
-    if (list.length == 0 ) {
+    if (list.length == 0) {
       settotalamt(0);
     }
   }, [list]);
 
- 
+
   const addOrUpdateItemHandler = (opt) => {
-    if (desc.length !== 0 && quantity > 0 && rate > 0 && amount > 0 
+    if (desc.length !== 0 && quantity > 0 && rate > 0 && amount > 0
       // && ctrate > 0 && strate > 0
 
     ) {
@@ -225,7 +227,7 @@ const StocksContext = ({ children }) => {
 
         let singleitem = {
           id: uuidv4(),
-          productid:productid,
+          productid: productid,
           desc: desc,
           quantity: quantity,
           rate: rate,
@@ -238,7 +240,7 @@ const StocksContext = ({ children }) => {
         );
 
         toast.success("Item added");
-       
+
         if (cleardetailoption) {
           clearlistcontent();
         }
@@ -289,7 +291,7 @@ const StocksContext = ({ children }) => {
           item.clientAdd = clientAdd;
           item.clientName = clientName;
           item.clientPhno = clientPhno;
-          item.userid=loginuser;
+          item.userid = loginuser;
           iscontains = true;
         }
         return item;
@@ -317,19 +319,25 @@ const StocksContext = ({ children }) => {
   const saveStock = async () => {
     console.log('saveStock');
     console.log('loginuserid + loginuserid');
-    if(stockid == '' || list.length ==0 ){
+    if (stockid == '' || list.length == 0) {
       toast.warn("Please add the stock or Generate the Stockid");
       return;
     }
+    let clientidtemp;
+    if (clientid == null) {
+      clientidtemp = uuidv4();
+      setclientid(clientidtemp);
+    }
     let datas = {
       authorization: header,
-      stockid:stockid,
-      stocklist:list,
-      totalamt:totalamt,
+      stockid: stockid,
+      stocklist: list,
+      clientid: clientidtemp,
+      totalamt: totalamt,
       clientAdd: clientAdd,
       clientName: clientName,
       clientPhno: clientPhno,
-      stockidcount:stockidcount
+      stockidcount: stockidcount
     }
     console.log(datas);
     saveLocalStock(datas);
@@ -381,7 +389,7 @@ const StocksContext = ({ children }) => {
 
     let filtercolumn = stockHistoryData.map(data => {
       return {
-       
+
         Invoice_id: data.stockid,
         Invoice_date: data.invoicedate,
         Payment_date: data.paymentdate,
@@ -468,25 +476,25 @@ const StocksContext = ({ children }) => {
 
     let val;
     val = (rate * quantity);
-    setamount(val.toFixed(2)); 
+    setamount(val.toFixed(2));
     console.log(rate + " rate " + val);
   }, [rate, quantity])
 
-  useEffect(() =>{
+  useEffect(() => {
     settotalamt(((collect(list.map((item) => item.amount)).sum())).toFixed(2));
-  },[list])
+  }, [list])
 
   const context = {
     list, setList, totalamt, settotalamt, totalamtwords, settotalamtwords, singlehsnitem, setsinglehsnitem, setval, setboxColors, cleardetailoption, setcleardetailoption,
     hsn, sethsn, quantity, setquantity, rateinctax, setrateinctax, rate, setrate, per, setper, disc, setdisc, amount, setamount, otherdesc, setotherdesc, ischargedinhsn, setischargedinhsn, otherdescamt, setotherdescamt,
     totalhsnamt, settotalhsnamt, hsnlist, sethsnList, totalhsnamtwords, settotalhsnamtwords, totalsubamt, saveStock, addOrUpdateItemHandler, clearlistcontent, clearOtherDetails, addOtherItems,
-    setsubtotalamt, gstCgstitem, setgstCgstitem, ctrate, setctrate, strate, setstrate, ctatm, setctatm, statm, setstatm, totaltaxvalueamt, settotaltaxvalueamt, dateHandler,gstincluded, setgstincluded,
+    setsubtotalamt, gstCgstitem, setgstCgstitem, ctrate, setctrate, strate, setstrate, ctatm, setctatm, statm, setstatm, totaltaxvalueamt, settotaltaxvalueamt, dateHandler, gstincluded, setgstincluded,
     totalcentaxamt, settotalcentaxamt, totalstatetaxamt, settotalstatetaxamt, isinstallationcharge, setisinstallationcharge, otherchargedetail, setOtherchargedetail, editListRows, addOrEditOtherItems,
     stockid, setstockid, invoicedate, setinvoicedate, paymentmode, setpaymentmode, paymentdate, setpaymentdate, stockidcount, setstockidcount, clientName, setclientName, clientPhno, setclientPhno, clientAdd, setclientAdd,
-    stockHistoryData, setstockHistoryData, invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag, selectedStockEdit, cleartallStock, handleInvoiceExportXlsx,displayhsntable, setdisplayhsntable,
+    stockHistoryData, setstockHistoryData, invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag, selectedStockEdit, cleartallStock, handleInvoiceExportXlsx, displayhsntable, setdisplayhsntable,
 
 
-    singlestockitem, setsinglestockitem,desc, setdesc,productid, setproductid,allStockData, setallStockData,productIdList, setproductIdList
+    singlestockitem, setsinglestockitem, desc, setdesc, productid, setproductid, allStockData, setallStockData, productIdList, setproductIdList, clientid, setclientid,clientList, setclientList
   };
   return <Stocks.Provider value={context}>{children}</Stocks.Provider>;
 }

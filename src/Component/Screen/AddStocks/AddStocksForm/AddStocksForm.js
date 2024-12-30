@@ -33,6 +33,16 @@ const AddStocksForm = () => {
         // let title = 
     }, [tabledet]);
 
+    const filterProdIdAndGetDesc = (prodid)=>{
+
+        let filterdata = tabledet.allStockData.find(data =>{
+            return data.productid==prodid
+        })
+        console.log(filterdata);
+        if(filterdata){
+            tabledet.setdesc(filterdata.desc);
+        }
+    }
     const autocompleTitle = () => {
         if (tabledet.allStockData !== null && tabledet.allStockData.length > 0) {
 
@@ -110,29 +120,22 @@ const AddStocksForm = () => {
                 productid: newValue.inputValue,
             });
             tabledet.setproductid(newValue.inputValue);
+            // filterProdIdAndGetDesc(newValue.inputValue);
         } 
         else {
             if (newValue.productid != null) {
                 setValue(newValue.productid);
                 tabledet.setproductid(newValue.productid);
+                filterProdIdAndGetDesc(newValue.productid);
             }
-
         }
 
     }
 
     const filterOptionOnAutoComplete = (options, params) => {
-        // console.log("filterOptionOnAutoComplete");
-        // console.log(options);
-
-        // let filtered;
         const filtered = filter(options, params);
         // // let filtered;
         const { inputValue } = params;
-        // console.log("inputValue");
-        // console.log(inputValue);
-        // console.log("params");
-        // console.log(params);
         // Suggest the creation of a new value
         const isExisting = options.some((option) => inputValue === option.title);
         // console.log(isExisting);
@@ -196,7 +199,7 @@ const AddStocksForm = () => {
                                 freeSolo
                                 renderInput={(params) => (
                                     // <TextField label="Title" />
-                                    <TextField required id="outlined-required" label="Item Title"
+                                    <TextField required id="outlined-required" label="Product Id"
                                         onChange={(e) => tabledet.setval(e, tabledet.setproductid)}
                                         color={tabledet.setboxColors(tabledet.productid, 'color')}
                                         error={tabledet.setboxColors(tabledet.productid, 'error')}  {...params}
@@ -228,7 +231,7 @@ const AddStocksForm = () => {
                                 )}
                             /> */}
                             
-                            <TextField required id="outlined-required" label="Item description" value={tabledet.desc}
+                            <TextField required id="outlined-required" label="Product description" value={tabledet.desc}
                                 onChange={(e) => tabledet.setval(e, tabledet.setdesc)}
                                 color={tabledet.setboxColors(tabledet.desc, 'color')}
                                 error={tabledet.setboxColors(tabledet.desc, 'error')}
