@@ -484,46 +484,25 @@ const CompanyDetailContext = ({ children }) => {
 
             }
 
-            let allStockData = localstore.addOrGetAllStockData('', 'get');
-
-            let getstockfromdb = await stockDetailBD.getStockDB(loginuserid);
-            console.log('allStockData ' + allStockData);
-            console.log(allStockData);
-            console.log(getstockfromdb);
-            if (getstockfromdb.status === 200) {
-
-                // if (allStockData === null || (allStockData.length <= getstockfromdb.data.length)) {
-                //console.log(getstockfromdb.data);
-                //console.log('inside setallStockData');
-                localstore.addOrGetAllStockData(getstockfromdb.data, 'save');
-                stockDetail.setallStockData(getstockfromdb.data);
+            let results = getAllStockData();
+            if(results){
                 refreshdata = true;
-                // }
-                // else {
-                //     estdetail.setstockHistoryData(getstockfromdb.data);
-                // }
-
-                // let invoicedetailscontext = localstorage.addOrGetstockHistoryData('', 'get');
-                console.log('getstockfromdb ****');
-                console.log(stockDetail.allStockData);
-               
             }
-
-            let allClientData = localstore.addOrGetAllStockData('', 'get');
+            let allClientData = localstore.addOrGetAllClientData('', 'get');
 
             let getallClientDatafromdb = await stockDetailBD.getClientDB(loginuserid);
             console.log('allClientData ' + allClientData);
            
             console.log(allClientData);
             console.log(getallClientDatafromdb);
-            if (getallClientDatafromdb.status === 200) {
+            if (getallClientDatafromdb.status === 200 ) {
 
                 // if (allClientData === null || (allClientData.length <= getallClientDatafromdb.data.length)) {
                 //console.log(getallClientDatafromdb.data);
                 //console.log('inside setallStockData');
                 localstore.addOrGetAllStockData(getallClientDatafromdb.data, 'save');
                 stockDetail.setclientList(getallClientDatafromdb.data);
-                refreshdata = true;
+                
                 // }
                 // else {
                 //     estdetail.setstockHistoryData(getallClientDatafromdb.data);
@@ -543,6 +522,34 @@ const CompanyDetailContext = ({ children }) => {
         setisloaded(true);
     };
 
+    const getAllStockData = async () =>{
+        let allStockData = localstore.addOrGetAllStockData('', 'get');
+
+        let getstockfromdb = await stockDetailBD.getStockDB(loginuserid);
+        console.log('getAllStockData !!!!!');
+        console.log(allStockData);
+        console.log(getstockfromdb);
+        if (getstockfromdb.status === 200) {
+
+            // if (allStockData === null || (allStockData.length <= getstockfromdb.data.length)) {
+            //console.log(getstockfromdb.data);
+            //console.log('inside setallStockData');
+            localstore.addOrGetAllStockData(getstockfromdb.data, 'save');
+            stockDetail.setallStockData(getstockfromdb.data);
+            
+            // }
+            // else {
+            //     estdetail.setstockHistoryData(getstockfromdb.data);
+            // }
+
+            // let invoicedetailscontext = localstorage.addOrGetstockHistoryData('', 'get');
+            console.log('getstockfromdb ****');
+            console.log(stockDetail.allStockData);
+            return true;
+           
+        }
+        return false;
+    }
     const getAlldataOnLogin = () => {
 
         let companyTermsAndCondition = localstore.getCompanyTermsAndConditionHandler();
@@ -736,9 +743,9 @@ const CompanyDetailContext = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        console.log(companyImageUrl);
+        getAllStockData();
 
-    }, [companyImageUrl])
+    }, [stockDetail.stockHistoryData])
     useEffect(() => {
         getAlldataOnLogin();
         if (isbackendconnect) {
@@ -759,7 +766,7 @@ const CompanyDetailContext = ({ children }) => {
         loginuser, setloginuser, loginUserPassword, setloginUserPassword, loginHandler, loginstatus, setloginstatus, loginId, setloginId, loginUserConfirmPassword, setloginUserConfirmPassword, tokenid, settokenid, logoutHandler,
         companyBankdetailtitle, setcompanyBankdetailtitle, companyBankdetailvalue, setcompanyBankdetailvalue, companyBankdetailIsVisible, setcompanyBankdetailIsVisible, companydetailIsVisible, setcompanydetailIsVisible,
         loginuserid, setloginuserid, saveHandler, getAlldataFromDB, getAlldataOnLogin, isloaded, setisloaded, companyImage, setcompanyImage, selectCompanyImg, uploadimg, setuploadimg,
-        role, setrole, type, settype, oraganisationName, setoraganisationName
+        role, setrole, type, settype, oraganisationName, setoraganisationName,getAllStockData
     };
 
     return <CompanyDetail.Provider value={compDet} >{children}</CompanyDetail.Provider>;

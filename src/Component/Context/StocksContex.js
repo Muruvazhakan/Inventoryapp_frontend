@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import { toast } from "react-toastify";
 
 import { v4 as uuidv4 } from "uuid";
@@ -13,7 +13,6 @@ export const Stocks = createContext();
 
 const StocksContext = ({ children }) => {
 
-
   const [width] = useState(641);
 
   const [singlestockitem, setsinglestockitem] = useState({
@@ -26,7 +25,9 @@ const StocksContext = ({ children }) => {
   });
   const [productid, setproductid] = useState('');
   const [list, setList] = useState([]);
+  const [allStockList, setallStockList] = useState([]);
   const [totalamt, settotalamt] = useState(0);
+  const [allstockstotalamt, setallstockstotalamt] = useState(0);
   const [desc, setdesc] = useState('');
   const [quantity, setquantity] = useState(0);
   const [rate, setrate] = useState(0);
@@ -152,6 +153,41 @@ const StocksContext = ({ children }) => {
 
   };
 
+  const getAllStocks = (props) =>{
+    console.log("allStockData");
+    console.log(allStockData);
+    if(props === "allstocks"){
+      if(allStockData && allStockData.length>1){
+          // setList(allStockData);
+          setallStockList(allStockData);
+          calculateSum(allStockData);
+      }
+      
+    }
+  };
+
+  const calculateSum = (alllistdata) =>{
+    let localsum=0,sum=0;
+    let val;
+    let singleval = alllistdata;
+    if(singleval.length >0){
+      console.log("singleval");
+      // console.log(singleval[0].rate);
+      for(let i=0;i<singleval.length-1;i++){
+        console.log("singleval*****");
+        console.log(singleval[i]);
+        // if(singleval[i].rate){
+          val = ( (singleval[i].quantity *1));
+          localsum  =localsum+val; 
+        // }
+       
+      }
+      console.log("localsum****");
+      console.log(localsum);
+      // settotalamt(localsum);
+      setallstockstotalamt(localsum);
+    }
+  }
 
   const addOrEditOtherItems = (item, type) => {
 
@@ -349,7 +385,7 @@ const StocksContext = ({ children }) => {
     }
     console.log('savedataresponse');
     console.log(savedataresponse);
-
+    // getAllStocks(("allstocks"));
     // localstorage.addOrGetstockid(stockidcount, "save");
     // console.log(stockidcount + ' stockidcount');
     // let savestockidcountdataresponse = await stockDb.savestockid(stockidcount, loginuserid);
@@ -494,7 +530,8 @@ const StocksContext = ({ children }) => {
     stockHistoryData, setstockHistoryData, invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag, selectedStockEdit, cleartallStock, handleInvoiceExportXlsx, displayhsntable, setdisplayhsntable,
 
 
-    singlestockitem, setsinglestockitem, desc, setdesc, productid, setproductid, allStockData, setallStockData, productIdList, setproductIdList, clientid, setclientid,clientList, setclientList
+    singlestockitem, setsinglestockitem, desc, setdesc, productid, setproductid, allStockData, setallStockData, productIdList, setproductIdList, clientid, setclientid,clientList, setclientList,
+    getAllStocks,allStockList, setallStockList,allstockstotalamt, setallstockstotalamt
   };
   return <Stocks.Provider value={context}>{children}</Stocks.Provider>;
 }

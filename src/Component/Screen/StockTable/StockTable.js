@@ -17,6 +17,11 @@ const StockTable = (props) => {
     const tabledetails = useContext(Stocks);
     const digit2options = { maximumFractionDigits: 2 }
 
+    let displaylist = (props.screen ==="allstocks" ? tabledetails.allStockList :tabledetails.list );
+    let localsum = (props.screen ==="allstocks" ? tabledetails.allstockstotalamt :
+        tabledetails.totalamt
+     );
+    
     return <>
 
         <Paper sx={{ width: '98%', overflow: 'hidden', padding: '5px', borderRadius: '10px',marginTop:"10px" }}>
@@ -43,8 +48,9 @@ const StockTable = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {tabledetails.list.map((item, index) => {
-
+                        {displaylist.map((item, index) => {
+                            let sum =  Intl.NumberFormat("en-IN", digit2options).format(item.amount);
+                            let othersum = Intl.NumberFormat("en-IN", digit2options).format(item.quantity *item.rate *1)
                             return (
                                 <TableRow className={item.index % 2 === 0 ? "table-body tablegrey" : "table-body"} key={item.id}
                                 // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -54,7 +60,15 @@ const StockTable = (props) => {
                                     <TableCell className="table-header-td">{item.desc}</TableCell>
                                     <TableCell align='center' className="table-header-td">{item.quantity}</TableCell>
                                     <TableCell className="table-header-td">{item.rate}</TableCell>
-                                    <TableCell className="table-header-td">{Intl.NumberFormat("en-IN", digit2options).format(item.amount)}</TableCell>
+                                    <TableCell className="table-header-td">
+                                        
+                                    { sum>0 ? sum: (othersum)}
+                                    {/* ({Intl.NumberFormat("en-IN", digit2options).format(item.amount)} :
+                                    {item.quantity *item.rate}) */}
+                                    
+                                        {/* {Intl.NumberFormat("en-IN", digit2options).format(item.amount)} */}
+
+                                    </TableCell>
                                     {props.screen === "update" &&
                                         <>
                                             <TableCell className="table-edit" onClick={() => tabledetails.editListRows(item, "update")} >
@@ -77,7 +91,7 @@ const StockTable = (props) => {
                             <TableCell ></TableCell>
                             <TableCell></TableCell>
                             <TableCell ></TableCell>
-                            <TableCell sx={{ fontSize: 18, fontWeight: 700 }} className="table-amount">₹{Intl.NumberFormat("en-IN", digit2options).format(tabledetails.totalamt)}</TableCell>
+                            <TableCell sx={{ fontSize: 18, fontWeight: 700 }} className="table-amount">₹{Intl.NumberFormat("en-IN", digit2options).format(localsum)}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

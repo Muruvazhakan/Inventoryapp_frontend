@@ -25,6 +25,13 @@ export const navigationbarcontent = [
         displays: true,
         image: invocie
     },
+    {
+        screenname: 'Stocks',
+        links: '/stocks',
+        altname: 'stocks',
+        displays: true,
+        image: invocie
+    },
     // {
     //     screenname: 'Generate Estimate',
     //     links: '/genestimate',

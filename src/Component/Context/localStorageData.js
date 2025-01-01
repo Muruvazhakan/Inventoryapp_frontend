@@ -156,3 +156,21 @@ export const addOrGetAllStockData = (props, type) => {
         localStorage.removeItem('allStockData');
     }
 }
+
+
+export const addOrGetAllClientData = (props, type) => {
+    // console.log(props);
+
+    if (type === 'save') {
+        localStorage.setItem('allClientData', JSON.stringify(props));
+        //  console.log('companyinvoicehistory details');
+        // let sto = JSON.parse(localStorage.getItem('companyinvoicehistory'));
+        // console.log(sto);
+    }
+    else if (type === 'get') {
+        return JSON.parse(localStorage.getItem('allClientData'));
+    }
+    else {
+        localStorage.removeItem('allClientData');
+    }
+}
