@@ -29,6 +29,8 @@ export const getStockidDB = async (userid) => {
 
  export const getStockDB = async (userid) => {
     //console.log(`${dbprop.getStockUrl}/${userid}` + ' dbprop.getStockIdUrl');
+    console.log("userid");
+    console.log(userid);
      // const data = {
      //     username: username,
      //     password: userpassword

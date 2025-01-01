@@ -484,7 +484,7 @@ const CompanyDetailContext = ({ children }) => {
 
             }
 
-            let results = getAllStockData();
+            let results = stockDetail.getAllStockData(loginuserid);
             if(results){
                 refreshdata = true;
             }
@@ -522,34 +522,35 @@ const CompanyDetailContext = ({ children }) => {
         setisloaded(true);
     };
 
-    const getAllStockData = async () =>{
-        let allStockData = localstore.addOrGetAllStockData('', 'get');
+    // const getAllStockData = async () =>{
+    //     let allStockData = localstore.addOrGetAllStockData('', 'get');
 
-        let getstockfromdb = await stockDetailBD.getStockDB(loginuserid);
-        console.log('getAllStockData !!!!!');
-        console.log(allStockData);
-        console.log(getstockfromdb);
-        if (getstockfromdb.status === 200) {
+    //     let getstockfromdb = await stockDetailBD.getStockDB(loginuserid);
+    //     console.log('getAllStockData !!!!!');
+    //     console.log(allStockData);
+    //     console.log(getstockfromdb);
+    //     if (getstockfromdb.status === 200) {
 
-            // if (allStockData === null || (allStockData.length <= getstockfromdb.data.length)) {
-            //console.log(getstockfromdb.data);
-            //console.log('inside setallStockData');
-            localstore.addOrGetAllStockData(getstockfromdb.data, 'save');
-            stockDetail.setallStockData(getstockfromdb.data);
-            
-            // }
-            // else {
-            //     estdetail.setstockHistoryData(getstockfromdb.data);
-            // }
+    //         // if (allStockData === null || (allStockData.length <= getstockfromdb.data.length)) {
+    //         //console.log(getstockfromdb.data);
+    //         //console.log('inside setallStockData');
+    //         localstore.addOrGetAllStockData(getstockfromdb.data, 'save');
+    //         stockDetail.setallStockData(getstockfromdb.data);
+    //         stockDetail.setallStockList(getstockfromdb.data);
+    //         stockDetail.calculateSum(getstockfromdb.data);
+    //         // }
+    //         // else {
+    //         //     estdetail.setstockHistoryData(getstockfromdb.data);
+    //         // }
 
-            // let invoicedetailscontext = localstorage.addOrGetstockHistoryData('', 'get');
-            console.log('getstockfromdb ****');
-            console.log(stockDetail.allStockData);
-            return true;
+    //         // let invoicedetailscontext = localstorage.addOrGetstockHistoryData('', 'get');
+    //         console.log('getstockfromdb ****');
+    //         console.log(stockDetail.allStockData);
+    //         return true;
            
-        }
-        return false;
-    }
+    //     }
+    //     return false;
+    // }
     const getAlldataOnLogin = () => {
 
         let companyTermsAndCondition = localstore.getCompanyTermsAndConditionHandler();
@@ -742,10 +743,7 @@ const CompanyDetailContext = ({ children }) => {
         setisloaded(false);
     }, []);
 
-    useEffect(() => {
-        getAllStockData();
 
-    }, [stockDetail.stockHistoryData])
     useEffect(() => {
         getAlldataOnLogin();
         if (isbackendconnect) {
@@ -766,7 +764,7 @@ const CompanyDetailContext = ({ children }) => {
         loginuser, setloginuser, loginUserPassword, setloginUserPassword, loginHandler, loginstatus, setloginstatus, loginId, setloginId, loginUserConfirmPassword, setloginUserConfirmPassword, tokenid, settokenid, logoutHandler,
         companyBankdetailtitle, setcompanyBankdetailtitle, companyBankdetailvalue, setcompanyBankdetailvalue, companyBankdetailIsVisible, setcompanyBankdetailIsVisible, companydetailIsVisible, setcompanydetailIsVisible,
         loginuserid, setloginuserid, saveHandler, getAlldataFromDB, getAlldataOnLogin, isloaded, setisloaded, companyImage, setcompanyImage, selectCompanyImg, uploadimg, setuploadimg,
-        role, setrole, type, settype, oraganisationName, setoraganisationName,getAllStockData
+        role, setrole, type, settype, oraganisationName, setoraganisationName
     };
 
     return <CompanyDetail.Provider value={compDet} >{children}</CompanyDetail.Provider>;

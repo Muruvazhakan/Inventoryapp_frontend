@@ -17,7 +17,7 @@ import AllEstimateDetails from "../Screen/ViewScreen/EstimateComponent/AllEstima
 import AllInvoiceDetails from "../Screen/ViewScreen/InvoiceComponent/AllInvoiceDetails";
 import AddStocksForm from "../Screen/AddStocks/AddStocksForm/AddStocksForm";
 import AddStocks from "../Screen/AddStocks/AddStocks";
-import AllStocks from "../Screen/ViewScreen/AllStocks/AllStocks";
+import AllStocks from "../Screen/MainComponent/AllStocks/AllStocks";
 const ScreenRoute = (props) => {
     const logindet = useContext(CompanyDetail);
     return <>

@@ -12,8 +12,8 @@ const CompanyEditeScreen = () => {
         <>
         <ToastContainer position="top-center" theme="colored" containerId="CompanyEditScreen" />
         <YourDetails/>
-        <CompanyBankDetailEdit />
-        <CompanyOtherDetailEdit/>
+        {/* <CompanyBankDetailEdit />
+        <CompanyOtherDetailEdit/> */}
         </>)
 }
 

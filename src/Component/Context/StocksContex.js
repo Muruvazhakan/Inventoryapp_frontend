@@ -156,8 +156,10 @@ const StocksContext = ({ children }) => {
   const getAllStocks = (props) =>{
     console.log("allStockData");
     console.log(allStockData);
+    console.log(props);
+    
     if(props === "allstocks"){
-      if(allStockData && allStockData.length>1){
+      if(allStockData && allStockData.length>0){
           // setList(allStockData);
           setallStockList(allStockData);
           calculateSum(allStockData);
@@ -171,19 +173,19 @@ const StocksContext = ({ children }) => {
     let val;
     let singleval = alllistdata;
     if(singleval.length >0){
-      console.log("singleval");
+      // console.log("****calculateSum****");
       // console.log(singleval[0].rate);
-      for(let i=0;i<singleval.length-1;i++){
-        console.log("singleval*****");
-        console.log(singleval[i]);
+      for(let i=0;i<singleval.length;i++){
+        // console.log("singleval*****");
+        // console.log(singleval[i]);
         // if(singleval[i].rate){
-          val = ( (singleval[i].quantity *1));
+          val = ( (singleval[i].rate * singleval[i].quantity *1));
           localsum  =localsum+val; 
         // }
        
       }
-      console.log("localsum****");
-      console.log(localsum);
+      // console.log("localsum****");
+      // console.log(localsum);
       // settotalamt(localsum);
       setallstockstotalamt(localsum);
     }
@@ -385,6 +387,7 @@ const StocksContext = ({ children }) => {
     }
     console.log('savedataresponse');
     console.log(savedataresponse);
+    getAllStockData(loginuser);
     // getAllStocks(("allstocks"));
     // localstorage.addOrGetstockid(stockidcount, "save");
     // console.log(stockidcount + ' stockidcount');
@@ -399,7 +402,37 @@ const StocksContext = ({ children }) => {
     toast.success("New Stock saved");
 
   }
+    const getAllStockData = async (loginuserid) =>{
+        let allStockData = localstorage.addOrGetAllStockData('', 'get');
+        if(loginuserid != '' || loginuserid !=null)
+            setloginuser(loginuserid);
+        let getstockfromdb = await stockDb.getStockDB(loginuserid);
+        console.log('getAllStockData !!!!!');
+        console.log(allStockData);
+        console.log(getstockfromdb);
+        if (getstockfromdb.status === 200) {
 
+            // if (allStockData === null || (allStockData.length <= getstockfromdb.data.length)) {
+            //console.log(getstockfromdb.data);
+            //console.log('inside setallStockData');
+            localstorage.addOrGetAllStockData(getstockfromdb.data, 'save');
+            setallStockData(getstockfromdb.data);
+            setallStockList(getstockfromdb.data);
+            calculateSum(getstockfromdb.data);
+            // }
+            // else {
+            //     estdetail.setstockHistoryData(getstockfromdb.data);
+            // }
+
+            // let invoicedetailscontext = localstorage.addOrGetstockHistoryData('', 'get');
+            console.log('getstockfromdb ****');
+            console.log(allStockData);
+            return true;
+           
+        }
+        return false;
+    }
+    ;
   const selectedStockEdit = (props) => {
     console.log(props);
 
@@ -520,6 +553,11 @@ const StocksContext = ({ children }) => {
     settotalamt(((collect(list.map((item) => item.amount)).sum())).toFixed(2));
   }, [list])
 
+      useEffect(() => {
+        getAllStocks("allstocks");
+  
+      }, [allStockData])
+
   const context = {
     list, setList, totalamt, settotalamt, totalamtwords, settotalamtwords, singlehsnitem, setsinglehsnitem, setval, setboxColors, cleardetailoption, setcleardetailoption,
     hsn, sethsn, quantity, setquantity, rateinctax, setrateinctax, rate, setrate, per, setper, disc, setdisc, amount, setamount, otherdesc, setotherdesc, ischargedinhsn, setischargedinhsn, otherdescamt, setotherdescamt,
@@ -531,7 +569,7 @@ const StocksContext = ({ children }) => {
 
 
     singlestockitem, setsinglestockitem, desc, setdesc, productid, setproductid, allStockData, setallStockData, productIdList, setproductIdList, clientid, setclientid,clientList, setclientList,
-    getAllStocks,allStockList, setallStockList,allstockstotalamt, setallstockstotalamt
+    getAllStocks,allStockList, setallStockList,allstockstotalamt, setallstockstotalamt,calculateSum,getAllStockData
   };
   return <Stocks.Provider value={context}>{children}</Stocks.Provider>;
 }

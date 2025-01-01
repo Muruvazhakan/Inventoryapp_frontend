@@ -1,5 +1,5 @@
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { CompanyDetail } from "../../../Context/companyDetailContext";
 import './CompanyOtherDetailEdit.css';
 import Card from "../../../Style/Card/Card";
@@ -11,15 +11,19 @@ const CompanyOtherDetailEdit = () => {
 
     const companydet = useContext(CompanyDetail);
 
-    // useEffect(() => {
-    //     console.log(companydet.companydetails)
-    // }, [companydet.companydetails]);
+    useEffect(() => {
+        console.log("companydet.companydetails");
+        console.log(companydet.companydetails)
+    }, [companydet.companydetails]);
 
 
     return (
 
         <Card >
             <h2>Terms And Conditions</h2>
+            {companydet.companydetails.length}
+            {companydet.companydetails.length == 0 ? <></> : 
+            <>
             {companydet.companydetails.map((item, index) => {
                 return (<Box className="  " key={item.id}
                     sx={{ '& .MuiTextField-root': { m: 2, width: '45ch' } }}
@@ -52,13 +56,6 @@ const CompanyOtherDetailEdit = () => {
                             // label="Is Visible?"
                             />
                             <h5 className="tagline isvisible">{item.isvisible ? 'Visible' : 'Hidden'}</h5>
-
-                            {/* <TableCell className="table-edit" onClick={() => companydet.companyOtherDetailHandeler(item.id, companydetailtitle, companydetaildesc, companydetailid, "save")}
-                            >
-
-                                <FaRegSave size={20} />
-
-                            </TableCell> */}
                             <Button variant="contained" color="error" endIcon={<MdDeleteForever />}
                                 onClick={() => companydet.companyOtherDetailHandeler(item.id, "delete")} >
                                 Delete
@@ -71,7 +68,9 @@ const CompanyOtherDetailEdit = () => {
 
                 </Box>
                 )
-            })}
+            })} 
+         </> } 
+            
              <h5 className="notetext" >
               New Item will not be automatically saved until you save!! 
             </h5>

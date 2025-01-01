@@ -11,21 +11,27 @@ import { MdDelete } from "react-icons/md";
 import './StockTable.css';
 
 import { Stocks } from "../../Context/StocksContex";
+import Header from "../Header/Header";
 
 const StockTable = (props) => {
 
     const tabledetails = useContext(Stocks);
     const digit2options = { maximumFractionDigits: 2 }
 
-    let displaylist = (props.screen ==="allstocks" ? tabledetails.allStockList :tabledetails.list );
-    let localsum = (props.screen ==="allstocks" ? tabledetails.allstockstotalamt :
+    let displaylist = (props.screen =="allstocks" ? tabledetails.allStockList :tabledetails.list );
+    let localsum = (props.screen =="allstocks" ? tabledetails.allstockstotalamt :
         tabledetails.totalamt
      );
+
+     console.log( props.screen+ " props.screen" + localsum + " localsum  " + displaylist + " displaylist");
     
     return <>
 
         <Paper sx={{ width: '98%', overflow: 'hidden', padding: '5px', borderRadius: '10px',marginTop:"10px" }}>
+           
             <TableContainer sx={{ minWidth: 650, borderRadius: '10px' }}>
+            {props.screen =="allstocks" && <Header name="Current Stocks"/> }
+            
                 <Table aria-label="simple table">
                     <TableHead sx={{ fontWeight: 1130, color: "white" }}>
                         <TableRow className="table-header">
