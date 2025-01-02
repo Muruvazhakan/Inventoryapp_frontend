@@ -11,3 +11,10 @@
   .button-warn{
     margin: 1%;
   }
+  .screenHeader{
+    display: inline-block;
+    font-size: x-large;
+    font-weight: bolder;
+    border-radius: 10px;
+    font-family: none;
+  }

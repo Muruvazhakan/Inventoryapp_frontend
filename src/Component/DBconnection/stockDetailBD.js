@@ -47,6 +47,27 @@ export const getStockidDB = async (userid) => {
      }
  };
 
+ export const getAllHistoryStockDB = async (userid) => {
+    //console.log(`${dbprop.getStockUrl}/${userid}` + ' dbprop.getStockIdUrl');
+    console.log("userid");
+    console.log(userid);
+     // const data = {
+     //     username: username,
+     //     password: userpassword
+     // };
+     // console.log(data);
+     let response;
+     try {
+         response = await axios.get(`${dbprop.getAllHistoryStockUrl}/${userid}`, config);
+         // console.log(response);
+         return response;
+     } catch (err) {
+         console.log(err);
+         return err;
+     }
+ };
+
+
  export const getClientDB = async (userid) => {
     //console.log(`${dbprop.getStockUrl}/${userid}` + ' dbprop.getStockIdUrl');
      // const data = {

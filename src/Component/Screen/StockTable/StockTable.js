@@ -18,20 +18,39 @@ const StockTable = (props) => {
     const tabledetails = useContext(Stocks);
     const digit2options = { maximumFractionDigits: 2 }
 
-    let displaylist = (props.screen =="allstocks" ? tabledetails.allStockList :tabledetails.list );
-    let localsum = (props.screen =="allstocks" ? tabledetails.allstockstotalamt :
-        tabledetails.totalamt
-     );
+    let displaylist = (props.screen == "allstocks" ? tabledetails.allStockList 
+        :
+    (props.screen == "add" ? tabledetails.list 
+        :
+        (props.screen == "sale" ? tabledetails.saleslist 
+            :tabledetails.allStockSalesList
+        )
+         ) 
+        );
+    console.log("displaylist  " + " ^^^" +displaylist)
+    let localsum = (props.screen == "allstocks" ? tabledetails.allstockstotalamt 
+        :
+        (props.screen == "add" ? tabledetails.totalamt 
+            :
+            (props.screen == "sale" ? tabledetails.totalsalesamt 
+                :tabledetails.allstockssalestotalamt
+            )
+             ) 
+            );
+       
+   
 
-     console.log( props.screen+ " props.screen" + localsum + " localsum  " + displaylist + " displaylist");
-    
+    let from = props.from;
+
+    console.log(props.screen + " props.screen" + localsum + " localsum  " + displaylist + " displaylist");
+
     return <>
 
-        <Paper sx={{ width: '98%', overflow: 'hidden', padding: '5px', borderRadius: '10px',marginTop:"10px" }}>
-           
+        <Paper sx={{ width: '98%', overflow: 'hidden', padding: '5px', borderRadius: '10px', marginTop: "10px" }}>
+
             <TableContainer sx={{ minWidth: 650, borderRadius: '10px' }}>
-            {props.screen =="allstocks" && <Header name="Current Stocks"/> }
-            
+                {props.screen == "allstocks" && <Header name="Current Stocks" />}
+                {props.screen == "allsales" && <Header name="Sales Stocks" />}
                 <Table aria-label="simple table">
                     <TableHead sx={{ fontWeight: 1130, color: "white" }}>
                         <TableRow className="table-header">
@@ -39,7 +58,7 @@ const StockTable = (props) => {
                             <TableCell sx={{ fontWeight: 700 }}>Product Id</TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Description of Goods </TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Quantity</TableCell>
-                            <TableCell sx={{ fontWeight: 700 }}>Purchace Rate</TableCell>
+                            <TableCell sx={{ fontWeight: 700 }}>{from === "add" ? "Purchace Rate" : "Sales Rate"}</TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Amount (₹)</TableCell>
                             {props.screen === "update" &&
                                 <>
@@ -55,8 +74,8 @@ const StockTable = (props) => {
                     </TableHead>
                     <TableBody>
                         {displaylist.map((item, index) => {
-                            let sum =  Intl.NumberFormat("en-IN", digit2options).format(item.amount);
-                            let othersum = Intl.NumberFormat("en-IN", digit2options).format(item.quantity *item.rate *1)
+                            let sum = Intl.NumberFormat("en-IN", digit2options).format(item.amount);
+                            let othersum = Intl.NumberFormat("en-IN", digit2options).format(item.quantity * item.rate * 1)
                             return (
                                 <TableRow className={item.index % 2 === 0 ? "table-body tablegrey" : "table-body"} key={item.id}
                                 // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -67,15 +86,15 @@ const StockTable = (props) => {
                                     <TableCell align='center' className="table-header-td">{item.quantity}</TableCell>
                                     <TableCell className="table-header-td">{item.rate}</TableCell>
                                     <TableCell className="table-header-td">
-                                        
-                                    { sum>0 ? sum: (othersum)}
-                                    {/* ({Intl.NumberFormat("en-IN", digit2options).format(item.amount)} :
+
+                                        {sum > 0 ? sum : (othersum)}
+                                        {/* ({Intl.NumberFormat("en-IN", digit2options).format(item.amount)} :
                                     {item.quantity *item.rate}) */}
-                                    
+
                                         {/* {Intl.NumberFormat("en-IN", digit2options).format(item.amount)} */}
 
                                     </TableCell>
-                                    {props.screen === "update" &&
+                                    {props.type === "update" &&
                                         <>
                                             <TableCell className="table-edit" onClick={() => tabledetails.editListRows(item, "update")} >
                                                 <FiEdit size={18} />

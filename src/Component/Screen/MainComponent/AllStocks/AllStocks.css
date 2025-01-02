@@ -2,3 +2,12 @@
     margin: 5px;
     /* padding: 5px 5px 5px 20px; */
 }
+.listofbuttons{
+    margin: 5px;
+    display: inline-table;
+    padding: 5px;
+    direction: ltr;
+    border: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}

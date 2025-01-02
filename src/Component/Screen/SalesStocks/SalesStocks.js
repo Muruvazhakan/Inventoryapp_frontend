@@ -1,23 +1,25 @@
 import React, { useContext, useEffect } from "react";
-import AddStocksForm from "./AddStocksForm/AddStocksForm";
+
 import AddStocksGenDetails from "./AddStocksGenDetails";
 import StockTable from "../StockTable/StockTable";
 import { Box, Grid } from "@mui/material";
+import AddStocksForm from "../AddStocks/AddStocksForm/AddStocksForm";
 import Card from "../../Style/Card/Card";
+import Header from "../Header/Header";
 
-const AddStocks = () => {
+const SalesStocks = () => {
 
     return <>
         <Box sx={{ flexGrow: 1 }}>
             <Card>
-                <Card className="screenHeader"> Add Stocks </Card>
+                <Card className="screenHeader"> Sales Stocks </Card>
                 <Grid container spacing={2}>
                     <Grid item xs={7}>
-                        <StockTable screen="add" from="add" type="update" />
+                        <StockTable screen="sales" from="sale" type="update"/>
                     </Grid>
                     <Grid item xs={5}>
-                        <AddStocksForm screen="add" />
-                        <AddStocksGenDetails screen="add" />
+                        <AddStocksForm screen="sale" />
+                        <AddStocksGenDetails screen="sale" />
 
                     </Grid>
                 </Grid>
@@ -26,4 +28,4 @@ const AddStocks = () => {
     </>
 }
 
-export default AddStocks;
+export default SalesStocks;

@@ -488,6 +488,12 @@ const CompanyDetailContext = ({ children }) => {
             if(results){
                 refreshdata = true;
             }
+
+            let resultsgetAllHistoryStockData = stockDetail.getAllHistoryStockData(loginuserid);
+            if(resultsgetAllHistoryStockData){
+                refreshdata = true;
+            }
+
             let allClientData = localstore.addOrGetAllClientData('', 'get');
 
             let getallClientDatafromdb = await stockDetailBD.getClientDB(loginuserid);
@@ -500,7 +506,7 @@ const CompanyDetailContext = ({ children }) => {
                 // if (allClientData === null || (allClientData.length <= getallClientDatafromdb.data.length)) {
                 //console.log(getallClientDatafromdb.data);
                 //console.log('inside setallStockData');
-                localstore.addOrGetAllStockData(getallClientDatafromdb.data, 'save');
+                localstore.addOrGetAllClientData(getallClientDatafromdb.data, 'save');
                 stockDetail.setclientList(getallClientDatafromdb.data);
                 
                 // }

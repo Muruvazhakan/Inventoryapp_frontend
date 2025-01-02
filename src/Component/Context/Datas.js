@@ -19,16 +19,16 @@ export const navigationbarcontent = [
         image: companyperson
     },
     {
-        screenname: 'Add Stock',
-        links: '/addstock',
-        altname: 'addstock',
+        screenname: 'Stocks',
+        links: '/stocks',
+        altname: 'stocks',
         displays: true,
         image: invocie
     },
     {
-        screenname: 'Stocks',
-        links: '/stocks',
-        altname: 'stocks',
+        screenname: 'Sales',
+        links: '/sales',
+        altname: 'sales',
         displays: true,
         image: invocie
     },

@@ -18,6 +18,8 @@ import AllInvoiceDetails from "../Screen/ViewScreen/InvoiceComponent/AllInvoiceD
 import AddStocksForm from "../Screen/AddStocks/AddStocksForm/AddStocksForm";
 import AddStocks from "../Screen/AddStocks/AddStocks";
 import AllStocks from "../Screen/MainComponent/AllStocks/AllStocks";
+import ListOfAddedStocks from "../Screen/AddStocks/ListOfAddedStocks/ListOfAddedStocks";
+import SalesStocks from "../Screen/SalesStocks/SalesStocks";
 const ScreenRoute = (props) => {
     const logindet = useContext(CompanyDetail);
     return <>
@@ -40,6 +42,8 @@ const ScreenRoute = (props) => {
                         <Route path='/yourdetail' Component={CompanyEditeScreen} />
                         <Route path='/addstock' Component={AddStocks} />
                         <Route path='/stocks' Component={AllStocks} />
+                        <Route path='/listofaddedstocks' Component={ListOfAddedStocks} />
+                        <Route path='/sales' Component={SalesStocks} />
                         {/* <Route path='/genestimate' Component={EstimateMainComponent} />
                         <Route path='/allinvoice' Component={AllInvoiceDetails} />
                         <Route path='/allestimates' Component={AllEstimateDetails} />  */}
