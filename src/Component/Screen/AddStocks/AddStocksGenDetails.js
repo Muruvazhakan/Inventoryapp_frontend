@@ -1,4 +1,4 @@
-import React, { useContext,useEffect,useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FormGroup, FormControl, TextField, Box, Button } from '@mui/material';
 import { FaRegIdCard } from "react-icons/fa6";
 import { MdOutlineAddToPhotos } from "react-icons/md";
@@ -9,10 +9,10 @@ import { Stocks } from "../../Context/StocksContex";
 import Card from "../../Style/Card/Card";
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 const filter = createFilterOptions();
-const AddStocksGenDetails = () => {
+const AddStocksGenDetails = (props) => {
 
     const stockdet = useContext(Stocks);
- const [value, setValue] = React.useState(null);
+    const [value, setValue] = React.useState(null);
 
     const [tit, setit] = useState([]);
     let title;
@@ -27,14 +27,14 @@ const AddStocksGenDetails = () => {
         // let title = 
     }, [stockdet]);
 
-    const filterProdIdAndGetDesc = (clname)=>{
+    const filterProdIdAndGetDesc = (clname) => {
 
-        let filterdata = stockdet.clientList.find(data =>{
-            return data.clientName==clname
+        let filterdata = stockdet.clientList.find(data => {
+            return data.clientName == clname
         })
         // console.log("filterProdIdAndGetDesc");
         // console.log(filterdata); 
-        if(filterdata){
+        if (filterdata) {
             stockdet.setclientPhno(filterdata.clientPhno);
             stockdet.setclientAdd(filterdata.clientAdd);
             stockdet.setclientid(filterdata.clientid);
@@ -68,7 +68,7 @@ const AddStocksGenDetails = () => {
         // console.log("newValue");
         // console.log(newValue);
         // console.log("event");
-       
+
         // console.log(event);
         if (newValue && newValue.inputValue) {
             // Create a new value from the user input
@@ -77,7 +77,7 @@ const AddStocksGenDetails = () => {
             });
             stockdet.setclientName(newValue.inputValue);
             // filterProdIdAndGetDesc(newValue.inputValue);
-        } 
+        }
         else {
             if (newValue.clientName != null) {
                 setValue(newValue.clientName);
@@ -144,30 +144,30 @@ const AddStocksGenDetails = () => {
                 <Card>
                     <h3>Client Details</h3>
                     <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }} >
-                    <Autocomplete
-                                // value={value}
-                                value={stockdet.clientName}
-                                onChange={(event, newValue) => onChangeOnAutoComplete(event, newValue)}
-                                filterOptions={(options, params) => filterOptionOnAutoComplete(options, params)}
-                                selectOnFocus
-                                clearOnBlur
-                                handleHomeEndKeys
-                                id="free-solo-with-text"
-                                options={tit}
-                                getOptionLabel={(option) => getOptionLabelOnAutoComplete(option)}
-                                renderOption={(props, option) => renderOptionOnAutoComplete(props, option)}
-                                // sx={{ width: 300 }}
-                                freeSolo
-                                renderInput={(params) => (
-                                    // <TextField label="Title" />
-                                    <TextField required id="outlined-required" label="Client Name"
+                        <Autocomplete
+                            // value={value}
+                            value={stockdet.clientName}
+                            onChange={(event, newValue) => onChangeOnAutoComplete(event, newValue)}
+                            filterOptions={(options, params) => filterOptionOnAutoComplete(options, params)}
+                            selectOnFocus
+                            clearOnBlur
+                            handleHomeEndKeys
+                            id="free-solo-with-text"
+                            options={tit}
+                            getOptionLabel={(option) => getOptionLabelOnAutoComplete(option)}
+                            renderOption={(props, option) => renderOptionOnAutoComplete(props, option)}
+                            // sx={{ width: 300 }}
+                            freeSolo
+                            renderInput={(params) => (
+                                // <TextField label="Title" />
+                                <TextField required id="outlined-required" label="Client Name"
                                     onChange={(e) => stockdet.setval(e, stockdet.setclientName)}
                                     color={stockdet.setboxColors(stockdet.clientName, 'color')}
                                     error={stockdet.setboxColors(stockdet.clientName, 'error')}  {...params}
-                                    />
-                                )}
-                            />
-                   
+                                />
+                            )}
+                        />
+
                         {/* <TextField required id="outlined-required" label="Client Name" value={stockdet.clientName}
                             // onChange={(e)=>stockdet.setclientName(e.target.value)}
                             onChange={(e) => stockdet.setval(e, stockdet.setclientName)}
@@ -191,19 +191,26 @@ const AddStocksGenDetails = () => {
                     </Box>
 
                     <h3>
-                        Stock Added Details
+                    {props.screen === "add" ? "Stocks Details" : "Sale Stocks Details"} 
                     </h3>
                     <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '15ch', height: '5ch' } }} >
-
-                        {stockdet.stockid.length == 0 ?
-                            <div><Button className="gen-invoice" variant="outlined" endIcon={<FaRegIdCard />} onClick={stockdet.dateHandler}>Generate Stock Id</Button> </div> : <div className="invoicegen"> Stock Id Generated: {stockdet.stockid}</div>}
-                        Bought date:
-                        <input type="date" className="date-field" onChange={(e) => stockdet.setval(e, stockdet.setstockdate)} title="payement" size={210} id="dateDefault" value={stockdet.stockdate} aria-label="stock" />
-                        {/* <TextField id="outlined-required" label="Payment Mode" value={stockdet.paymentmode}
-                            onChange={(e) => stockdet.setval(e, stockdet.setpaymentmode)}
-                            color={stockdet.setboxColors(stockdet.paymentmode, 'color')}
-                        //  error={stockdet.setboxColors(stockdet.paymentmode,'error')} 
-                        /> */}
+                        {props.screen == "add" ? <>
+                            {stockdet.stockid.length == 0 ?
+                                <div>
+                                    <Button className="gen-invoice" variant="outlined" endIcon={<FaRegIdCard />} onClick={() => stockdet.dateHandler("stock")}>Generate Stock Id</Button> </div> : <div className="invoicegen"> Stock Id Generated: {stockdet.stockid}
+                                </div>}
+                            Bought date:
+                            <input type="date" className="date-field" onChange={(e) => stockdet.setval(e, stockdet.setstockdate)} title="payement" size={210} id="dateDefault" value={stockdet.stockdate} aria-label="stock" />
+                        </>
+                            : <>
+                                {stockdet.salestockid.length == 0 ?
+                                    <div>
+                                        <Button className="gen-invoice" variant="outlined" endIcon={<FaRegIdCard />} onClick={() => stockdet.dateHandler("sale")}>Generate Sale Stock Id</Button> </div> : <div className="invoicegen"> Sale Stock Id Generated: {stockdet.salestockid}
+                                    </div>}
+                                Sale date:
+                                <input type="date" className="date-field" onChange={(e) => stockdet.setval(e, stockdet.setsalestockdate)} title="payement" size={210} id="dateDefault" value={stockdet.salestockdate} aria-label="salestock" />
+                            </>
+                        }
 
                     </Box>
 
@@ -211,12 +218,14 @@ const AddStocksGenDetails = () => {
 
                         <div className="button-warn">
                             <Button variant="contained" color="success" size="medium" endIcon={<FaFileInvoice />}
-                                onClick={stockdet.saveStock}>Save Stocks</Button>
+                                onClick={() => stockdet.saveStock(props.screen)}>
+                                    {props.screen === "add" ? "Save Stocks" : "Save Sale Stocks"}
+                                </Button>
                         </div>
 
                         <div className="button-warn buttonspace">
                             <Button variant="contained" color="warning" size="medium" endIcon={<GrClearOption />}
-                                onClick={stockdet.cleartallStock}> Reset Stock Screen</Button>
+                                onClick={() => stockdet.cleartallStock(props.screen)}> Reset Screen</Button>
                         </div>
                     </Box>
                 </Card>

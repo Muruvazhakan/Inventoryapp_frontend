@@ -96,10 +96,10 @@ const StockTable = (props) => {
                                     </TableCell>
                                     {props.type === "update" &&
                                         <>
-                                            <TableCell className="table-edit" onClick={() => tabledetails.editListRows(item, "update")} >
+                                            <TableCell className="table-edit" onClick={() => tabledetails.editListRows(item,props.screen,displaylist, "update")} >
                                                 <FiEdit size={18} />
                                             </TableCell>
-                                            <TableCell className="table-edit" onClick={() => tabledetails.editListRows(item, "delete")} >
+                                            <TableCell className="table-edit" onClick={() => tabledetails.editListRows(item,props.screen,displaylist, "delete")} >
                                                 <MdDelete size={18} />
                                             </TableCell>
                                         </>}

@@ -12,13 +12,13 @@ import { Link } from "react-router-dom";
 import { BsFiletypeXlsx } from "react-icons/bs";
 // import img  from '.'
 
-const ListOfAddedStocks = () => {
+const ListOfAddedSaleStocks = (props) => {
 
     const stocksdet = useContext(Stocks);
     const companydet = useContext(CompanyDetail);
     const digit2options = { maximumFractionDigits: 2 }
     useEffect(()=>{
-        console.log('ListOfAddedStocks');
+        console.log('ListOfAddedSaleStocks');
 
         console.log(stocksdet.stockHistoryData);
         
@@ -37,7 +37,7 @@ const ListOfAddedStocks = () => {
         <>
             {stocksdet.stockHistoryData === null || stocksdet.stockHistoryData.length ===0 ?
                 <>
-                    <NoData details="Stock Not Found" />
+                    <NoData details="Stock Found" />
                 </>
                 :
                 < >
@@ -48,12 +48,19 @@ const ListOfAddedStocks = () => {
                     <div className="displayelements">
                         {stocksdet.stockHistoryData.map((item, index) => {
                             // console.log('item');
-                            let clientdetail = stocksdet.clientList.find(data => {
+                            // console.log(item);
+                            let clientdetail = null;
+                             clientdetail = stocksdet.clientList.find(data => {
                                 // console.log("data.clientid");
                                 // console.log(data.clientid + " //// "+ item.clientid);
-                                   return data.clientid =item.clientid
-                            })
+                                if(data.clientid == item.clientid){
+                                    return data;
+                                }
+                                  
+                            });
                             // console.log("clientdetail &&&&");
+                            // console.log(clientdetail);
+                            // console.log("stocksdet.clientList");
                             // console.log(clientdetail);
                             // console.log("item");
                             // console.log(item);
@@ -78,6 +85,7 @@ const ListOfAddedStocks = () => {
                                     <ul className="details">
                                         <div className=" ">
                                             <h3>Client Details</h3>
+                                           
                                             <li>
                                                 Client Name
                                             </li> <div className="nameheigh">{clientdetail.clientName} </div>
@@ -113,6 +121,7 @@ const ListOfAddedStocks = () => {
                                 </Card>
 
                             </>
+                           
                         })}
                     </div>
                 </>
@@ -120,4 +129,4 @@ const ListOfAddedStocks = () => {
         </>)
 }
 
-export default ListOfAddedStocks;
+export default ListOfAddedSaleStocks;

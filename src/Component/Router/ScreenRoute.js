@@ -6,20 +6,20 @@ import NoData from "../Screen/NoData/NoData";
 import NavigationBar from "../Screen/NavigationBar/NavigationBar";
 import DisplayAllComponent from "../Screen/MainComponent/DisplayAllComponent";
 
-import EstimateMainComponent from "../Screen/MainComponent/EstimateMainComponent";
 import CompanyEditeScreen from "../Screen/ViewScreen/CompanyotherDetail/CompanyEditeScreen";
 import Login from "../Screen/Login/Login";
 import { CompanyDetail } from "../Context/companyDetailContext";
 import SignUp from "../Screen/Login/SignUp";
 import Developer from "../Screen/ViewScreen/Developer";
 import { ToastContainer } from "react-toastify";
-import AllEstimateDetails from "../Screen/ViewScreen/EstimateComponent/AllEstimateDetails";
-import AllInvoiceDetails from "../Screen/ViewScreen/InvoiceComponent/AllInvoiceDetails";
 import AddStocksForm from "../Screen/AddStocks/AddStocksForm/AddStocksForm";
 import AddStocks from "../Screen/AddStocks/AddStocks";
 import AllStocks from "../Screen/MainComponent/AllStocks/AllStocks";
-import ListOfAddedStocks from "../Screen/AddStocks/ListOfAddedStocks/ListOfAddedStocks";
+
 import SalesStocks from "../Screen/SalesStocks/SalesStocks";
+import AllSaleStocks from "../Screen/MainComponent/AllSaleStocks/AllSaleStocks";
+import ListOfAddedSaleStocks from "../Screen/SalesStocks/ListOfAddedSaleStocks/ListOfAddedSaleStocks";
+import ListOfAddedStocks from "../Screen/AddStocks/ListOfAddedStocks/ListOfAddedStocks";
 const ScreenRoute = (props) => {
     const logindet = useContext(CompanyDetail);
     return <>
@@ -43,7 +43,9 @@ const ScreenRoute = (props) => {
                         <Route path='/addstock' Component={AddStocks} />
                         <Route path='/stocks' Component={AllStocks} />
                         <Route path='/listofaddedstocks' Component={ListOfAddedStocks} />
-                        <Route path='/sales' Component={SalesStocks} />
+                        <Route path='/sales' Component={AllSaleStocks} />
+                        <Route path='/salestock' Component={SalesStocks} />
+                        <Route path='/listofaddedsalestocks' Component={ListOfAddedSaleStocks} />
                         {/* <Route path='/genestimate' Component={EstimateMainComponent} />
                         <Route path='/allinvoice' Component={AllInvoiceDetails} />
                         <Route path='/allestimates' Component={AllEstimateDetails} />  */}

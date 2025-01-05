@@ -1,8 +1,7 @@
 import companyperson from '../../Image/companydetails.png';
-import invocie from '../../Image/invoice.png';
-import estimation from '../../Image/estimationgen.png';
-import allestimation from '../../Image/allestimation.png';
-import allinvoice from '../../Image/allinvoice.png';
+import salestockimage from '../../Image/salestockimage.png';
+import mystock from '../../Image/mystock.png';
+import stocklist from '../../Image/stocklist.png';
 
 export const navigationbarcontent = [
     {
@@ -23,14 +22,14 @@ export const navigationbarcontent = [
         links: '/stocks',
         altname: 'stocks',
         displays: true,
-        image: invocie
+        image: mystock
     },
     {
         screenname: 'Sales',
         links: '/sales',
         altname: 'sales',
         displays: true,
-        image: invocie
+        image: salestockimage
     },
     // {
     //     screenname: 'Generate Estimate',

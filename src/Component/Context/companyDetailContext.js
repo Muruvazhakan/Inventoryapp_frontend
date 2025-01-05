@@ -494,31 +494,11 @@ const CompanyDetailContext = ({ children }) => {
                 refreshdata = true;
             }
 
-            let allClientData = localstore.addOrGetAllClientData('', 'get');
-
-            let getallClientDatafromdb = await stockDetailBD.getClientDB(loginuserid);
-            console.log('allClientData ' + allClientData);
-           
-            console.log(allClientData);
-            console.log(getallClientDatafromdb);
-            if (getallClientDatafromdb.status === 200 ) {
-
-                // if (allClientData === null || (allClientData.length <= getallClientDatafromdb.data.length)) {
-                //console.log(getallClientDatafromdb.data);
-                //console.log('inside setallStockData');
-                localstore.addOrGetAllClientData(getallClientDatafromdb.data, 'save');
-                stockDetail.setclientList(getallClientDatafromdb.data);
-                
-                // }
-                // else {
-                //     estdetail.setstockHistoryData(getallClientDatafromdb.data);
-                // }
-
-                // let invoicedetailscontext = localstorage.addOrGetstockHistoryData('', 'get');
-                console.log('getallClientDatafromdb ****');
-                console.log(stockDetail.clientList);
-               
+            let resultsgetAllClientList = stockDetail.getAllClientList(loginuserid);
+            if(resultsgetAllClientList){
+                refreshdata = true;
             }
+
         }
 
         if (refreshdata === true) {

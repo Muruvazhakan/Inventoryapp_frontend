@@ -5,7 +5,7 @@ import StockTable from "../StockTable/StockTable";
 import { Box, Grid } from "@mui/material";
 import Card from "../../Style/Card/Card";
 
-const AddStocks = () => {
+const AddStocks = (props) => {
 
     return <>
         <Box sx={{ flexGrow: 1 }}>

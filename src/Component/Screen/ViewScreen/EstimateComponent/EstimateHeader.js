@@ -5,7 +5,7 @@ import { CompanyDetail } from "../../../Context/companyDetailContext";
 import '../../GeneralDetails/GeneralDetails.css';
 import { estimateState } from "../../../Context/EstimatestateContext";
 // import img  from '.'
-import logo from '../../../../Image/JRLogo.png';
+
 const EstimateHeader = () => {
 
     const estimatedet = useContext(estimateState);

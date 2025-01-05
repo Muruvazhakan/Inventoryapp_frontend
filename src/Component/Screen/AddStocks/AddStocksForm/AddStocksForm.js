@@ -14,14 +14,14 @@ import './AddStocksForm.css';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 const filter = createFilterOptions();
 
-const AddStocksForm = () => {
+const AddStocksForm = (props) => {
 
     // const [singleDesc, setSingleDesc] = useState();
     const tabledet = useContext(Stocks);
     const [value, setValue] = React.useState(null);
 
     const [tit, setit] = useState([]);
-    let title;
+    
 
     useEffect(() => {
         console.log('tabledet estimateState');
@@ -41,6 +41,8 @@ const AddStocksForm = () => {
         console.log(filterdata);
         if(filterdata){
             tabledet.setdesc(filterdata.desc);
+            tabledet.setavailablestock(filterdata.quantity);
+            
         }
     }
     const autocompleTitle = () => {
@@ -174,13 +176,17 @@ const AddStocksForm = () => {
     return <>
         <Card >
             <ToastContainer position="top-center" theme="colored" containerId="Invoice" />
-            <h3>
-                Stocks Data
+            <h3> 
+                {props.screen === "add" ? "Stocks Data" : "Sale Stocks Data"} 
             </h3>
             <FormGroup>
                 <FormControl>
                     <Card>
-                        <h3>Add Stocks details below</h3>
+                        <h3>
+                        {props.screen === "add" ? "Add Stocks details below" : "Add Sale Stocks details below"} 
+                            
+
+                        </h3>
                         <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '20ch' } }}>
 
                             <Autocomplete
@@ -207,35 +213,14 @@ const AddStocksForm = () => {
                                 )}
                             />
 
-                            {/* <Autocomplete
-                                // value={value}
-                                value={estdetail.title}
-                                onChange={(event, newValue) => onChangeOnAutoComplete(event, newValue)}
-                                filterOptions={(options, params) => filterOptionOnAutoComplete(options, params)}
-                                selectOnFocus
-                                clearOnBlur
-                                handleHomeEndKeys
-                                id="free-solo-with-text"
-                                options={tit}
-                                getOptionLabel={(option) => getOptionLabelOnAutoComplete(option)}
-                                renderOption={(props, option) => renderOptionOnAutoComplete(props, option)}
-                                // sx={{ width: 300 }}
-                                freeSolo
-                                renderInput={(params) => (
-                                    // <TextField label="Title" />
-                                    <TextField required id="outlined-required" label="Item Title"
-                                        onChange={(e) => setval(e, estdetail.settitle)}
-                                        color={setboxColors(estdetail.title, 'color')}
-                                        error={setboxColors(estdetail.title, 'error')}  {...params}
-                                    />
-                                )}
-                            /> */}
-                            
                             <TextField required id="outlined-required" label="Product description" value={tabledet.desc}
                                 onChange={(e) => tabledet.setval(e, tabledet.setdesc)}
                                 color={tabledet.setboxColors(tabledet.desc, 'color')}
                                 error={tabledet.setboxColors(tabledet.desc, 'error')}
                             />
+                            {props.screen =="sale" &&
+                             <TextField id="outlined-required" label="Available Quantity" value={tabledet.availablestock} disabled type="number"
+                            /> }
 
                             <TextField required id="outlined-required" label="Quantity" value={tabledet.quantity} type="number"
                                 onChange={(e) => tabledet.setval(e, tabledet.setquantity)}
@@ -257,7 +242,7 @@ const AddStocksForm = () => {
 
                             <div className="button-warn">
                                 <Button variant="contained" color="success" size="medium" endIcon={<BsSave />}
-                                    onClick={() => tabledet.addOrUpdateItemHandler('Add')}>Add Item</Button>
+                                    onClick={() => tabledet.addOrUpdateItemHandler('Add', props.screen)}>Add Item</Button>
                             </div>
                             <Button variant="contained" color="warning" size="medium" endIcon={<GrClearOption />}
                                 onClick={() => tabledet.clearlistcontent()}>Clear Form</Button>
