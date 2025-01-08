@@ -486,10 +486,7 @@ const CompanyDetailContext = ({ children }) => {
 
             
 
-            let resultsgetAllHistorySalesStockData = stockDetail.getAllHistorySalesStockData(loginuserid);
-            if(resultsgetAllHistorySalesStockData){
-                refreshdata = true;
-            }
+           
 
             let results = stockDetail.getAllStockData(loginuserid);
             if(results){
@@ -501,15 +498,20 @@ const CompanyDetailContext = ({ children }) => {
                 refreshdata = true;
             }
 
-            let resultsgetAllHistoryStockData = stockDetail.getAllHistoryStockData(loginuserid);
-            if(resultsgetAllHistoryStockData){
-                refreshdata = true;
-            }
+            // let resultsgetAllHistoryStockData = stockDetail.getAllHistoryStockData(loginuserid);
+            // if(resultsgetAllHistoryStockData){
+            //     refreshdata = true;
+            // }
 
             let resultsgetAllClientList = stockDetail.getAllClientList(loginuserid);
             if(resultsgetAllClientList){
                 refreshdata = true;
             }
+
+            // let resultsgetAllHistorySalesStockData = stockDetail.getAllHistorySalesStockData(loginuserid);
+            // if(resultsgetAllHistorySalesStockData){
+            //     refreshdata = true;
+            // }
 
         }
 

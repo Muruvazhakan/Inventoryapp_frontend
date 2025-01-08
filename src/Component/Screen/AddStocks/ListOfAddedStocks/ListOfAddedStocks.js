@@ -48,16 +48,16 @@ const ListOfAddedStocks = () => {
                     <div className="displayelements">
                         {stocksdet.stockHistoryData.map((item, index) => {
                             // console.log('item');
-                            let clientdetail = null;
-                             clientdetail = stocksdet.clientList.find(data => {
-                                // console.log("data.clientid");
-                                // console.log(data.clientid + " //// "+ item.clientid);
-                                   if(data.clientid == item.clientid){
-                                    // console.log("^^^found data.clientid&&&&");
-                                    // console.log(data);
-                                    return data;
-                                }
-                            })
+                            // let clientdetail = null;
+                            //  clientdetail = stocksdet.clientList.find(data => {
+                            //     // console.log("data.clientid");
+                            //     // console.log(data.clientid + " //// "+ item.clientid);
+                            //        if(data.clientid == item.clientid){
+                            //         // console.log("^^^found data.clientid&&&&");
+                            //         // console.log(data);
+                            //         return data;
+                            //     }
+                            // })
                             // console.log("clientdetail &&&&");
                             // console.log(clientdetail);
                             // console.log("item");
@@ -79,7 +79,7 @@ const ListOfAddedStocks = () => {
 
                                         </li>
                                     </ul>
-                                    {item.clientid && clientdetail && 
+                                    {item.clientName  && 
                                     <ul className="details">
                                         <div className=" "> 
                                             <h3>Client Details</h3>
@@ -87,13 +87,13 @@ const ListOfAddedStocks = () => {
                                             <h3> {clientdetail.clientid}</h3> */}
                                             <li>
                                                 Client Name
-                                            </li> <div className="nameheigh">{clientdetail.clientName} </div>
+                                            </li> <div className="nameheigh">{item.clientName} </div>
                                             <li>
                                                 Client Phone Number
-                                            </li>{clientdetail.clientPhno}
+                                            </li>{item.clientPhno}
                                             <li>
                                                 Client Address
-                                            </li> {clientdetail.clientAdd}
+                                            </li> {item.clientAdd}
                                         </div>
                                     </ul>}
                                    

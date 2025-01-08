@@ -541,7 +541,7 @@ const StocksContext = ({ children }) => {
       console.log(savedataresponse);
       getAllClientList(loginuser);
       getAllStockData(loginuser);
-      getAllHistoryStockData(loginuser);
+      // getAllHistoryStockData(loginuser);
       toast.success("New Stock saved");
     } else {
       if (salestockid == '' || saleslist.length == 0) {
@@ -666,6 +666,8 @@ const StocksContext = ({ children }) => {
       setclientList(getallClientDatafromdb.data);
       console.log('getallClientDatafromdb ****');
       console.log(clientList);
+      getAllHistorySalesStockData(loginuserid,getallClientDatafromdb.data);
+      getAllHistoryStockData(loginuserid,getallClientDatafromdb.data);
       return true;
     }
     return false;
@@ -709,6 +711,7 @@ const StocksContext = ({ children }) => {
   const handleHistoryExportXlsx = (props) => {
     let filtercolumn,filename = (props === "sale" ? "SalesStock":"Stocks") ;
     let lastcolumn, totaladdedamt=0;
+    // deriveClientDetail(salesStockHistoryData);
     console.log(props)
     if (props === "sale") {
       filtercolumn = salesStockHistoryData.map((data, index) => {
@@ -805,7 +808,7 @@ const StocksContext = ({ children }) => {
   }
 
 
-  const getAllHistoryStockData = async (loginuserid) => {
+  const getAllHistoryStockData = async (loginuserid,clientdata) => {
     let allHistoryStockData = localstorage.addOrGetAllHistoryStockData('', 'get');
     if (loginuserid != '' || loginuserid != null)
       setloginuser(loginuserid);
@@ -816,8 +819,9 @@ const StocksContext = ({ children }) => {
     if (getstockfromdb.status === 200) {
       console.log(getstockfromdb.data);
       console.log('inside allHistoryStockData');
-      localstorage.addOrGetAllHistoryStockData(getstockfromdb.data, 'save');
-      setstockHistoryData(getstockfromdb.data);
+      let deriveClientDetailValue  = deriveClientDetail(getstockfromdb.data,clientdata,"add");
+      localstorage.addOrGetAllHistoryStockData(deriveClientDetailValue, 'save');
+      setstockHistoryData(deriveClientDetailValue);
       return true;
     }
     return false;
@@ -927,7 +931,62 @@ const StocksContext = ({ children }) => {
     setclientPhno('');
   };
 
-  const getAllHistorySalesStockData = async (loginuserid) => {
+  const deriveClientDetail = (details,clientdata,type) =>{
+      let salestocks= details;
+      let newvalues=salestocks.map((item, index) => {
+
+       let clientdetail = clientdata.find(data => {
+          // console.log("data.clientid");
+          // console.log(data.clientid + " //// "+ item.clientid);
+             if(data.clientid == item.clientid){
+              // console.log("^^^found data.clientid&&&&");
+              // console.log(data);
+              return data;
+          }
+          
+      });
+      // console.log("%%% client datas $$%%%%");
+      // console.log(clientdetail);
+      let datas;
+      if(type ==="sale"){
+         datas = {
+          salestockid: item.salestockid,
+          userid: item.userid,
+          rows:item.rows,
+          totalsalesamt: item.totalsalesamt,
+          salestockid: item.salestockid,
+          clientid: item.clientid,
+          lastupdatedsalestockdate:item.lastupdatedsalestockdate,
+          salestockdate:item.salestockdate,
+          clientName:(clientdetail !==undefined ? clientdetail.clientName : null),
+          clientPhno:(clientdetail !==undefined? clientdetail.clientPhno: null),
+          clientAdd:(clientdetail !==undefined? clientdetail.clientAdd: null),
+        }
+      } else {
+        datas = {
+          stockid: item.stockid,
+          userid: item.userid,
+          rows:item.rows,
+          totalamt: item.totalamt,
+          stockid: item.stockid,
+          clientid: item.clientid,
+          lastupdatedstockdate:item.lastupdatedstockdate,
+          stockdate:item.stockdate,
+          clientName:(clientdetail !==undefined ? clientdetail.clientName : null),
+          clientPhno:(clientdetail !==undefined? clientdetail.clientPhno: null),
+          clientAdd:(clientdetail !==undefined? clientdetail.clientAdd: null),
+        }
+      }
+      
+    //   console.log("%%% salestocks datas $$%%%%");
+    // console.log(datas);
+      return datas;
+    });
+    // console.log("%%% newvalues $$%%%%");
+    // console.log(newvalues);
+    return newvalues;
+  }
+  const getAllHistorySalesStockData = async (loginuserid,clientdata) => {
     let allHistorySalesStockData = localstorage.addOrGetAllHistorySalesStockData('', 'get');
     if (loginuserid != '' || loginuserid != null)
       setloginuser(loginuserid);
@@ -938,8 +997,11 @@ const StocksContext = ({ children }) => {
     if (getSalesStockfromdb.status === 200) {
       console.log(getSalesStockfromdb.data);
       console.log('inside allHistorySalesStockData');
-      localstorage.addOrGetAllHistorySalesStockData(getSalesStockfromdb.data, 'save');
-      setSalesstockHistoryData(getSalesStockfromdb.data);
+      let deriveClientDetailValue  = deriveClientDetail(getSalesStockfromdb.data,clientdata,"sale");
+      localstorage.addOrGetAllHistorySalesStockData(deriveClientDetailValue, 'save');
+
+  
+      setSalesstockHistoryData(deriveClientDetailValue);
       return true;
     }
     return false;
