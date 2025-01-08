@@ -37,21 +37,26 @@ const ListOfAddedStocks = () => {
         <>
             {stocksdet.stockHistoryData === null || stocksdet.stockHistoryData.length ===0 ?
                 <>
-                    <NoData details="Stock Not Found" />
+                    <NoData details="Stock Found" />
                 </>
                 :
                 < >
                     <div className="exportExcelbttn" >
                         <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
-                            onClick={() => stocksdet.handleExportXlsx()}>Export Estimation to Excel</Button>
+                            onClick={() => stocksdet.handleHistoryExportXlsx("add")}>Export History Stock to Excel</Button>
                     </div>
                     <div className="displayelements">
                         {stocksdet.stockHistoryData.map((item, index) => {
                             // console.log('item');
-                            let clientdetail = stocksdet.clientList.find(data => {
+                            let clientdetail = null;
+                             clientdetail = stocksdet.clientList.find(data => {
                                 // console.log("data.clientid");
                                 // console.log(data.clientid + " //// "+ item.clientid);
-                                   return data.clientid =item.clientid
+                                   if(data.clientid == item.clientid){
+                                    // console.log("^^^found data.clientid&&&&");
+                                    // console.log(data);
+                                    return data;
+                                }
                             })
                             // console.log("clientdetail &&&&");
                             // console.log(clientdetail);
@@ -74,10 +79,12 @@ const ListOfAddedStocks = () => {
 
                                         </li>
                                     </ul>
-                                    {clientdetail && 
+                                    {item.clientid && clientdetail && 
                                     <ul className="details">
-                                        <div className=" ">
+                                        <div className=" "> 
                                             <h3>Client Details</h3>
+                                            {/* <h3> {item.clientid}</h3>
+                                            <h3> {clientdetail.clientid}</h3> */}
                                             <li>
                                                 Client Name
                                             </li> <div className="nameheigh">{clientdetail.clientName} </div>
@@ -89,6 +96,7 @@ const ListOfAddedStocks = () => {
                                             </li> {clientdetail.clientAdd}
                                         </div>
                                     </ul>}
+                                   
                                     <ul className="details  ">
                                         <div className="">
                                             <h3>Stock Value</h3>
@@ -113,6 +121,7 @@ const ListOfAddedStocks = () => {
                                 </Card>
 
                             </>
+                           
                         })}
                     </div>
                 </>

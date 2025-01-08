@@ -92,6 +92,24 @@ export const addOrGetstockHistoryData = (props, type) => {
     }
 }
 
+
+export const addOrGetSaleStockHistoryData = (props, type) => {
+    // console.log(props);
+
+    if (type === 'save') {
+        localStorage.setItem('companysalestockhistory', JSON.stringify(props));
+        //  console.log('companyinvoicehistory details');
+        // let sto = JSON.parse(localStorage.getItem('companyinvoicehistory'));
+        // console.log(sto);
+    }
+    else if (type === 'get') {
+        return JSON.parse(localStorage.getItem('companysalestockhistory'));
+    }
+    else {
+        localStorage.removeItem('companysalestockhistory');
+    }
+}
+
 export const addOrGetEstimateHistoryData = (props, type) => {
     // console.log('companyestimatehistory details');
     // console.log(props);
@@ -127,6 +145,16 @@ export const addOrGetStockid = (props, type) => {
     }
     else if (type === 'get') {
         return JSON.parse(localStorage.getItem('stocksid'));
+    }
+}
+
+export const addOrGetSaleStockid = (props, type) => {
+    //console.log(props);
+    if (type === 'save') {
+        localStorage.setItem('salestocksid', JSON.stringify(props));
+    }
+    else if (type === 'get') {
+        return JSON.parse(localStorage.getItem('salestocksid'));
     }
 }
 
@@ -174,6 +202,23 @@ export const addOrGetAllHistoryStockData = (props, type) => {
     }
 }
 
+
+export const addOrGetAllHistorySalesStockData = (props, type) => {
+    // console.log(props);
+
+    if (type === 'save') {
+        localStorage.setItem('allHistorySalesStockData', JSON.stringify(props));
+        //  console.log('companyinvoicehistory details');
+        // let sto = JSON.parse(localStorage.getItem('companyinvoicehistory'));
+        // console.log(sto);
+    }
+    else if (type === 'get') {
+        return JSON.parse(localStorage.getItem('allHistorySalesStockData'));
+    }
+    else {
+        localStorage.removeItem('allHistorySalesStockData');
+    }
+}
 
 export const addOrGetAllClientData = (props, type) => {
     // console.log(props);

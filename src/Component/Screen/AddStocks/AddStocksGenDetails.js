@@ -32,8 +32,8 @@ const AddStocksGenDetails = (props) => {
         let filterdata = stockdet.clientList.find(data => {
             return data.clientName == clname
         })
-        // console.log("filterProdIdAndGetDesc");
-        // console.log(filterdata); 
+        console.log("filterProdIdAndGetDesc");
+        console.log(filterdata); 
         if (filterdata) {
             stockdet.setclientPhno(filterdata.clientPhno);
             stockdet.setclientAdd(filterdata.clientAdd);

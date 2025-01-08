@@ -20,9 +20,9 @@ const ListOfAddedSaleStocks = (props) => {
     useEffect(()=>{
         console.log('ListOfAddedSaleStocks');
 
-        console.log(stocksdet.stockHistoryData);
+        console.log(stocksdet.salesStockHistoryData);
         
-    },[])
+    },[stocksdet.salesStockHistoryData])
 
     if (!companydet.isloaded) {
 
@@ -35,38 +35,31 @@ const ListOfAddedSaleStocks = (props) => {
     return (
 
         <>
-            {stocksdet.stockHistoryData === null || stocksdet.stockHistoryData.length ===0 ?
+            {stocksdet.salesStockHistoryData === null || stocksdet.salesStockHistoryData.length ===0 ?
                 <>
-                    <NoData details="Stock Found" />
+                    <NoData details="Sales Stock Found" />
                 </>
                 :
                 < >
                     <div className="exportExcelbttn" >
                         <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
-                            onClick={() => stocksdet.handleExportXlsx()}>Export Estimation to Excel</Button>
+                            onClick={() => stocksdet.handleHistoryExportXlsx("sale")}>Export History Sales Stock to Excel</Button>
                     </div>
                     <div className="displayelements">
-                        {stocksdet.stockHistoryData.map((item, index) => {
+                        {stocksdet.salesStockHistoryData.map((item, index) => {
                             // console.log('item');
                             // console.log(item);
                             let clientdetail = null;
                              clientdetail = stocksdet.clientList.find(data => {
                                 // console.log("data.clientid");
                                 // console.log(data.clientid + " //// "+ item.clientid);
-                                if(data.clientid == item.clientid){
+                                   if(data.clientid == item.clientid){
+                                    // console.log("^^^found data.clientid&&&&");
+                                    // console.log(data);
                                     return data;
                                 }
-                                  
                             });
-                            // console.log("clientdetail &&&&");
-                            // console.log(clientdetail);
-                            // console.log("stocksdet.clientList");
-                            // console.log(clientdetail);
-                            // console.log("item");
-                            // console.log(item);
-                            // console.log("stocksdet.clientList");
-                            // console.log(stocksdet.clientList);
-                            // console.log(item.estimateid + ' estimateid ' + item.clientName + ' companydet.loginuserid ' +companydet.loginuserid + 'item.userid ' + item.userid );
+                           
                             return <>
 
                                 <Card className="  allestimatedisplay" key={index}>
@@ -74,10 +67,10 @@ const ListOfAddedSaleStocks = (props) => {
                                    
                                     <ul className="details invoicedetails details ">
                                         <li >
-                                            <div className="companyname"> Stock ID: {item.stockid}</div>
+                                            <div className="companyname"> Sales Stock ID: {item.salestockid}</div>
                                         </li>
                                         <li>
-                                            <div className="companyname"> Date: {item.stockdate}</div>
+                                            <div className="companyname"> Sale Date: {item.salestockdate}</div>
 
                                         </li>
                                     </ul>
@@ -99,22 +92,22 @@ const ListOfAddedSaleStocks = (props) => {
                                     </ul>}
                                     <ul className="details  ">
                                         <div className="">
-                                            <h3>Stock Value</h3>
+                                            <h3>Sale Stock Value</h3>
                                             <li>
                                                 Total Cost
-                                            </li> <div className="nameheigh"> ₹ {Intl.NumberFormat("en-IN", digit2options).format(item.totalamt)} </div> 
+                                            </li> <div className="nameheigh"> ₹ {Intl.NumberFormat("en-IN", digit2options).format(item.totalsalesamt)} </div> 
                                         </div>
                                     </ul>
                                     <Link to={{
-                                        pathname: `/addstock`
+                                        pathname: `/salestock`
                                     }}
                                     >
                                         <Button className="gen-stocks" variant="outlined"
-                                            onClick={() => stocksdet.allStockHistoryEdit(item)}  
+                                            onClick={() => stocksdet.allSaleStockHistoryEdit(item)}  
                                             endIcon={<RiEditCircleFill />} 
                                              >
 
-                                            Edit Stocks</Button>
+                                            Edit Sales Stocks</Button>
                                     </Link>
                                     {/* </div> */}
 

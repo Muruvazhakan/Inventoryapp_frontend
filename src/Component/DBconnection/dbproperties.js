@@ -32,8 +32,13 @@ export const getStockHistoryUrl = `${backendUrl}/stock/getallstocks`;
 export const getStockidUrl = `${backendUrl}/stock/getstockid`;
 export const saveStockIdUrl = `${backendUrl}/stock/savestockid`;
 
-export const saveStockUrl = `${backendUrl}/stock/savestock`;
+export const getAllHistorySalesStockUrl = `${backendUrl}/stock/getallhistorysalesstocks`;
 
+export const getSalesStockidUrl = `${backendUrl}/stock/getsalesstockid`;
+export const saveSalesStockIdUrl = `${backendUrl}/stock/savesalesstockid`;
+
+export const saveStockUrl = `${backendUrl}/stock/savestock`;
+export const saveSaleStockUrl = `${backendUrl}/stock/savesalesstock`;
 
 // router.post('/:userid',invoicecont.getallinvoice);
 // router.post('/createorupdateinvoice/:userid',invoicecont.createorupdateinvoice);

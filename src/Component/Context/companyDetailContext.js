@@ -484,8 +484,20 @@ const CompanyDetailContext = ({ children }) => {
 
             }
 
+            
+
+            let resultsgetAllHistorySalesStockData = stockDetail.getAllHistorySalesStockData(loginuserid);
+            if(resultsgetAllHistorySalesStockData){
+                refreshdata = true;
+            }
+
             let results = stockDetail.getAllStockData(loginuserid);
             if(results){
+                refreshdata = true;
+            }
+
+            let resultsgetAllSalesCount = stockDetail.getAllSalesCount(loginuserid);
+            if(resultsgetAllSalesCount){
                 refreshdata = true;
             }
 

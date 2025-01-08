@@ -106,6 +106,7 @@ const StocksContext = ({ children }) => {
   const [otherdescamt, setotherdescamt] = useState(0);
   const [allStockData, setallStockData] = useState([]);
   const [stockHistoryData, setstockHistoryData] = useState([]);
+  const [salesStockHistoryData, setSalesstockHistoryData] = useState([]);
   const [invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag] = useState(false);
 
   const setval = (e, fun) => {
@@ -340,7 +341,7 @@ const StocksContext = ({ children }) => {
             let avgrate = rate * 1;
             let avgquantity = quantity * 1;
             let avgamt = amount * 1;
-           
+
             if (data.productid == productid) {
 
               avgrate = (((data.rate * 1 * data.quantity * 1) + (rate * 1 * quantity * 1)) / ((quantity * 1) + (data.quantity * 1))).toFixed(2);
@@ -363,11 +364,11 @@ const StocksContext = ({ children }) => {
               ...prev
             ]
             );
-            if (highquantity){
+            if (highquantity) {
               toast.error("Entered Quantity is more than available quantity!");
               return false;
             }
-              
+
 
           } else {
             setSalesList([
@@ -416,104 +417,95 @@ const StocksContext = ({ children }) => {
     setischargedinhsn(true);
   }
 
-  const saveSalesStock = async () => {
-    console.log('saveSalesStock');
-    console.log('loginuserid + loginuserid');
-    if (salestockid == '' || list.length == 0) {
-      toast.warn("Please add the sales stock or Generate the Sales Stockid");
-      return;
-    }
-    let clientidtemp;
-    if (clientid == null) {
-      clientidtemp = uuidv4();
-      setclientid(clientidtemp);
-    }
-    let datas = {
-      authorization: header,
-      stockid: salestockid,
-      stocklist: list,
-      clientid: clientidtemp,
-      totalamt: totalamt,
-      clientAdd: clientAdd,
-      clientName: clientName,
-      clientPhno: clientPhno,
-      stockidcount: stockidcount,
-      stockdate: stockdate,
-      stockidcounttype: "sales"
-    }
-    console.log(datas);
-    saveLocalStock(datas);
+  const saveLocalStock = (singlestock, screen) => {
 
-    let savedataresponse = await stockDb.saveStockBD(datas, loginuser);
-    if (savedataresponse.status !== 200) {
-      toast.warn("Issue in saving Stock");
-      return;
-    }
-    console.log('savedataresponse');
-    console.log(savedataresponse);
-    getAllStockData(loginuser);
-    getAllHistoryStockData(loginuser);
-    // getAllStocks(("allstocks"));
-    // localstorage.addOrGetstockid(stockidcount, "save");
-    // console.log(stockidcount + ' stockidcount');
-    // let savestockidcountdataresponse = await stockDb.savestockid(stockidcount, loginuserid);
-    // if (savestockidcountdataresponse.status !== 200) {
-    //   toast.warn("Issue in Update");
-    //   return;
-    // }
-    // console.log('savestockidcountdataresponse');
-    // console.log(savestockidcountdataresponse);
-
-    toast.success("New Stock saved");
-
-  }
-
-  const saveLocalStock = (singlestock) => {
-
-    if (stockHistoryData !== null) {
-      let iscontains = false;
-      stockHistoryData.map((item) => {
-        if (item.stockid === stockid) {
-          item.stockdate = stockdate;
-          item.paymentmode = paymentmode;
-          item.list = list;
-          item.totalamt = totalamt;
-          item.clientAdd = clientAdd;
-          item.clientName = clientName;
-          item.clientid = clientid;
-          item.clientPhno = clientPhno;
-          item.userid = loginuser;
-          iscontains = true;
+    if (screen === "add") {
+      if (stockHistoryData !== null) {
+        let iscontains = false;
+        stockHistoryData.map((item) => {
+          if (item.stockid === stockid) {
+            item.stockdate = stockdate;
+            item.paymentmode = paymentmode;
+            item.list = list;
+            item.totalamt = totalamt;
+            item.clientAdd = clientAdd;
+            item.clientName = clientName;
+            item.clientid = clientid;
+            item.clientPhno = clientPhno;
+            item.userid = loginuser;
+            iscontains = true;
+          }
+          return item;
+        });
+        if (iscontains === false) {
+          setstockHistoryData([
+            ...stockHistoryData, singlestock
+          ]);
+          toast.success('Stock Details are added');
         }
-        return item;
-      });
-      if (iscontains === false) {
-        setstockHistoryData([
-          ...stockHistoryData, singlestock
-        ]);
-        toast.success('Stock Details are added');
-      }
-      else {
-        toast.success('Stock Details are updated');
-      }
-      // console.log('estimateHistoryData');
-      // console.log(estimateHistoryData);
+        else {
+          toast.success('Stock Details are updated');
+        }
+        // console.log('estimateHistoryData');
+        // console.log(estimateHistoryData);
 
+      } else {
+        // console.log('inside else');
+        setstockHistoryData([
+          singlestock
+        ]);
+      }
+      localstorage.addOrGetstockHistoryData(stockHistoryData, "save");
     } else {
-      // console.log('inside else');
-      setstockHistoryData([
-        singlestock
-      ]);
+      if (salesStockHistoryData !== null) {
+        let iscontains = false;
+        salesStockHistoryData.map((item) => {
+          if (item.salestockid === salestockid) {
+            item.salestockdate = salestockdate;
+            item.saleslist = saleslist;
+            item.totalsalesamt = totalsalesamt;
+            item.clientAdd = clientAdd;
+            item.clientName = clientName;
+            item.clientid = clientid;
+            item.clientPhno = clientPhno;
+            item.userid = loginuser;
+            iscontains = true;
+          }
+          return item;
+        });
+        if (iscontains === false) {
+          setSalesstockHistoryData([
+            ...salesStockHistoryData, singlestock
+          ]);
+          toast.success('Stock Details are added');
+        }
+        else {
+          toast.success('Stock Sales Details are updated');
+        }
+        // console.log('estimateHistoryData');
+        // console.log(estimateHistoryData);
+
+      } else {
+        // console.log('inside else');
+        setSalesstockHistoryData([
+          singlestock
+        ]);
+      }
+      localstorage.addOrGetSaleStockHistoryData(salesStockHistoryData, "save");
     }
-    localstorage.addOrGetstockHistoryData(stockHistoryData, "save");
+    // if (item.salestockid === salestockid) {
+    //   item.salestockdate = salestockdate;
+
+    //   item.saleslist = saleslist;
+
   }
   const saveStock = async (screen) => {
     console.log('saveStock');
     console.log('loginuserid + loginuserid');
     // if(screen ==="add"){
-      
+
     // }
-    if(screen === "add"){
+    if (screen === "add") {
       if (stockid == '' || list.length == 0) {
         toast.warn("Please add the stock or Generate the Stockid");
         return;
@@ -522,6 +514,8 @@ const StocksContext = ({ children }) => {
       if (clientid == null) {
         clientidtemp = uuidv4();
         setclientid(clientidtemp);
+      } else {
+        clientidtemp = clientid;
       }
       let datas = {
         authorization: header,
@@ -536,8 +530,8 @@ const StocksContext = ({ children }) => {
         stockdate: stockdate,
       }
       console.log(datas);
-      saveLocalStock(datas);
-  
+      saveLocalStock(datas, "add");
+
       let savedataresponse = await stockDb.saveStockBD(datas, loginuser);
       if (savedataresponse.status !== 200) {
         toast.warn("Issue in saving Stock");
@@ -558,11 +552,13 @@ const StocksContext = ({ children }) => {
       if (clientid == null) {
         clientidtemp = uuidv4();
         setclientid(clientidtemp);
+      } else {
+        clientidtemp = clientid;
       }
       let datas = {
         authorization: header,
-        salestockid : salestockid,
-        saleslist: saleslist,
+        salestockid: salestockid,
+        salestocklist: saleslist,
         clientid: clientidtemp,
         totalsalesamt: totalsalesamt,
         clientAdd: clientAdd,
@@ -574,32 +570,39 @@ const StocksContext = ({ children }) => {
       console.log("sales datas");
       console.log(datas);
 
-      // saveLocalStock(datas);
-  
-      // let savedataresponse = await stockDb.saveStockBD(datas, loginuser);
-      // if (savedataresponse.status !== 200) {
-      //   toast.warn("Issue in saving Stock");
-      //   return;
-      // }
-      // console.log('savedataresponse');
-      // console.log(savedataresponse);
-      // getAllClientList(loginuser);
-      // getAllStockData(loginuser);
-      // getAllHistoryStockData(loginuser);
-      
-      toast.success("New Sale Stock saved");
+      saveLocalStock(datas, "sale");
+
+      let savedataresponse = await stockDb.saveSalesStockBD(datas, loginuser);
+      if (savedataresponse.status !== 200) {
+        toast.warn("Issue in saving Stock");
+        return;
+      }
+      console.log('savedataresponse');
+      console.log(savedataresponse);
+      getAllClientList(loginuser);
+      getAllStockData(loginuser);
+      // getAllHistorySalesStockData(loginuser);
+
+      // toast.success("New Sale Stock saved");
     }
   };
 
   const allStockHistoryEdit = (props) => {
-    // console.log(props);
+    console.log(props);
 
     let stockhistorydetail = props;
+
     let clientdetail = clientList.find(data => {
-      // console.log("data.clientid");
-      // console.log(data.clientid + " //// "+ item.clientid);
-      return data.clientid = props.clientid
+      console.log("data.clientid");
+      console.log(data.clientid + " //// " + props.clientid);
+      if (data.clientid === props.clientid)
+        return data;
     })
+    console.log("clientList");
+    console.log(clientList);
+
+    console.log("clientdetail");
+    console.log(clientdetail);
     settotalamt(stockhistorydetail.totalamt);
     setclientid(stockhistorydetail.clientid);
     setstockdate(stockhistorydetail.stockdate);
@@ -617,6 +620,35 @@ const StocksContext = ({ children }) => {
     setstockid(stockhistorydetail.stockid);
 
 
+  }
+
+  const allSaleStockHistoryEdit = (props) => {
+    console.log("allSaleStockHistoryEdit ");
+    console.log(props);
+    console.log("clientList");
+    console.log(clientList);
+    let salesStockhistorydetail = props;
+    let clientdetail = clientList.find(data => {
+      console.log("data.clientid");
+      console.log(data.clientid + " //// " + props.clientid);
+      if (data.clientid === props.clientid)
+        return data;
+    })
+    settotalsalesamt(salesStockhistorydetail.totalsalesamt);
+    setclientid(salesStockhistorydetail.clientid);
+    setsalestockdate(salesStockhistorydetail.salestockdate);
+    setsalestockid(salesStockhistorydetail.salestockid);
+    setSalesList(salesStockhistorydetail.rows);
+    if (clientdetail) {
+      setclientName(clientdetail.clientName);
+      setclientPhno(clientdetail.clientPhno);
+      setclientAdd(clientdetail.clientAdd);
+    }
+    else {
+      setclientName('');
+      setclientPhno('');
+      setclientAdd('');
+    }
   }
 
   const getAllClientList = async (loginuserid) => {
@@ -672,6 +704,73 @@ const StocksContext = ({ children }) => {
     var stockDate =
       date.getDate() + "_" + date.getMonth() + "_" + date.getFullYear();
     XLSX.writeFile(wb, `MyCurrrentStocks_${stockDate}.xlsx`);
+  }
+
+  const handleHistoryExportXlsx = (props) => {
+    let filtercolumn,filename = (props === "sale" ? "SalesStock":"Stocks") ;
+    let lastcolumn, totaladdedamt=0;
+    console.log(props)
+    if (props === "sale") {
+      filtercolumn = salesStockHistoryData.map((data, index) => {
+        totaladdedamt+=data.totalsalesamt * 1;
+        return {
+          Sno: index + 1,
+          Sale_Stock_Id: data.salestockid,
+          Sale_Stock_Date: data.salestockdate,
+          Client_Name: data.clientName,
+          Client_Phone_No: data.clientPhno,
+          Client_Address: data.clientAdd,
+          Total_Sales_Amount: data.totalsalesamt * 1
+        }
+      });
+      console.log("filtercolumn")
+      console.log(filtercolumn)
+      lastcolumn = {
+        Sno: "Total Amount",
+        Sale_Stock_Id: '',
+        Sale_Stock_Date: '',
+        Client_Name: '',
+        Client_Phone_No: '',
+        Client_Address: '',
+        Total_Sales_Amount: totaladdedamt
+      }
+    } else {
+      filtercolumn = stockHistoryData.map((data, index) => {
+        totaladdedamt+=data.totalamt * 1;
+        return {
+          Sno: index + 1,
+          Stock_Id: data.stockid,
+          Stock_Date: data.stockdate,
+          Client_Name: data.clientName,
+          Client_Phone_No: data.clientPhno,
+          Client_Address: data.clientAdd,
+          Total_Amount: data.totalamt * 1
+        }
+      });
+      lastcolumn = {
+        Sno: "Total Amount",
+        Stock_Id: '',
+        Stock_Date: '',
+        Client_Name: '',
+        Client_Phone_No: '',
+        Client_Address: '',
+        Total_Amount: totaladdedamt
+      }
+    }
+    filtercolumn.push(lastcolumn);
+    console.log("filtercolumn");
+    console.log(filtercolumn);
+    // console.log(estimateHistoryData);
+    // console.log(estimateHistoryData.length);
+    var wb = XLSX.utils.book_new(),
+      ws = XLSX.utils.json_to_sheet(filtercolumn);
+
+    XLSX.utils.book_append_sheet(wb, ws, filename);
+    let date = (new Date());
+    console.log(date);
+    var stockDate =
+      date.getDate() + "_" + date.getMonth() + "_" + date.getFullYear();
+    XLSX.writeFile(wb, `My${filename}_${stockDate}.xlsx`);
   }
 
   const getAllStockData = async (loginuserid) => {
@@ -788,22 +887,23 @@ const StocksContext = ({ children }) => {
     const month = today.getMonth() + 1;
     const year = today.getFullYear();
     const date = today.getDate();
-    let idcounttype = type ==="stock" ? stockidcount : salestockidcount;
+    let idcounttype = (type === "stock" ? stockidcount : salestockidcount);
 
-    
     let count = idcounttype * 1;
-    if(type ==="stock"){
+    console.log("idcounttype " + count + " type " + type + " salestockidcount " + salestockidcount);
+    if (type === "stock") {
       todaydate = `ST${year}${month}${date}${idcounttype}`;
       setstockid(todaydate);
       setstockidcount(++count);
-     
-    } else{
+
+    } else {
+
       todaydate = `SA${year}${month}${date}${idcounttype}`;
       setsalestockid(todaydate);
       setsalestockidcount(++count);
-      
+
     }
-    
+
     // console.log("stockidcount: " + count);
     // console.log("todaydate: " + todaydate);
     // setstockid()
@@ -811,9 +911,9 @@ const StocksContext = ({ children }) => {
 
   const cleartallStock = (screen) => {
 
-    if(screen ==="add"){
+    if (screen === "add") {
       setstockdate('');
-      setstockid(''); 
+      setstockid('');
       setList([]);
       settotalamt('');
     } else {
@@ -827,6 +927,36 @@ const StocksContext = ({ children }) => {
     setclientPhno('');
   };
 
+  const getAllHistorySalesStockData = async (loginuserid) => {
+    let allHistorySalesStockData = localstorage.addOrGetAllHistorySalesStockData('', 'get');
+    if (loginuserid != '' || loginuserid != null)
+      setloginuser(loginuserid);
+    let getSalesStockfromdb = await stockDb.getAllHistorySalesStockDB(loginuserid);
+    console.log('getAllHistorySalesStockDB !!!!!');
+    console.log(allHistorySalesStockData);
+    console.log(getSalesStockfromdb);
+    if (getSalesStockfromdb.status === 200) {
+      console.log(getSalesStockfromdb.data);
+      console.log('inside allHistorySalesStockData');
+      localstorage.addOrGetAllHistorySalesStockData(getSalesStockfromdb.data, 'save');
+      setSalesstockHistoryData(getSalesStockfromdb.data);
+      return true;
+    }
+    return false;
+  }
+
+  const getAllSalesCount = async (loginuserid) => {
+    let salesstockidcounter = localstorage.addOrGetSaleStockid('', "get");
+    console.log(salesstockidcounter + ' addOrGetStockid');
+    let getSalesStockfromDb = await stockDb.getSalesStockidDB(loginuserid);
+    console.log('getSalesStockfromDb.data');
+    console.log(getSalesStockfromDb);
+    if (getSalesStockfromDb.status === 200) {
+      localstorage.addOrGetSaleStockid(getSalesStockfromDb.data, "save");
+      setsalestockidcount(getSalesStockfromDb.data);
+      console.log('saving setinvoiceidount ' + getSalesStockfromDb.data);
+    }
+  }
   useEffect(() => {
     // //console.log('local invoice history');
     let count = localstorage.addOrGetStockid('', 'get');
@@ -870,7 +1000,7 @@ const StocksContext = ({ children }) => {
     singlestockitem, setsinglestockitem, desc, setdesc, productid, setproductid, allStockData, setallStockData, productIdList, setproductIdList, clientid, setclientid, clientList, setclientList,
     getAllStocks, allStockList, setallStockList, allstockstotalamt, setallstockstotalamt, calculateSum, getAllStockData, handleExportXlsx, getAllHistoryStockData, allStockHistoryEdit, saleslist, setSalesList,
     allStockSalesList, setallStockSalesList, allstockssalestotalamt, setallstockssalestotalamt, totalsalesamt, settotalsalesamt, salestockidcount, setsalestockidcount, salestockid, setsalestockid, getAllClientList,
-    availablestock, setavailablestock,salestockdate, setsalestockdate
+    availablestock, setavailablestock, salestockdate, setsalestockdate, getAllSalesCount, salesStockHistoryData, setSalesstockHistoryData, getAllHistorySalesStockData, allSaleStockHistoryEdit, handleHistoryExportXlsx
   };
   return <Stocks.Provider value={context}>{children}</Stocks.Provider>;
 }
