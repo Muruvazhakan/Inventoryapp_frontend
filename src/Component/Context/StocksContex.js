@@ -539,10 +539,10 @@ const StocksContext = ({ children }) => {
       }
       console.log('savedataresponse');
       console.log(savedataresponse);
-      getAllClientList(loginuser);
+      getAllClientList(loginuser,"add");
       getAllStockData(loginuser);
       // getAllHistoryStockData(loginuser);
-      toast.success("New Stock saved");
+      // toast.success("New Stock saved");
     } else {
       if (salestockid == '' || saleslist.length == 0) {
         toast.warn("Please add the sale stock or Generate the Sale Stockid");
@@ -579,8 +579,8 @@ const StocksContext = ({ children }) => {
       }
       console.log('savedataresponse');
       console.log(savedataresponse);
-      getAllClientList(loginuser);
-      getAllStockData(loginuser);
+      getAllClientList(loginuser,"sale");
+      // getAllStockData(loginuser);
       // getAllHistorySalesStockData(loginuser);
 
       // toast.success("New Sale Stock saved");
@@ -651,7 +651,7 @@ const StocksContext = ({ children }) => {
     }
   }
 
-  const getAllClientList = async (loginuserid) => {
+  const getAllClientList = async (loginuserid,type) => {
     let allClientData = localstorage.addOrGetAllClientData('', 'get');
     console.log('loginuserid &&&& ' + loginuserid);
     if (loginuserid != '' || loginuserid != null)
@@ -666,8 +666,15 @@ const StocksContext = ({ children }) => {
       setclientList(getallClientDatafromdb.data);
       console.log('getallClientDatafromdb ****');
       console.log(clientList);
-      getAllHistorySalesStockData(loginuserid,getallClientDatafromdb.data);
-      getAllHistoryStockData(loginuserid,getallClientDatafromdb.data);
+      if(type ==="default"){
+        getAllHistorySalesStockData(loginuserid,getallClientDatafromdb.data);
+        getAllHistoryStockData(loginuserid,getallClientDatafromdb.data);
+      }else if(type==="add"){
+        getAllHistoryStockData(loginuserid,getallClientDatafromdb.data);
+      }else{
+        getAllHistorySalesStockData(loginuserid,getallClientDatafromdb.data);
+      }
+      
       return true;
     }
     return false;

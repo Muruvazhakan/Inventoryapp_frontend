@@ -503,7 +503,7 @@ const CompanyDetailContext = ({ children }) => {
             //     refreshdata = true;
             // }
 
-            let resultsgetAllClientList = stockDetail.getAllClientList(loginuserid);
+            let resultsgetAllClientList = stockDetail.getAllClientList(loginuserid,"default");
             if(resultsgetAllClientList){
                 refreshdata = true;
             }
