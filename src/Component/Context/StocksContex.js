@@ -539,7 +539,7 @@ const StocksContext = ({ children }) => {
       }
       console.log('savedataresponse');
       console.log(savedataresponse);
-      getAllClientList(loginuser,"add");
+      getAllClientList(loginuser, "add");
       getAllStockData(loginuser);
       // getAllHistoryStockData(loginuser);
       // toast.success("New Stock saved");
@@ -579,7 +579,7 @@ const StocksContext = ({ children }) => {
       }
       console.log('savedataresponse');
       console.log(savedataresponse);
-      getAllClientList(loginuser,"sale");
+      getAllClientList(loginuser, "sale");
       // getAllStockData(loginuser);
       // getAllHistorySalesStockData(loginuser);
 
@@ -651,7 +651,7 @@ const StocksContext = ({ children }) => {
     }
   }
 
-  const getAllClientList = async (loginuserid,type) => {
+  const getAllClientList = async (loginuserid, type) => {
     let allClientData = localstorage.addOrGetAllClientData('', 'get');
     console.log('loginuserid &&&& ' + loginuserid);
     if (loginuserid != '' || loginuserid != null)
@@ -666,15 +666,15 @@ const StocksContext = ({ children }) => {
       setclientList(getallClientDatafromdb.data);
       console.log('getallClientDatafromdb ****');
       console.log(clientList);
-      if(type ==="default"){
-        getAllHistorySalesStockData(loginuserid,getallClientDatafromdb.data);
-        getAllHistoryStockData(loginuserid,getallClientDatafromdb.data);
-      }else if(type==="add"){
-        getAllHistoryStockData(loginuserid,getallClientDatafromdb.data);
-      }else{
-        getAllHistorySalesStockData(loginuserid,getallClientDatafromdb.data);
+      if (type === "default") {
+        getAllHistorySalesStockData(loginuserid, getallClientDatafromdb.data);
+        getAllHistoryStockData(loginuserid, getallClientDatafromdb.data);
+      } else if (type === "add") {
+        getAllHistoryStockData(loginuserid, getallClientDatafromdb.data);
+      } else {
+        getAllHistorySalesStockData(loginuserid, getallClientDatafromdb.data);
       }
-      
+
       return true;
     }
     return false;
@@ -716,13 +716,13 @@ const StocksContext = ({ children }) => {
   }
 
   const handleHistoryExportXlsx = (props) => {
-    let filtercolumn,filename = (props === "sale" ? "SalesStock":"Stocks") ;
-    let lastcolumn, totaladdedamt=0;
+    let filtercolumn, filename = (props === "sale" ? "SalesStock" : "Stocks");
+    let lastcolumn, totaladdedamt = 0;
     // deriveClientDetail(salesStockHistoryData);
     console.log(props)
     if (props === "sale") {
       filtercolumn = salesStockHistoryData.map((data, index) => {
-        totaladdedamt+=data.totalsalesamt * 1;
+        totaladdedamt += data.totalsalesamt * 1;
         return {
           Sno: index + 1,
           Sale_Stock_Id: data.salestockid,
@@ -746,7 +746,7 @@ const StocksContext = ({ children }) => {
       }
     } else {
       filtercolumn = stockHistoryData.map((data, index) => {
-        totaladdedamt+=data.totalamt * 1;
+        totaladdedamt += data.totalamt * 1;
         return {
           Sno: index + 1,
           Stock_Id: data.stockid,
@@ -780,7 +780,8 @@ const StocksContext = ({ children }) => {
     console.log(date);
     var stockDate =
       date.getDate() + "_" + date.getMonth() + "_" + date.getFullYear();
-    XLSX.writeFile(wb, `My${filename}_${stockDate}.xlsx`);
+    // XLSX.writeFile(wb, `My${filename}_${stockDate}.xlsx`); // use to generate files
+    deriveSaleStockFromHistory(filtercolumn);
   }
 
   const getAllStockData = async (loginuserid) => {
@@ -815,7 +816,7 @@ const StocksContext = ({ children }) => {
   }
 
 
-  const getAllHistoryStockData = async (loginuserid,clientdata) => {
+  const getAllHistoryStockData = async (loginuserid, clientdata) => {
     let allHistoryStockData = localstorage.addOrGetAllHistoryStockData('', 'get');
     if (loginuserid != '' || loginuserid != null)
       setloginuser(loginuserid);
@@ -826,7 +827,7 @@ const StocksContext = ({ children }) => {
     if (getstockfromdb.status === 200) {
       console.log(getstockfromdb.data);
       console.log('inside allHistoryStockData');
-      let deriveClientDetailValue  = deriveClientDetail(getstockfromdb.data,clientdata,"add");
+      let deriveClientDetailValue = deriveClientDetail(getstockfromdb.data, clientdata, "add");
       localstorage.addOrGetAllHistoryStockData(deriveClientDetailValue, 'save');
       setstockHistoryData(deriveClientDetailValue);
       return true;
@@ -938,62 +939,62 @@ const StocksContext = ({ children }) => {
     setclientPhno('');
   };
 
-  const deriveClientDetail = (details,clientdata,type) =>{
-      let salestocks= details;
-      let newvalues=salestocks.map((item, index) => {
+  const deriveClientDetail = (details, clientdata, type) => {
+    let salestocks = details;
+    let newvalues = salestocks.map((item, index) => {
 
-       let clientdetail = clientdata.find(data => {
-          // console.log("data.clientid");
-          // console.log(data.clientid + " //// "+ item.clientid);
-             if(data.clientid == item.clientid){
-              // console.log("^^^found data.clientid&&&&");
-              // console.log(data);
-              return data;
-          }
-          
+      let clientdetail = clientdata.find(data => {
+        // console.log("data.clientid");
+        // console.log(data.clientid + " //// "+ item.clientid);
+        if (data.clientid == item.clientid) {
+          // console.log("^^^found data.clientid&&&&");
+          // console.log(data);
+          return data;
+        }
+
       });
       // console.log("%%% client datas $$%%%%");
       // console.log(clientdetail);
       let datas;
-      if(type ==="sale"){
-         datas = {
+      if (type === "sale") {
+        datas = {
           salestockid: item.salestockid,
           userid: item.userid,
-          rows:item.rows,
+          rows: item.rows,
           totalsalesamt: item.totalsalesamt,
           salestockid: item.salestockid,
           clientid: item.clientid,
-          lastupdatedsalestockdate:item.lastupdatedsalestockdate,
-          salestockdate:item.salestockdate,
-          clientName:(clientdetail !==undefined ? clientdetail.clientName : null),
-          clientPhno:(clientdetail !==undefined? clientdetail.clientPhno: null),
-          clientAdd:(clientdetail !==undefined? clientdetail.clientAdd: null),
+          lastupdatedsalestockdate: item.lastupdatedsalestockdate,
+          salestockdate: item.salestockdate,
+          clientName: (clientdetail !== undefined ? clientdetail.clientName : null),
+          clientPhno: (clientdetail !== undefined ? clientdetail.clientPhno : null),
+          clientAdd: (clientdetail !== undefined ? clientdetail.clientAdd : null),
         }
       } else {
         datas = {
           stockid: item.stockid,
           userid: item.userid,
-          rows:item.rows,
+          rows: item.rows,
           totalamt: item.totalamt,
           stockid: item.stockid,
           clientid: item.clientid,
-          lastupdatedstockdate:item.lastupdatedstockdate,
-          stockdate:item.stockdate,
-          clientName:(clientdetail !==undefined ? clientdetail.clientName : null),
-          clientPhno:(clientdetail !==undefined? clientdetail.clientPhno: null),
-          clientAdd:(clientdetail !==undefined? clientdetail.clientAdd: null),
+          lastupdatedstockdate: item.lastupdatedstockdate,
+          stockdate: item.stockdate,
+          clientName: (clientdetail !== undefined ? clientdetail.clientName : null),
+          clientPhno: (clientdetail !== undefined ? clientdetail.clientPhno : null),
+          clientAdd: (clientdetail !== undefined ? clientdetail.clientAdd : null),
         }
       }
-      
-    //   console.log("%%% salestocks datas $$%%%%");
-    // console.log(datas);
+
+      //   console.log("%%% salestocks datas $$%%%%");
+      // console.log(datas);
       return datas;
     });
     // console.log("%%% newvalues $$%%%%");
     // console.log(newvalues);
     return newvalues;
   }
-  const getAllHistorySalesStockData = async (loginuserid,clientdata) => {
+  const getAllHistorySalesStockData = async (loginuserid, clientdata) => {
     let allHistorySalesStockData = localstorage.addOrGetAllHistorySalesStockData('', 'get');
     if (loginuserid != '' || loginuserid != null)
       setloginuser(loginuserid);
@@ -1004,14 +1005,58 @@ const StocksContext = ({ children }) => {
     if (getSalesStockfromdb.status === 200) {
       console.log(getSalesStockfromdb.data);
       console.log('inside allHistorySalesStockData');
-      let deriveClientDetailValue  = deriveClientDetail(getSalesStockfromdb.data,clientdata,"sale");
+      let deriveClientDetailValue = deriveClientDetail(getSalesStockfromdb.data, clientdata, "sale");
       localstorage.addOrGetAllHistorySalesStockData(deriveClientDetailValue, 'save');
-
-  
       setSalesstockHistoryData(deriveClientDetailValue);
+      deriveSaleStockFromHistory(deriveClientDetailValue);
       return true;
     }
     return false;
+  }
+
+  const deriveSaleStockFromHistory = (props) => {
+    console.log("props");
+    console.log(salesStockHistoryData);
+    let accumalatevalue = [];
+    let totalsaleamt=0;
+    let listofsales = props.map(data => {
+      let singllistofsales = data.rows.map(innerrows => {
+        console.log("innerrows");
+        console.log(innerrows);
+        let found = false;
+        totalsaleamt = (totalsaleamt*1) + (innerrows.amount * 1);
+        if (accumalatevalue.length > 0) {
+          for (let i = 0; i < accumalatevalue.length; i++) {
+            if (accumalatevalue[i].productid === innerrows.productid) {
+              found = true;
+              accumalatevalue[i].quantity = (accumalatevalue[i].quantity * 1) + (innerrows.quantity * 1);
+              accumalatevalue[i].amount = (accumalatevalue[i].amount * 1) + (innerrows.amount * 1);
+            
+              console.log(" found &&&");
+              console.log(accumalatevalue);
+            }
+          }
+          if (!found) {
+            accumalatevalue = [...accumalatevalue, innerrows];
+           
+            console.log("nt found &&&");
+          }
+        } else {
+          accumalatevalue = [innerrows];
+          console.log("else &&&");
+        }
+        console.log("accumalatevalue &&&");
+        console.log(accumalatevalue);
+        // return accumalatevalue;
+      });
+
+    });
+
+    console.log("deriveSaleStockFromHistory");
+    console.log(accumalatevalue);
+    setallStockSalesList(accumalatevalue);
+    setallstockssalestotalamt(totalsaleamt);  
+    // allstockssalestotalamt
   }
 
   const getAllSalesCount = async (loginuserid) => {

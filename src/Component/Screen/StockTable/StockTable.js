@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,9 +16,10 @@ import Header from "../Header/Header";
 const StockTable = (props) => {
 
     const tabledetails = useContext(Stocks);
-    const digit2options = { maximumFractionDigits: 2 }
-
-    let displaylist = (props.screen == "allstocks" ? tabledetails.allStockList 
+    useEffect(()=>{
+    console.log("refresh");
+      },[tabledetails.allStockSalesList]);
+let displaylist = (props.screen == "allstocks" ? tabledetails.allStockList 
         :
     (props.screen == "add" ? tabledetails.list 
         :
@@ -37,13 +38,20 @@ const StockTable = (props) => {
             )
              ) 
             );
-            let localsumqty1=0;
-            let localsumqty =   (props.screen === "allstocks" ? displaylist.map((item, index) => {
+            
+           
+     let localsumqty1=0;
+ let localsumqty =   (props.screen === "allstocks" || props.screen === "allsalestocks" ? displaylist.map((item, index) => {
                 localsumqty1=localsumqty1 + (item.quantity *1);
             }) : null);
-    let from = props.from;
 
     console.log(props.screen + " props.screen" + localsum + " localsum  " + displaylist + " displaylist", + " localsumqty ++ " + localsumqty1);
+  
+   
+    let from = props.from;
+    const digit2options = { maximumFractionDigits: 2 };
+
+    
 
     return <>
 
@@ -58,10 +66,10 @@ const StockTable = (props) => {
                             <TableCell sx={{ fontWeight: 700 }}>S.No</TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Product Id</TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Description of Goods </TableCell>
-                            <TableCell sx={{ fontWeight: 700 }}>Quantity</TableCell>
+                            <TableCell align='center'  sx={{ fontWeight: 700 }}>Quantity</TableCell>
                             {props.screen !== "allstocks" &&
                                     <>
-                            <TableCell sx={{ fontWeight: 700 }}>{from === "add" ? "Purchace Rate" : "Sales Rate"}</TableCell>
+                              {props.screen !== "allsalestocks" &&  <> <TableCell sx={{ fontWeight: 700 }}>{from === "add" ? "Purchace Rate" : "Sales Rate"}</TableCell></>}
                             <TableCell sx={{ fontWeight: 700 }}>Amount (₹)</TableCell>
                             </>}
                             {props.screen === "update" &&
@@ -91,7 +99,8 @@ const StockTable = (props) => {
                                     <TableCell align='center' className="table-header-td">{item.quantity}</TableCell>
                                     {props.screen !== "allstocks" &&
                                     <>
-                                    <TableCell className="table-header-td">{item.rate}</TableCell>
+                                      {props.screen !== "allsalestocks" &&  <> <TableCell className="table-header-td">{item.rate}</TableCell></>}
+                                   
                                     <TableCell className="table-header-td">
 
                                         {sum > 0 ? sum : (othersum)}
@@ -125,7 +134,7 @@ const StockTable = (props) => {
                             <TableCell  align='center' className="table-header-td" sx={{fontSize: 18, fontWeight: 700 }}> {localsumqty1}</TableCell>
                             {props.screen !== "allstocks" &&
                                     <>
-                            <TableCell ></TableCell>
+                            {props.screen !== "allsalestocks" &&  <> <TableCell ></TableCell></>}
                             <TableCell sx={{ fontSize: 18, fontWeight: 700 }} className="table-amount">₹{Intl.NumberFormat("en-IN", digit2options).format(localsum)}</TableCell>
                             </>}
                         </TableRow>

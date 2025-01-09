@@ -43,7 +43,7 @@ const AllSaleStocks = (props) => {
                 </Link>
 
             </Card> 
-            {/* <Card>
+            <Card>
 
                 <ReactToPrint
                     trigger={() => (
@@ -56,12 +56,12 @@ const AllSaleStocks = (props) => {
                 <div ref={componentRef}>
                     <div className="exportExcelbttn" >
                         <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
-                            onClick={() => tabledet.handleExportXlsx("sale")}>Export Stocks to Excel</Button>
+                            onClick={() => tabledet.handleExportXlsx("sale")}>Export Sales Stocks to Excel</Button>
                     </div>
                     <StockTable screen="allsalestocks" />
 
                 </div>
-            </Card> */}
+            </Card>
         </Box>
     </>
 }
