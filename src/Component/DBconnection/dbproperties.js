@@ -9,21 +9,10 @@ export const userSigninUrl = `${backendUrl}/user/signin`;
 export const getCompanyBasicDetailsUrl = `${backendUrl}/user/getcompanybasic`;
 export const saveCompanyBasicDetailsUrl = `${backendUrl}/user/savecompanybasic`;
 
-export const getCompanyBankDetailsUrl = `${backendUrl}/user/getcompanybank`;
-export const saveCompanyBankDetailsUrl = `${backendUrl}/user/savecompanybank`;
-
-export const getCompanyTermsAndConditionDetailsUrl = `${backendUrl}/user/gettermsandconditioncompany`;
-export const saveCompanyTermsAndConditionDetailsUrl = `${backendUrl}/user/savetermsandconditioncompany`;
 export const uploadCompanyLogo = `${backendUrl}/uploadCompanyLogo`;
 // export const uploadCompanyLogo = `${backendUrl}/upload`;
-export const getEstimateUrl = `${backendUrl}/estimate`;
-export const saveEstimateUrl = `${backendUrl}/estimate/createorupateestimate`;
-
-export const getEstimationIdUrl = `${backendUrl}/estimate/getestimationid`;
-export const saveEstimationIdUrl = `${backendUrl}/estimate/saveestimationid`;
 
 export const getAllStockUrl = `${backendUrl}/stock/getallstocks`;
-
 export const getAllHistoryStockUrl = `${backendUrl}/stock/getallhistorystocks`;
 export const getAllClientUrl = `${backendUrl}/stock/getallclient`;
 export const getStockHistoryUrl = `${backendUrl}/stock/getallstocks`;

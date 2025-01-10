@@ -9,6 +9,7 @@ import { Stocks } from "../../../Context/StocksContex";
 import StockTable from "../../StockTable/StockTable";
 import '../AllStocks/AllStocks.css';
 import { Link } from "react-router-dom";
+import Header from "../../Header/Header";
 const AllSaleStocks = (props) => {
     const tabledet = useContext(Stocks);
     useEffect(() => {
@@ -44,20 +45,20 @@ const AllSaleStocks = (props) => {
 
             </Card> 
             <Card>
-
+            <div className="exportExcelbttn " >
                 <ReactToPrint
                     trigger={() => (
                         <Button variant="contained" color="info" endIcon={<BsFileEarmarkPdfFill />} >
-                            Download
+                            Download Sale Stocks
                         </Button>
                     )}
                     content={() => componentRef.current}
                 />
+                  <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
+                            onClick={() => tabledet.handleExportXlsx("sale")}>Export Sale Stocks to Excel</Button>
+                </div>
                 <div ref={componentRef}>
-                    <div className="exportExcelbttn" >
-                        <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
-                            onClick={() => tabledet.handleExportXlsx("sale")}>Export Sales Stocks to Excel</Button>
-                    </div>
+                <Header name="All Sale Stocks" />
                     <StockTable screen="allsalestocks" />
 
                 </div>

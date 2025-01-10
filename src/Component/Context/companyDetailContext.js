@@ -4,11 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as Datas from '../Context/Datas';
 import * as localstore from './localStorageData';
 import * as companyDetailsDB from '../DBconnection/companyDetailsDB';
-import * as estimateDetailsDb from '../DBconnection/estimateDetailsDB';
-import * as invoiceDetailsDb from '../DBconnection/invoiceDetailBD';
 import * as stockDetailBD from '../DBconnection/stockDetailBD';
-import { estimateState } from "./EstimatestateContext";
-import { AllState } from "./allStateContext";
 import { Stocks } from "./StocksContex";
 import { isbackendconnect, imageBaseUrl } from "../DBconnection/dbproperties";
 import axios from "axios";
@@ -17,9 +13,7 @@ export const CompanyDetail = createContext();
 
 
 const CompanyDetailContext = ({ children }) => {
-
-    const estdetail = useContext(estimateState);
-    const invociedetail = useContext(AllState);
+   
     const stockDetail = useContext(Stocks);
 
 
@@ -325,10 +319,12 @@ const CompanyDetailContext = ({ children }) => {
         localstore.addOrGetUserdetail('', 'loginuser', 'remove');
         localstore.addOrGetUserdetail('', 'userid', 'remove');
         localstore.addOrUpdateCompanyHandler('', 'remove');
-        localstore.addOrUpdateCompanyTermsAndConditionHandler('', 'remove');
-        localstore.addOrGetCompanyBankDetailHandler('', 'remove');
         localstore.addOrGetstockHistoryData('', 'remove');
-        localstore.addOrGetEstimateHistoryData('', 'remove');
+        localstore.addOrGetSaleStockHistoryData('', 'remove');
+        localstore.addOrGetAllStockData('', 'remove');
+        localstore.addOrGetAllHistoryStockData('', 'remove');
+        localstore.addOrGetAllHistorySalesStockData('', 'remove');
+        
         setloginstatus(false);
         setloginuserid(null);
         setloginuser('');
@@ -365,39 +361,6 @@ const CompanyDetailContext = ({ children }) => {
         let refreshdata = false;
         if (loginuserid !== null && loginuserid !== '') {
 
-            let estimateidcounter = localstore.addOrGetEstimateid('', "get");
-            // console.log(estimateidcounter + 'estimateidcounter');
-            let getEstimationIdfromDb = await estimateDetailsDb.getEstimationId(loginuserid);
-            // console.log(getEstimationIdfromDb );
-            if (getEstimationIdfromDb.status === 200 && estimateidcounter < getEstimationIdfromDb.data) {
-                localstore.addOrGetEstimateid(getEstimationIdfromDb.data, "save");
-                estdetail.setestimateidcount(getEstimationIdfromDb.data);
-                // console.log('saving');
-
-            }
-
-            let estimateHistoryData = localstore.addOrGetEstimateHistoryData('', 'get');
-
-            let getestimatefromdb = await estimateDetailsDb.getEstimateDB(loginuserid);
-            //console.log('estimateHistoryData ' + estimateHistoryData);
-            //console.log(getestimatefromdb);
-            if (getestimatefromdb.status === 200) {
-                if (estimateHistoryData === null || (estimateHistoryData.length <= getestimatefromdb.data.length)) {
-                    //console.log(getestimatefromdb.data);
-                    localstore.addOrGetEstimateHistoryData(getestimatefromdb.data, 'save');
-                    estdetail.setestimateHistoryData(getestimatefromdb.data);
-                    refreshdata = true;
-                }
-                // else {
-                //     estdetail.setestimateHistoryData(getestimatefromdb.data);
-                // }
-
-                // let estimatedetailscontext = localstorage.addOrGetstockHistoryData('', 'get');
-                //console.log('estimatedetailscontext ****');
-                //console.log(estimatedetailscontext);
-
-            }
-
             let companyBasicDetailslocal = localstore.getCompanyHandler();
             let companyBasicDetailsfromdb = await companyDetailsDB.getCompanyBasicDetails(loginuserid);
             console.log('companyBasicDetailsfromdb ');
@@ -427,51 +390,7 @@ const CompanyDetailContext = ({ children }) => {
             else {
                 toast.warning(companyBasicDetailsfromdb.data);
             }
-            // getCompanyBankDetails
-            let companyBankDetailslocal = localstore.addOrGetCompanyBankDetailHandler('', 'get');
-            let companyBankDetailsfromdb = await companyDetailsDB.getCompanyBankDetails(loginuserid);
-            //console.log('companyBankDetailsfromdb ');
-            //console.log(companyBankDetailsfromdb);
-            //console.log('companyBankDetailslocal ');
-            //console.log(companyBankDetailslocal);
-
-            if (companyBankDetailsfromdb.status === 200) {
-                if (!companyBankDetailslocal || (companyBankDetailsfromdb.data
-                    && companyBankDetailsfromdb.data.length > companyBankDetailslocal.length)) {
-                    localstore.addOrGetCompanyBankDetailHandler(companyBankDetailsfromdb.data, "save");
-                    //console.log("company basic details updated");
-                    refreshdata = true;
-                }
-            }
-            else {
-                if (companyBankDetailsfromdb.data !== null) {
-                    toast.warning(companyBankDetailsfromdb.data);
-                }
-                else {
-                    toast.warning("Issue in Company Bank details retrival");
-                }
-
-            }
-
-            let companyTermsAndConditionDetailslocal = localstore.getCompanyTermsAndConditionHandler();
-            let companyTermsAndConditionDetailsfromDB = await companyDetailsDB.getCompanyTermsAndConditionDetails(loginuserid);
-            //console.log('companyTermsAndConditionDetailsfromDB ');
-            //console.log(companyTermsAndConditionDetailsfromDB);
-            //console.log('companyTermsAndConditionDetailslocal ');
-            //console.log(companyTermsAndConditionDetailslocal);
-
-            if (companyBasicDetailsfromdb.status === 200) {
-                if (!companyTermsAndConditionDetailslocal || (companyTermsAndConditionDetailsfromDB.data
-                    && companyTermsAndConditionDetailsfromDB.data.length > companyTermsAndConditionDetailslocal.length)) {
-                    localstore.addOrUpdateCompanyTermsAndConditionHandler(companyTermsAndConditionDetailsfromDB.data, "save");
-                    //console.log("companycompanyTermsAndConditionDetailslocal updated");
-                    refreshdata = true;
-                }
-            }
-            else {
-                toast.warning(companyTermsAndConditionDetailsfromDB.data);
-            }
-
+            
             let stockidcounter = localstore.addOrGetStockid('', "get");
             console.log(stockidcounter + ' addOrGetStockid');
             let getStockfromDb = await stockDetailBD.getStockidDB(loginuserid);
@@ -483,10 +402,6 @@ const CompanyDetailContext = ({ children }) => {
                 console.log('saving setinvoiceidount ' + getStockfromDb.data);
 
             }
-
-            
-
-           
 
             let results = stockDetail.getAllStockData(loginuserid);
             if(results){
@@ -522,43 +437,9 @@ const CompanyDetailContext = ({ children }) => {
         setisloaded(true);
     };
 
-    // const getAllStockData = async () =>{
-    //     let allStockData = localstore.addOrGetAllStockData('', 'get');
-
-    //     let getstockfromdb = await stockDetailBD.getStockDB(loginuserid);
-    //     console.log('getAllStockData !!!!!');
-    //     console.log(allStockData);
-    //     console.log(getstockfromdb);
-    //     if (getstockfromdb.status === 200) {
-
-    //         // if (allStockData === null || (allStockData.length <= getstockfromdb.data.length)) {
-    //         //console.log(getstockfromdb.data);
-    //         //console.log('inside setallStockData');
-    //         localstore.addOrGetAllStockData(getstockfromdb.data, 'save');
-    //         stockDetail.setallStockData(getstockfromdb.data);
-    //         stockDetail.setallStockList(getstockfromdb.data);
-    //         stockDetail.calculateSum(getstockfromdb.data);
-    //         // }
-    //         // else {
-    //         //     estdetail.setstockHistoryData(getstockfromdb.data);
-    //         // }
-
-    //         // let invoicedetailscontext = localstorage.addOrGetstockHistoryData('', 'get');
-    //         console.log('getstockfromdb ****');
-    //         console.log(stockDetail.allStockData);
-    //         return true;
-           
-    //     }
-    //     return false;
-    // }
+   
     const getAlldataOnLogin = () => {
 
-        let companyTermsAndCondition = localstore.getCompanyTermsAndConditionHandler();
-
-        if (companyTermsAndCondition !== null) {
-            //console.log(companyTermsAndCondition);
-            setcompanydetails(companyTermsAndCondition);
-        }
         let companydetail = localstore.getCompanyHandler();
         console.log('companydetail getAlldataOnLogin');
         console.log(companydetail);
@@ -590,15 +471,6 @@ const CompanyDetailContext = ({ children }) => {
             // }
 
         }
-
-
-        let companyBankdetail = localstore.addOrGetCompanyBankDetailHandler('', 'get');
-        if (companyBankdetail != null) {
-            //console.log('companyBankdetail');
-            //console.log(companyBankdetail);
-            setcompanyBankdetails(companyBankdetail);
-        }
-
         setisloaded(false);
 
     }
@@ -646,86 +518,13 @@ const CompanyDetailContext = ({ children }) => {
     }
 
     const saveHandler = async (funcs, item, type) => {
-        setisloaded(false);
-        // console.log('items');
-        // console.log(item);
-        if (funcs === 'addOrUpdateCompanyTermsAndConditionHandler') {
-            localstore.addOrUpdateCompanyTermsAndConditionHandler(item, type);
-            if (isbackendconnect) {
-
-                let saveCompanyTermsAndConditionDetailsdb = await companyDetailsDB.saveCompanyTermsAndConditionDetails(item, loginuserid);
-                //console.log('saveCompanyTermsAndConditionDetailsdb');
-                //console.log(saveCompanyTermsAndConditionDetailsdb);
-                if (saveCompanyTermsAndConditionDetailsdb.status !== 201 && saveCompanyTermsAndConditionDetailsdb.status !== 200) {
-                    toast.error(saveCompanyTermsAndConditionDetailsdb.data + " in saving DB");
-                }
-            }
-        }
-        if (funcs === 'addOrGetCompanyBankDetailHandler') {
-            localstore.addOrGetCompanyBankDetailHandler(item, type);
-            if (isbackendconnect) {
-                let saveCompanyBankDetaitlsdb = await companyDetailsDB.saveCompanyBankDetails(item, loginuserid);
-                //console.log('compabankdet');
-                //console.log(saveCompanyBankDetaitlsdb);
-                if (saveCompanyBankDetaitlsdb.status !== 201 && saveCompanyBankDetaitlsdb.status !== 200) {
-                    toast.error(saveCompanyBankDetaitlsdb.data + " in saving DB");
-                }
-            }
-        }
-        if (funcs === 'addOrUpdateCompanyHandler') {
-            let estimateidcount = localstore.addOrGetEstimateid('', 'get');
-            console.log(item);
-            localstore.addOrUpdateCompanyHandler(item, type, estimateidcount);
-            if (isbackendconnect) {
-                let companyBasicDetails = await companyDetailsDB.saveCompanyBasicDetails(item, loginuserid, estimateidcount);
-                console.log('companyBasicDetails');
-                console.log(companyBasicDetails);
-                if (companyBasicDetails.status !== 201 && companyBasicDetails.status !== 200) {
-                    toast.error(companyBasicDetails.data + " in saving DB");
-                }
-            }
-        }
+        
         setisloaded(true);
 
         toast.success("Details are saved");
     }
 
 
-    const companyBankDetailHandler = async (item, type) => {
-        //  //console.log(companyBankdetailtitle + ' ' + companyBankdetailvalue + ' ' + type + ' item' +item);
-        if (companyBankdetailtitle.length === 0 && companyBankdetailvalue.length === 0 && type !== "delete") {
-            toast.error("Both Details are Empty");
-            return;
-        }
-        //console.log('type ' + type);
-        let getresul;
-        if (type === "new") {
-            getresul = { id: uuidv4(), title: companyBankdetailtitle, isvisible: companyBankdetailIsVisible, value: companyBankdetailvalue };
-            //console.log('getresul');
-            //console.log(getresul);
-            //console.log(companydetails);
-            let compabankdet = [
-                ...companyBankdetails, getresul
-            ];
-            //console.log('compabankdet');
-            //console.log(compabankdet);
-            setcompanyBankdetails(compabankdet);
-            toast.success("New Bank Details are Added");
-            setcompanyBankdetailtitle('');
-            setcompanyBankdetailvalue('');
-            setcompanyBankdetailIsVisible(false);
-        }
-        else if (type === "delete") {
-            getresul = companyBankdetails.filter((items) => {
-                //console.log(items.id + ' ids ' + item);
-                return items.id !== item;
-            })
-
-            //console.log(getresul);
-            setcompanyBankdetails(getresul);
-            toast.success("Selected Bank detail is deleted");
-        }
-    }
     useEffect(() => {
 
         let useralreadyloggedin = localstore.addOrGetUserdetail('', 'loginuser', "get");
@@ -758,7 +557,7 @@ const CompanyDetailContext = ({ children }) => {
     const compDet = {
         companyName, setcompanyName,
         companyTagLine, setcompanyTagLine, companyAddress, setcompanyAddress, companyPhno, setcompanyPhno, companyGstin, setcompanyGstin, companyGstinStatename, setcompanyGstinStatename,
-        updateBankDetailHandler, companyBankDetailHandler, uploadImage,
+        updateBankDetailHandler, uploadImage,
         companyDeleration, setcompanyDeleration, companymailid, setcompanymailid, companyOwner, setcompanyOwner, companydetails, setcompanydetails, companyBankdetails, setcompanyBankdetails,
         companythankyou, setcompanythankyou, companytitle, companyOtherDetailHandeler, companydetailtitle, setcompanydetailtitle, companydetaildesc, setcompanydetaildesc, setval, setboxColors,
         loginuser, setloginuser, loginUserPassword, setloginUserPassword, loginHandler, loginstatus, setloginstatus, loginId, setloginId, loginUserConfirmPassword, setloginUserConfirmPassword, tokenid, settokenid, logoutHandler,

@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import InvoiceMainComponent from "../Screen/MainComponent/InvoiceMainComponent";
 import NoData from "../Screen/NoData/NoData";
 import NavigationBar from "../Screen/NavigationBar/NavigationBar";
 import DisplayAllComponent from "../Screen/MainComponent/DisplayAllComponent";
@@ -12,7 +11,6 @@ import { CompanyDetail } from "../Context/companyDetailContext";
 import SignUp from "../Screen/Login/SignUp";
 import Developer from "../Screen/ViewScreen/Developer";
 import { ToastContainer } from "react-toastify";
-import AddStocksForm from "../Screen/AddStocks/AddStocksForm/AddStocksForm";
 import AddStocks from "../Screen/AddStocks/AddStocks";
 import AllStocks from "../Screen/MainComponent/AllStocks/AllStocks";
 
@@ -46,9 +44,6 @@ const ScreenRoute = (props) => {
                         <Route path='/sales' Component={AllSaleStocks} />
                         <Route path='/salestock' Component={SalesStocks} />
                         <Route path='/listofaddedsalestocks' Component={ListOfAddedSaleStocks} />
-                        {/* <Route path='/genestimate' Component={EstimateMainComponent} />
-                        <Route path='/allinvoice' Component={AllInvoiceDetails} />
-                        <Route path='/allestimates' Component={AllEstimateDetails} />  */}
                         <Route path='/login' Component={Login} />
                         <Route path='/' Component={NoData} />
                         </> }

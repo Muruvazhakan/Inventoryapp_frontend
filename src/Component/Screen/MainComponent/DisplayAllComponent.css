@@ -5,7 +5,8 @@
   /* width: 400px;
   height: 300px; */
   align-items: center;
-  background-color: #4f4f4f;
+  /* background-color: #4f4f4f; */
+  background: linear-gradient(#2376a3, #010101db);
   color: aliceblue;
   justify-content: center;
   /* flex-direction: column; */

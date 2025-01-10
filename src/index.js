@@ -5,22 +5,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import CompanyDetailContext from './Component/Context/companyDetailContext';
-import AllStateContext from './Component/Context/allStateContext';
-import EstimatestateContext from './Component/Context/EstimatestateContext';
 import StocksContext from './Component/Context/StocksContex';
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <EstimatestateContext>
+    
     <StocksContext >
-      <AllStateContext>
+     
         <CompanyDetailContext>
           <App />
         </CompanyDetailContext>
-      </AllStateContext>
+     
       </StocksContext>
-    </EstimatestateContext>
+  
   </React.StrictMode>
 );
 

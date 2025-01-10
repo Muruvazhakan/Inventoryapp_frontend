@@ -1,13 +1,17 @@
 .App {
   text-align: center;
 }
-.websitecontainer{
+
+.websitecontainer {
   min-height: 97vh;
 }
 
-.exportExcelbttn{
-  padding-top: 20px;
+.exportExcelbttn {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-around;
 }
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -38,6 +42,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

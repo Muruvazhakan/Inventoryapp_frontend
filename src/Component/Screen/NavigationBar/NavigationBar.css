@@ -1,13 +1,13 @@
 .navbar {
-    background: #9a9c31e2;
-    /* background: transparent; */
+    /* background: #305a84e2; */
+    background: linear-gradient(#2376a3, #00000094);
     /* height: 60px; */
     display: flex;
     position: relative;
     justify-content: center;
     align-items: center;
     font-size: 1.2rem;
-    position: sticky;
+    position: sticky; 
     top: 0;
     z-index: 999;   
      /* opacity: 0.9; */
@@ -15,11 +15,10 @@
   }
   .logo{
     max-height: initial;
-    /* width: 60px; */
+    width: 30px;
     margin-right: 5px;
    
   }
-
   @keyframes bounce {
       0%, 100%, 20%, 50%, 80% {
         -webkit-transform: translateY(0);
@@ -55,19 +54,20 @@
   }
   .logo-name{
     /* font-size: x-large; */
-    font-size: 30px;
+    display: contents;
+    font-size: 27px;
     font-weight: 700;
-    
+    padding-top: 2px;
     list-style: none;
     shape-rendering: 12%;
    
-    color: #ffffff;
+    color: #ebe9e9;
   }
   .logo-name:hover{
     /* animation-name: bounce;
     -moz-animation-name: bounce; */
     list-style: none;
-    color: rgba(135,112,56,32);     
+    color: #e1c6ae;    
     text-decoration: none;
   }
   .nav-links:hover {

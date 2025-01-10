@@ -1,16 +1,20 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { BsFileEarmarkPdfFill, BsFiletypeXlsx } from "react-icons/bs";
 import { FaRegListAlt } from "react-icons/fa";
 import { MdAddChart } from "react-icons/md";
 import Card from "../../../Style/Card/Card";
 import ReactToPrint from "react-to-print";
 import { Box, Button } from "@mui/material";
+import { RiTableView } from "react-icons/ri";
 import { Stocks } from "../../../Context/StocksContex";
 import StockTable from "../../StockTable/StockTable";
 import './AllStocks.css';
 import { Link } from "react-router-dom";
+import Header from "../../Header/Header";
 const AllStocks = (props) => {
     const tabledet = useContext(Stocks);
+    const [viewAllAddedStock, setviewAllAddedStock] = useState(false);
+
     useEffect(() => {
         console.log(" useEffect AllStocks ");
         tabledet.getAllStocks("allstocks");
@@ -30,38 +34,78 @@ const AllStocks = (props) => {
                         Add Stocks</Button>
                 </Link>
 
-            </Card> 
-            
+            </Card>
+
             <Card className="listofbuttons">
                 <Link to={{
                     pathname: `/listofaddedstocks`
                 }}
                 >
                     <Button variant="outlined" color="secondary" endIcon={<FaRegListAlt />} >
-                    View List of added Stocks
-                </Button>
+                        View List of added Stocks
+                    </Button>
                 </Link>
 
-            </Card> 
-            <Card>
+            </Card>
+            
+            <Card className="listofbuttons">
 
-                <ReactToPrint
-                    trigger={() => (
-                        <Button variant="contained" color="info" endIcon={<BsFileEarmarkPdfFill />} >
-                            Download
-                        </Button>
-                    )}
-                    content={() => componentRef.current}
-                />
-                <div ref={componentRef}>
-                    <div className="exportExcelbttn" >
+                <Button variant="text" color={viewAllAddedStock ?"primary" :"warning" }
+                onClick={() => setviewAllAddedStock(!viewAllAddedStock)} endIcon={<RiTableView />}
+                >
+                    {viewAllAddedStock ? "Click to hide All Added Stocks" : "Click to Expand All Added Stocks"
+                    }
+                </Button>
+            </Card>
+            {viewAllAddedStock &&
+                <Card>
+                    <div className="exportExcelbttn " >
+                        <ReactToPrint
+                            trigger={() => (
+                                <Button variant="contained" color="info" endIcon={<BsFileEarmarkPdfFill />} >
+                                    Download All Stocks
+                                </Button>
+                            )}
+                            content={() => componentRef.current}
+                        />
+                        {/* <div className="button-space" > */}
                         <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
-                            onClick={() => tabledet.handleExportXlsx()}>Export Stocks to Excel</Button>
+                            onClick={() => tabledet.handleExportXlsx("alladdedstock")}>Export All Stocks to Excel</Button>
+                            {/* </div> */}
                     </div>
-                    <StockTable screen="allstocks" />
+                    <div ref={componentRef}>
+                        <Header name="All Stocks" />
+
+                        {/* <div> All Stocks   </div> */}
+                        <StockTable screen="alladdedstocks" from="add" />
+
+                    </div>
+                </Card>
+            }
+            <Card>
+                <div className="exportExcelbttn" >
+                    <ReactToPrint
+                        trigger={() => (
+                            <Button variant="contained" color="info" endIcon={<BsFileEarmarkPdfFill />} >
+                                Download Current Stocks
+                            </Button>
+                        )}
+                        content={() => componentRef.current}
+                    />
+
+                    <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
+                        onClick={() => tabledet.handleExportXlsx("add")}>Export Current Stocks to Excel</Button>
+                </div>
+                <div ref={componentRef}>
+                    <Header name="Current Stocks" />
+                    <StockTable screen="allstocks" from="add" />
 
                 </div>
             </Card>
+
+
+
+
         </Box>
     </>
 }

@@ -121,60 +121,6 @@ export const saveCompanyBasicDetails = async (basicdetail, userid,estimateidcoun
     }
 };
 
-export const getCompanyBankDetails = async (userid) =>{
-    //console.log(`${dbprop.getCompanyBankDetailsUrl}/${userid}` + 'dbprop.getCompanyBankDetailsUrl');
-    let response;
-    try {
-        response = await axios.get(`${dbprop.getCompanyBankDetailsUrl}/${userid}`, config);
-        //console.log(response);
-        return response;
-    } catch (err) {
-        console.log(err);
-        return err;
-    }
-}
-
-export const saveCompanyBankDetails = async (bankdetails,userid) => {
-    //console.log(`${dbprop.saveCompanyBankDetailsUrl}/${userid}` + ' dbprop.saveCompanyBankDetailsUrl');
-   
-    //console.log(bankdetails);
-    let response;
-    try {
-        response = await axios.post(`${dbprop.saveCompanyBankDetailsUrl}/${userid}`,bankdetails, config);
-        //console.log(response);
-        return response;
-    } catch (err) {
-        console.log(err);
-        return err;
-    }
-};
-
-export const getCompanyTermsAndConditionDetails = async (userid) =>{
-    //console.log(`${dbprop.getCompanyTermsAndConditionDetailsUrl}/${userid}` + 'dbprop.getCompanyTermsAndConditionDetailsUrl');
-    let response;
-    try {
-        response = await axios.get(`${dbprop.getCompanyTermsAndConditionDetailsUrl}/${userid}`, config);
-        //console.log(response);
-        return response;
-    } catch (err) {
-        console.log(err);
-        return err;
-    }
-}
-
-export const saveCompanyTermsAndConditionDetails = async (termsAndCondition,userid) => {
-    //console.log(`${dbprop.saveCompanyTermsAndConditionDetailsUrl}/${userid}` + ' dbprop.saveCompanyTermsAndConditionDetailsUrl');
-    //console.log(termsAndCondition);
-    let response;
-    try {
-        response = await axios.post(`${dbprop.saveCompanyTermsAndConditionDetailsUrl}/${userid}`,termsAndCondition, config);
-        //console.log(response);
-        return response;
-    } catch (err) {
-        console.log(err);
-        return err;
-    }
-};
 
 export const uploadCompanyLogo = async (companylogo,userid) => {
     //console.log(`${dbprop.saveCompanyTermsAndConditionDetailsUrl}/${userid}` + ' dbprop.saveCompanyTermsAndConditionDetailsUrl');
