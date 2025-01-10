@@ -582,13 +582,13 @@ const StocksContext = ({ children }) => {
       }
       console.log('savedataresponse');
       console.log(savedataresponse);
-      // getAllClientList(loginuser, "sale");
+      getAllClientList(loginuser, "sale");
       // getAllStockData(loginuser);
       // getAllHistorySalesStockData(loginuser);
 
       // toast.success("New Sale Stock saved");
     }
-    // getAllStockData(loginuser);
+    getAllStockData(loginuser);
   };
 
   const allStockHistoryEdit = (props) => {
