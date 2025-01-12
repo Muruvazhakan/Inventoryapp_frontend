@@ -2,13 +2,20 @@ import React, { useContext, useEffect } from "react";
 import AddStocksForm from "./AddStocksForm/AddStocksForm";
 import AddStocksGenDetails from "./AddStocksGenDetails";
 import StockTable from "../StockTable/StockTable";
-import { Box, Grid } from "@mui/material";
+import { Box, CircularProgress, Grid, Stack } from "@mui/material";
 import Card from "../../Style/Card/Card";
+import { Stocks } from "../../Context/StocksContex";
 
 const AddStocks = (props) => {
-
+ const statckdet = useContext(Stocks);
     return <>
         <Box sx={{ flexGrow: 1 }}>
+        
+        {statckdet.isloading &&
+                <Stack sx={{ color: 'grey.500' }} spacing={2} alignItems={"center"} className="spinnerstyle">
+                    <CircularProgress color="success" size={30} />
+                </Stack>
+            }
             <Card>
                 <Card className="screenHeader"> Add Stocks </Card>
                 <Grid container spacing={2}>

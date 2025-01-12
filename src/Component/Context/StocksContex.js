@@ -23,6 +23,7 @@ const StocksContext = ({ children }) => {
     amount: 0
   });
   const [productid, setproductid] = useState('');
+  const [isloading, setisloading] = useState(false);
   const [list, setList] = useState([]);
   const [saleslist, setSalesList] = useState([]);
   const [allStockList, setallStockList] = useState([]);
@@ -153,6 +154,14 @@ const StocksContext = ({ children }) => {
       setquantity(item.quantity);
       setrate(item.rate);
       setamount(item.amount);
+      let filterdata = allStockData.find(data =>{
+        return data.productid==item.productid
+    })
+    console.log("filterdata^^^&&");
+    console.log(filterdata);
+    if(filterdata){
+        setavailablestock(((filterdata.quantity*1)+ (item.quantity*1))); 
+    }
       toast.info("Item is added in edit section");
     }
     if (screen == "allstocks" || (screen == "add")) {
@@ -503,6 +512,7 @@ const StocksContext = ({ children }) => {
 
   }
   const saveStock = async (screen) => {
+    setisloading(true);
     console.log('saveStock');
     console.log('loginuserid + loginuserid');
     // if(screen ==="add"){
@@ -589,6 +599,7 @@ const StocksContext = ({ children }) => {
       // toast.success("New Sale Stock saved");
     }
     getAllStockData(loginuser);
+    setisloading(false);
   };
 
   const allStockHistoryEdit = (props) => {
@@ -1211,7 +1222,7 @@ const StocksContext = ({ children }) => {
     getAllStocks, allStockList, setallStockList, allstockstotalamt, setallstockstotalamt, calculateSum, getAllStockData, handleExportXlsx, getAllHistoryStockData, allStockHistoryEdit, saleslist, setSalesList,
     allStockSalesList, setallStockSalesList, allstockssalestotalamt, setallstockssalestotalamt, totalsalesamt, settotalsalesamt, salestockidcount, setsalestockidcount, salestockid, setsalestockid, getAllClientList,
     availablestock, setavailablestock, salestockdate, setsalestockdate, getAllSalesCount, salesStockHistoryData, setSalesstockHistoryData, getAllHistorySalesStockData, allSaleStockHistoryEdit, handleHistoryExportXlsx,
-    allStockAddedList, setallStockAddedList, alladdedstockstotalamt, setaddedallstockstotalamt
+    allStockAddedList, setallStockAddedList, alladdedstockstotalamt, setaddedallstockstotalamt,isloading, setisloading
   };
   return <Stocks.Provider value={context}>{children}</Stocks.Provider>;
 }
