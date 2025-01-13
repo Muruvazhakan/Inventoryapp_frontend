@@ -17,16 +17,17 @@ const DisplayAllComponent = (props) => {
 
 
     return <>
+      {!logindet.isloaded &&
+                <Stack sx={{ color: 'grey.500' }} spacing={2} alignItems={"center"} className="spinnerstyle">
+                    <CircularProgress color="success" size={30} />
+                </Stack>
+            }
         <Link className="linkdecor" to={{ pathname: '/profits' }} >
             <YourProfits />
         </Link>
 
         <div className=" displayelements" >
-            {logindet.isloaded &&
-                <Stack sx={{ color: 'grey.500' }} spacing={2} alignItems={"center"} className="spinnerstyle">
-                    <CircularProgress color="success" size={30} />
-                </Stack>
-            }
+          
 
             {Datas.navigationbarcontent.map((items, index) => {
                 if (items.screenname !== "Home") {
