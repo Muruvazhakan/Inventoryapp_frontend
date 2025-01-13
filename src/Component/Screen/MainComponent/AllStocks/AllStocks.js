@@ -86,15 +86,18 @@ const AllStocks = (props) => {
                 <div className="exportExcelbttn" >
                     <ReactToPrint
                         trigger={() => (
+                            <div className="excelexport" >
                             <Button variant="contained" color="info" endIcon={<BsFileEarmarkPdfFill />} >
                                 Download Current Stocks
                             </Button>
+                            </div>
                         )}
                         content={() => componentRef.current}
                     />
-
+                    <div className="excelexport" >
                     <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
                         onClick={() => tabledet.handleExportXlsx("add")}>Export Current Stocks to Excel</Button>
+                        </div>
                 </div>
                 <div ref={componentRef}>
                     <Header name="Current Stocks" />

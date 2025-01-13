@@ -9,6 +9,17 @@ import AddStocksGenDetails from "../AddStocks/AddStocksGenDetails";
 import { Stocks } from "../../Context/StocksContex";
 
 const SalesStocks = () => {
+
+     const Gridmenu = (props) => {
+            return <>
+                {window.innerWidth <= 960 ?
+                    <>  {props.children} </>
+                    : <Grid container spacing={2}>
+                        {props.children}
+                    </Grid>
+                }
+            </>
+        }
 const tabledet = useContext(Stocks);
     return <>
         <Box sx={{ flexGrow: 1 }}>
@@ -19,7 +30,7 @@ const tabledet = useContext(Stocks);
             }
             <Card>
                 <Card className="screenHeader"> Sales Stocks </Card>
-                <Grid container spacing={2}>
+                <Gridmenu>
                     <Grid item xs={7}>
                         <StockTable screen="sale" from="sale" type="update"/>
                     </Grid>
@@ -28,7 +39,7 @@ const tabledet = useContext(Stocks);
                         <AddStocksGenDetails screen="sale" />
 
                     </Grid>
-                </Grid>
+                </Gridmenu>
             </Card>
         </Box>
     </>

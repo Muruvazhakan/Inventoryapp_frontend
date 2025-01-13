@@ -1,17 +1,37 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { IconContext } from 'react-icons/lib';
 import * as Datas from '../../Context/Datas';
 import icon from '../../../Image/favicon.ico';
+import { FaBars, FaTimes } from 'react-icons/fa';
 import { PiInvoiceThin } from "react-icons/pi";
 import './NavigationBar.css';
 import { CompanyDetail } from "../../Context/companyDetailContext";
 
 const NavigationBar = (props) => {
 
-  const logindet = useContext(CompanyDetail);
+  const [button, setButton] = useState(true);
+  const showButton = () => {
+    if (window.innerWidth <= 960) {
+      setButton(false);
+    } else {
+      setButton(true);
+    }
+  };
+  const closeMobileMenu = () => setClick(false);
+  useEffect(() => {
+    showButton();
+    window.addEventListener('resize', showButton);
+    return (
+      window.removeEventListener('resize', showButton)
+    )
 
+  }, []);
+  const logindet = useContext(CompanyDetail);
+  // const [state, setState] = useState(initialState);
+  const [click, setClick] = useState(false);
+  const handleClick = () => setClick(!click);
 
   return <>
     <IconContext.Provider value={{ color: '#rrr' }}>
@@ -19,19 +39,21 @@ const NavigationBar = (props) => {
       <nav className='navbar'>
         <div className="navbar-container container ">
 
-          <Link to='/' className='navbar-logo'>
+          <Link to='/' className='navbar-logo'  onClick={closeMobileMenu}>
             {/* <PiInvoiceThin className='logo logo-name' size={30} /> */}
             <div
               className='logo-name'>
               <img className='logo' src={icon}
                   alt="EE_Logo"
                 />
-              <div> AssetSync</div>
+              <div className='logoname'> AssetSync</div>
               </div>
 
           </Link>
-
-          <ul className={'nav-menu  nav-active  active'}>
+          <div className='menu-icon' onClick={handleClick}>
+              {click ? <FaTimes /> : <FaBars />}
+            </div>
+          <ul className={click ? 'nav-menu  nav-active  active' : 'nav-menu '}>
             {logindet.loginstatus ?
               <>
                 {Datas.navigationbarcontent.map((item, index) => {
@@ -46,7 +68,7 @@ const NavigationBar = (props) => {
                         < Link className='nav-links' to={{ pathname: item.altname }}
                           duration={1000} activeClass="nav-active" spy={true} offset={-50}
                           smooth
-                        // onClick={closeMobileMenu}
+                        onClick={closeMobileMenu}
                         >
                           {item.screenname}
                         </Link>
@@ -54,6 +76,8 @@ const NavigationBar = (props) => {
                     </div>
                   )
                 })}
+
+                
                 <div className='nav-item  nav-active '
                   //  onClick={() => handleheaderClick()} 
                   key="logout">
@@ -96,6 +120,10 @@ const NavigationBar = (props) => {
             >
 
             </div>
+
+            <div className='nav-item menu-icon2' onClick={handleClick}>
+                {click ? <FaTimes size="40px" /> : <FaBars />}
+              </div>
             {/* {state.useredits === '66656d6364' ?
                   <div className='nav-item nav-links'
                 //    onClick={handleLogout}

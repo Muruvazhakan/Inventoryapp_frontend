@@ -7,7 +7,6 @@
 }
 
 .exportExcelbttn {
-  margin-top: 5px;
   display: flex;
   justify-content: space-around;
 }
@@ -16,7 +15,18 @@
   height: 40vmin;
   pointer-events: none;
 }
-
+.css-1b8pf4n .MuiTextField-root {
+  width: 70%;
+}
+@media screen and (max-width: 700px) {
+  .exportExcelbttn {
+    display: flex;
+    display: inline;
+    padding: 5px;
+    justify-content: space-around;
+  }
+ 
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

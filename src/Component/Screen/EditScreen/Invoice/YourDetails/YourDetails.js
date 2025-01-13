@@ -1,6 +1,6 @@
 
 import React, { useContext } from "react";
-import { FormGroup, FormControl, TextField, Box, Button, ImageList, ImageListItem } from '@mui/material';
+import { FormGroup, FormControl, TextField, Box, Button, ImageList, ImageListItem, withStyles } from '@mui/material';
 
 import { MdOutlineSaveAlt } from "react-icons/md";
 
@@ -33,7 +33,7 @@ const YourDetails = () => {
       <FormControl>
         <Card>
           <h3>Company Details</h3>
-          <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '45ch' } }} >
+          <Box component="form" className="alltextfiled" sx={{ '& .MuiTextField-root': { m: 1, width: '35ch' } }} >
             {/* companyImage, setcompanyImage */}
 
             {/* {compayDet.companyImage ?
@@ -82,58 +82,58 @@ const YourDetails = () => {
               </div>
               </ImageListItem>
             </ImageList> */}
-
-            <TextField required id="outlined-required" label="Company Name" value={compayDet.companyName}
+            
+            <TextField className="alltextfiled" required id="outlined-required" label="Company Name" value={compayDet.companyName}
               onChange={(e) => setval(e, compayDet.setcompanyName)}
               color={setboxColors(compayDet.companyName, 'color')}
               error={setboxColors(compayDet.companyName, 'error')} />
 
-            <TextField required id="outlined-required" label="Company Tag Line" multiline value={compayDet.companyTagLine}
+            <TextField className="alltextfiled" required id="outlined-required" label="Company Tag Line" multiline value={compayDet.companyTagLine}
               onChange={(e) => setval(e, compayDet.setcompanyTagLine)}
               color={setboxColors(compayDet.companyTagLine, 'color')}
               error={setboxColors(compayDet.companyTagLine, 'error')} />
 
-            <TextField required id="outlined-required" label="Company Address" multiline value={compayDet.companyAddress}
+            <TextField className="alltextfiled" required id="outlined-required" label="Company Address" multiline value={compayDet.companyAddress}
               onChange={(e) => setval(e, compayDet.setcompanyAddress)}
               color={setboxColors(compayDet.companyAddress, 'color')}
               error={setboxColors(compayDet.companyAddress, 'error')} />
 
-            <TextField required id="outlined-required" label="Company Phone Number" value={compayDet.companyPhno}
+            <TextField className="alltextfiled" required id="outlined-required" label="Company Phone Number" value={compayDet.companyPhno}
               onChange={(e) => setval(e, compayDet.setcompanyPhno)}
               color={setboxColors(compayDet.companyPhno, 'color')}
               error={setboxColors(compayDet.companyPhno, 'error')} />
 
-            <TextField required id="outlined-required" label="Company Mailid" value={compayDet.companymailid}
+            <TextField className="alltextfiled" required id="outlined-required" label="Company Mailid" value={compayDet.companymailid}
               onChange={(e) => setval(e, compayDet.setcompanymailid)}
               color={setboxColors(compayDet.companymailid, 'color')}
               error={setboxColors(compayDet.companymailid, 'error')} />
 
-            <TextField required id="outlined-required" label="Company Owner Name" value={compayDet.companyOwner}
+            <TextField className="alltextfiled" required id="outlined-required" label="Company Owner Name" value={compayDet.companyOwner}
               onChange={(e) => setval(e, compayDet.setcompanyOwner)}
               color={setboxColors(compayDet.companyOwner, 'color')}
               error={setboxColors(compayDet.companyOwner, 'error')} />
 
-            <TextField required id="outlined-required" label="Thanksyou words" value={compayDet.companythankyou} multiline rows={2}
+            {/* <TextField className="alltextfiled" required id="outlined-required" label="Thanksyou words" value={compayDet.companythankyou} multiline rows={2}
               onChange={(e) => setval(e, compayDet.setcompanythankyou)}
               color={setboxColors(compayDet.companythankyou, 'color')}
-              error={setboxColors(compayDet.companythankyou, 'error')} />
+              error={setboxColors(compayDet.companythankyou, 'error')} /> */}
 
-            <TextField id="outlined-required" label="Company Gstin" value={compayDet.companyGstin}
+            <TextField className="alltextfiled" id="outlined-required" label="Company Gstin" value={compayDet.companyGstin}
               onChange={(e) => setval(e, compayDet.setcompanyGstin)}
             //  color ={setboxColors(compayDet.companyGstin,'color')}
             //  error={setboxColors(compayDet.companyGstin,'error')}
             />
-            <TextField id="outlined-required" label="Company Gstin state" value={compayDet.companyGstinStatename} multiline
+            <TextField className="alltextfiled" id="outlined-required" label="Company Gstin state" value={compayDet.companyGstinStatename} multiline
               onChange={(e) => setval(e, compayDet.setcompanyGstinStatename)}
             //  color ={setboxColors(compayDet.companyGstinStatename,'color')}
             //  error={setboxColors(compayDet.companyGstinStatename,'error')}
             />
 
-            <TextField id="outlined-required" label="Company Declaration" value={compayDet.companyDeleration} multiline rows={3}
+            {/* <TextField className="alltextfiled" id="outlined-required" label="Company Declaration" value={compayDet.companyDeleration} multiline rows={3}
               onChange={(e) => setval(e, compayDet.setcompanyDeleration)}
               color={setboxColors(compayDet.companyDeleration, 'color')}
               error={setboxColors(compayDet.companyDeleration, 'error')}
-            />
+            /> */}
             <h5>
               System will automatically update..
             </h5>
