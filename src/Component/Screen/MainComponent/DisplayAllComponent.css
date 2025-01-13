@@ -14,10 +14,14 @@
   /* height: 100px; */
 }
 
+.listofstickexcelbtn{
+  margin-top: 5px;
+}
+
 .displayelements {
   display: flex;
   align-items: stretch;
-  justify-content: start;
+  justify-content: center;
   /* margin-top: 1%; */
   padding-top: 5px;
   flex-flow: wrap;

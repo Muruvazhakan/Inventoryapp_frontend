@@ -31,34 +31,38 @@ const AllSaleStocks = (props) => {
                         Sale Stocks</Button>
                 </Link>
 
-            </Card> 
-            
+            </Card>
+
             <Card className="listofbuttons">
                 <Link to={{
                     pathname: `/listofaddedsalestocks`
                 }}
                 >
                     <Button variant="outlined" color="secondary" endIcon={<FaRegListAlt />} >
-                    View List of added Sale Stocks
-                </Button>
+                        View List of added Sale Stocks
+                    </Button>
                 </Link>
 
-            </Card> 
+            </Card>
             <Card>
-            <div className="exportExcelbttn " >
-                <ReactToPrint
-                    trigger={() => (
-                        <Button variant="contained" color="info" endIcon={<BsFileEarmarkPdfFill />} >
-                            Download Sale Stocks
-                        </Button>
-                    )}
-                    content={() => componentRef.current}
-                />
-                  <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
+                <div className="exportExcelbttn " >
+                    <ReactToPrint
+                        trigger={() => (
+                            <div>
+                                <Button variant="contained" color="info" endIcon={<BsFileEarmarkPdfFill />} >
+                                    Download Sale Stocks
+                                </Button>
+                            </div>
+                        )}
+                        content={() => componentRef.current}
+                    />
+                    <div className="excelexport" >
+                        <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
                             onClick={() => tabledet.handleExportXlsx("sale")}>Export Sale Stocks to Excel</Button>
+                    </div>
                 </div>
                 <div ref={componentRef}>
-                <Header name="All Sale Stocks" />
+                    <Header name="All Sale Stocks" />
                     <StockTable screen="allsalestocks" />
 
                 </div>

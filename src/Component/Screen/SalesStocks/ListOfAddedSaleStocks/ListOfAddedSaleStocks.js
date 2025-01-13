@@ -41,7 +41,7 @@ const ListOfAddedSaleStocks = (props) => {
                 </>
                 :
                 < >
-                    <div className="exportExcelbttn" >
+                    <div className="listofstickexcelbtn" >
                         <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
                             onClick={() => stocksdet.handleHistoryExportXlsx("sale")}>Export History Sales Stock to Excel</Button>
                     </div>
