@@ -7,21 +7,24 @@ import ReactToPrint from "react-to-print";
 import { Box, Button } from "@mui/material";
 import { Stocks } from "../../../Context/StocksContex";
 import StockTable from "../../StockTable/StockTable";
-import '../AllStocks/AllStocks.css';
+// import '../AllStocks/AllStocks.css';
 import { Link } from "react-router-dom";
 import Header from "../../Header/Header";
-const AllSaleStocks = (props) => {
+import YourProfits from "../YourProfits/YourProfits";
+
+
+const AllProfit = (props) => {
     const tabledet = useContext(Stocks);
     useEffect(() => {
-        console.log(" useEffect AllSaleStocks ");
-        tabledet.getAllStocks("AllSaleStocks");
+        console.log(" useEffect AllProfit ");
+        tabledet.getAllStocks("AllProfit");
     }, [tabledet.allStockData, tabledet.allstockstotalamt, tabledet.stockHistoryData, tabledet.allStockList]);
     const componentRef = useRef();
     return <>
         <Box className="allstocksdisplaytable" sx={{ flexGrow: 1 }}>
-
-            {/* <StockTable screen="AllSaleStocks" /> */}
-            <Card className="listofbuttons">
+            <YourProfits/>
+            {/* <StockTable screen="AllProfit" /> */}
+            {/* <Card className="listofbuttons">
                 <Link to={{
                     pathname: `/salestock`
                 }}
@@ -31,9 +34,9 @@ const AllSaleStocks = (props) => {
                         Sale Stocks</Button>
                 </Link>
 
-            </Card>
+            </Card> */}
 
-            <Card className="listofbuttons">
+            {/* <Card className="listofbuttons">
                 <Link to={{
                     pathname: `/listofaddedsalestocks`
                 }}
@@ -43,14 +46,14 @@ const AllSaleStocks = (props) => {
                     </Button>
                 </Link>
 
-            </Card>
+            </Card> */}
             <Card>
                 <div className="exportExcelbttn " >
                     <ReactToPrint
                         trigger={() => (
                             <div>
                                 <Button variant="contained" color="info" endIcon={<BsFileEarmarkPdfFill />} >
-                                    Download Sale Stocks
+                                    Download Profits Stocks
                                 </Button>
                             </div>
                         )}
@@ -58,12 +61,12 @@ const AllSaleStocks = (props) => {
                     />
                     <div className="excelexport" >
                         <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
-                            onClick={() => tabledet.handleExportXlsx("allsalestocks")}>Export Sale Stocks to Excel</Button>
+                            onClick={() => tabledet.handleExportXlsx("allProfit")}>Export Profits to Excel</Button>
                     </div>
                 </div>
                 <div ref={componentRef}>
-                    <Header name="All Sale Stocks" />
-                    <StockTable screen="allsalestocks" />
+                    <Header name="Your Profits!" />
+                    <StockTable screen="allProfit" from = "profit" />
 
                 </div>
             </Card>
@@ -71,4 +74,4 @@ const AllSaleStocks = (props) => {
     </>
 }
 
-export default AllSaleStocks;
+export default AllProfit;

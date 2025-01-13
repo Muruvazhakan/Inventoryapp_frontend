@@ -31,6 +31,13 @@ export const navigationbarcontent = [
         displays: true,
         image: mysalesf
     },
+    {
+        screenname: 'Profits',
+        links: '/profits',
+        altname: 'profits',
+        displays: true,
+        image: mysalesf
+    },
     // {
     //     screenname: 'Generate Estimate',
     //     links: '/genestimate',

@@ -1,0 +1,20 @@
+.profitstyle{
+    display: ruby;
+    margin: 0;
+    /* width: 20px; */
+    /* border: 20px; */
+    font-size: large;
+    font-weight: bolder;
+}
+
+.profitstyle .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  }
+
+.profitstylecard{
+    border-radius: 20px;
+    cursor: pointer;
+    background: linear-gradient(#7cb9d9, #0000002e);
+    
+}

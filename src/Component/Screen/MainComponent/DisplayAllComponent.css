@@ -30,7 +30,8 @@
 
 .linkdecor {
   text-decoration: none;
-  color: rgb(238, 193, 56);
+  /* color: rgb(238, 193, 56); */
+  color: black;
 }
 
 .cardline {

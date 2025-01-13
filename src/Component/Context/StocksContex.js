@@ -27,10 +27,12 @@ const StocksContext = ({ children }) => {
   const [list, setList] = useState([]);
   const [saleslist, setSalesList] = useState([]);
   const [allStockList, setallStockList] = useState([]);
+  const [allProfitStockList, setAllProfitStockList] = useState([]);
   const [allStockAddedList, setallStockAddedList] = useState([]);
   const [allStockSalesList, setallStockSalesList] = useState([]);
   const [totalamt, settotalamt] = useState(0);
   const [totalsalesamt, settotalsalesamt] = useState(0);
+  const [totalprofiramt, settotalprofiramt] = useState(0);
   const [allstockstotalamt, setallstockstotalamt] = useState(0);
   const [alladdedstockstotalamt, setaddedallstockstotalamt] = useState(0);
   const [allstockssalestotalamt, setallstockssalestotalamt] = useState(0);
@@ -154,14 +156,14 @@ const StocksContext = ({ children }) => {
       setquantity(item.quantity);
       setrate(item.rate);
       setamount(item.amount);
-      let filterdata = allStockData.find(data =>{
-        return data.productid==item.productid
-    })
-    console.log("filterdata^^^&&");
-    console.log(filterdata);
-    if(filterdata){
-        setavailablestock(((filterdata.quantity*1)+ (item.quantity*1))); 
-    }
+      let filterdata = allStockData.find(data => {
+        return data.productid == item.productid
+      })
+      console.log("filterdata^^^&&");
+      console.log(filterdata);
+      if (filterdata) {
+        setavailablestock(((filterdata.quantity * 1) + (item.quantity * 1)));
+      }
       toast.info("Item is added in edit section");
     }
     if (screen == "allstocks" || (screen == "add")) {
@@ -553,7 +555,7 @@ const StocksContext = ({ children }) => {
       console.log('savedataresponse');
       console.log(savedataresponse);
       getAllClientList(loginuser, "add");
-      
+
       // getAllHistoryStockData(loginuser);
       // toast.success("New Stock saved");
     } else {
@@ -686,15 +688,54 @@ const StocksContext = ({ children }) => {
       } else {
         getAllHistorySalesStockData(loginuserid, getallClientDatafromdb.data);
         getAllHistoryStockData(loginuserid, getallClientDatafromdb.data);
+
       }
 
       return true;
     }
     return false;
   }
+
   const handleExportXlsx = (screen) => {
     let filtercolumn = [];
-    if (screen === "add") {
+    let localsumqty1 = 0, localsumqty2 = 0, sumpurchaseamt = 0;
+
+    let displaylist = (screen === "allstocks" ? allStockList
+      :
+      (screen === "alladdedstocks" ? allStockAddedList
+        :
+        (screen === "allProfit" ? allProfitStockList
+          :
+          (screen === "add" ? list
+            :
+            (screen === "sale" ? saleslist
+              : allStockSalesList
+            )
+          )))
+    );
+    let localsum = (screen === "allstocks" ? allstockstotalamt
+      :
+      (screen === "alladdedstocks" ? alladdedstockstotalamt
+        :
+        (screen === "allProfit" ? totalprofiramt
+          :
+          (screen === "add" ? totalamt
+            :
+            (screen === "sale" ? totalsalesamt
+              : allstockssalestotalamt
+            )
+          )
+        )
+      )
+    );
+    let localsumqty = displaylist.map((item, index) => {
+      localsumqty1 = localsumqty1 + (item.quantity * 1);
+      if (screen === "allProfit")
+        localsumqty2 = localsumqty2 + (item.salequantity * 1);
+      sumpurchaseamt = sumpurchaseamt + (item.purchaceamount * 1);
+    });
+
+    if (screen === "allstocks") {
       filtercolumn = allStockList.map((data, index) => {
         return {
           Sno: index + 1,
@@ -709,14 +750,14 @@ const StocksContext = ({ children }) => {
         Sno: "Total Amount",
         Productid: '',
         ProductDescription: '',
-        Quantity: '',
+        Quantity: localsumqty1,
         Rate: '',
-        Amount: allstockstotalamt
+        Amount: localsum
       }
       filtercolumn.push(lastcolumn);
       console.log("filtercolumn");
       console.log(filtercolumn);
-    } else if (screen === "sale") {
+    } else if (screen === "allsalestocks") {
       let filtercolumn = allStockSalesList.map((data, index) => {
         return {
           Sno: index + 1,
@@ -731,15 +772,15 @@ const StocksContext = ({ children }) => {
         Sno: "Total Sale Amount",
         Productid: '',
         ProductDescription: '',
-        Quantity: '',
+        Quantity: localsumqty1,
         Sale_Rate: '',
-        Sale_Amount: allstockstotalamt
+        Sale_Amount: localsum
       }
       filtercolumn.push(lastcolumn);
       console.log("filtercolumn");
       console.log(filtercolumn);
 
-    } else if (screen === "alladdedstock") {
+    } else if (screen === "alladdedstocks") {
       let filtercolumn = allStockAddedList.map((data, index) => {
         return {
           Sno: index + 1,
@@ -754,9 +795,41 @@ const StocksContext = ({ children }) => {
         Sno: "Total Amount",
         Productid: '',
         ProductDescription: '',
-        Quantity: '',
+        Quantity: localsumqty1,
         Rate: '',
-        Amount: alladdedstockstotalamt
+        Amount: localsum
+      }
+      filtercolumn.push(lastcolumn);
+      console.log("filtercolumn");
+      console.log(filtercolumn);
+
+    } else if (screen === "allProfit") {
+
+      let filtercolumn = allProfitStockList.map((data, index) => {
+        return {
+          Sno: index + 1,
+          Productid: data.productid,
+          ProductDescription: data.desc,
+          TotalQuantity: data.quantity,
+          PurchaceRate: data.rate,
+          TotalPurchaceAmount: data.amount,
+          SaleRate: data.salerate,
+          SaleQuantity: data.salequantity,
+          SaleAmount: data.saleamount,
+          PurchaceAmount: data.purchaceamount,
+          Profit: data.profit,
+        }
+      })
+      let lastcolumn = {
+        Sno: "Total Amount",
+        TotalQuantity: localsumqty1,
+        PurchaceRate: '',
+        TotalPurchaceAmount: alladdedstockstotalamt,
+        SaleRate: '',
+        SaleQuantity: localsumqty2,
+        SaleAmount: allstockssalestotalamt,
+        PurchaceAmount: sumpurchaseamt,
+        Profit: localsum,
       }
       filtercolumn.push(lastcolumn);
       console.log("filtercolumn");
@@ -1122,6 +1195,49 @@ const StocksContext = ({ children }) => {
     // allstockssalestotalamt
   }
 
+  const deriveProfitStock = () => {
+    console.log("allStockList");
+    console.log(allStockList);
+    console.log("allStockSalesList");
+    console.log(allStockSalesList);
+    let profitsum = 0;
+    if (allStockSalesList.length > 0 && allStockAddedList.length > 0) {
+      const mergedArray = allStockSalesList.map((obj1) => {
+        // Find the corresponding object in array2 by Productid
+        const obj2 = allStockAddedList.find((item) => item.productid === obj1.productid);
+
+        // userid: userid,
+        // productid: singlestock.productid,
+        // quantity: singlestock.quantity,
+        // desc: singlestock.desc,
+        // rate: singlestock.rate,
+        // Merge the two objects
+        let profits = ((obj1.quantity * 1 * (obj1.rate)) - ((obj1.quantity * 1 * (obj2.rate))));
+        profitsum = profitsum + profits;
+        return {
+          productid: obj2.productid,
+          desc: obj2.desc,
+          quantity: obj2.quantity * 1,
+          rate: obj2.rate * 1,
+          amount: (obj2.rate * 1 * obj2.quantity),
+          // If a match is found in array2, merge its properties
+          salerate: obj1 ? obj1.rate * 1 : undefined,
+          saleamount: obj1 ? obj1.amount * 1 : undefined,
+          purchaceamount: obj1 ? obj1.quantity * 1 * obj2.rate : undefined,
+          salequantity: obj1 ? obj1.quantity * 1 : undefined,
+          profit: profits,
+        };
+      });
+      console.log("mergedArray");
+      console.log(mergedArray);
+      console.log("profitsum");
+      console.log(profitsum);
+      setAllProfitStockList(mergedArray);
+      // profitsum = (Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 }).format(profitsum));
+      settotalprofiramt(profitsum.toFixed(2));
+    }
+  }
+
   const deriveStockAddedFromHistory = (prop) => {
     console.log("props");
     let accumalatevalue = [];
@@ -1204,9 +1320,11 @@ const StocksContext = ({ children }) => {
   }, [saleslist])
   // 
 
-  // useEffect(() => {
-  //   getAllStocks("allstocks");
-  // }, [allStockData]);
+  useEffect(() => {
+    setTimeout(() => {
+      deriveProfitStock();
+    }, 1000)
+  }, [allStockSalesList,allStockAddedList]);
 
   const context = {
     list, setList, totalamt, settotalamt, totalamtwords, settotalamtwords, singlehsnitem, setsinglehsnitem, setval, setboxColors, cleardetailoption, setcleardetailoption,
@@ -1222,7 +1340,7 @@ const StocksContext = ({ children }) => {
     getAllStocks, allStockList, setallStockList, allstockstotalamt, setallstockstotalamt, calculateSum, getAllStockData, handleExportXlsx, getAllHistoryStockData, allStockHistoryEdit, saleslist, setSalesList,
     allStockSalesList, setallStockSalesList, allstockssalestotalamt, setallstockssalestotalamt, totalsalesamt, settotalsalesamt, salestockidcount, setsalestockidcount, salestockid, setsalestockid, getAllClientList,
     availablestock, setavailablestock, salestockdate, setsalestockdate, getAllSalesCount, salesStockHistoryData, setSalesstockHistoryData, getAllHistorySalesStockData, allSaleStockHistoryEdit, handleHistoryExportXlsx,
-    allStockAddedList, setallStockAddedList, alladdedstockstotalamt, setaddedallstockstotalamt,isloading, setisloading
+    allStockAddedList, setallStockAddedList, alladdedstockstotalamt, setaddedallstockstotalamt, isloading, setisloading, allProfitStockList, setAllProfitStockList, totalprofiramt, settotalprofiramt
   };
   return <Stocks.Provider value={context}>{children}</Stocks.Provider>;
 }

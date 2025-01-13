@@ -18,6 +18,7 @@ import SalesStocks from "../Screen/SalesStocks/SalesStocks";
 import AllSaleStocks from "../Screen/MainComponent/AllSaleStocks/AllSaleStocks";
 import ListOfAddedSaleStocks from "../Screen/SalesStocks/ListOfAddedSaleStocks/ListOfAddedSaleStocks";
 import ListOfAddedStocks from "../Screen/AddStocks/ListOfAddedStocks/ListOfAddedStocks";
+import AllProfit from "../Screen/MainComponent/AllProfit/AllProfit";
 const ScreenRoute = (props) => {
     const logindet = useContext(CompanyDetail);
     return <>
@@ -43,6 +44,7 @@ const ScreenRoute = (props) => {
                         <Route path='/listofaddedstocks' Component={ListOfAddedStocks} />
                         <Route path='/sales' Component={AllSaleStocks} />
                         <Route path='/salestock' Component={SalesStocks} />
+                        <Route path='/profits' Component={AllProfit} />
                         <Route path='/listofaddedsalestocks' Component={ListOfAddedSaleStocks} />
                         <Route path='/login' Component={Login} />
                         <Route path='/' Component={NoData} />

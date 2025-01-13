@@ -73,7 +73,7 @@ const AllStocks = (props) => {
                        
                         <div className="excelexport" >
                         <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
-                            onClick={() => tabledet.handleExportXlsx("alladdedstock")}>Export All Stocks to Excel</Button>
+                            onClick={() => tabledet.handleExportXlsx("alladdedstocks")}>Export All Stocks to Excel</Button>
                             </div>
                     </div>
                     <div ref={componentRef}>
@@ -99,7 +99,7 @@ const AllStocks = (props) => {
                     />
                     <div className="excelexport" >
                     <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
-                        onClick={() => tabledet.handleExportXlsx("add")}>Export Current Stocks to Excel</Button>
+                        onClick={() => tabledet.handleExportXlsx("allstocks")}>Export Current Stocks to Excel</Button>
                         </div>
                 </div>
                 <div ref={componentRef}>

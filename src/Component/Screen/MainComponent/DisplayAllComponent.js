@@ -9,19 +9,25 @@ import {
 
 import './DisplayAllComponent.css';
 import { CompanyDetail } from "../../Context/companyDetailContext";
+import YourProfits from "./YourProfits/YourProfits";
 
 const DisplayAllComponent = (props) => {
 
     const logindet = useContext(CompanyDetail);
-    
+
 
     return <>
+        <Link className="linkdecor" to={{ pathname: '/profits' }} >
+            <YourProfits />
+        </Link>
+
         <div className=" displayelements" >
             {!logindet.isloaded &&
                 <Stack sx={{ color: 'grey.500' }} spacing={2} alignItems={"center"} className="spinnerstyle">
                     <CircularProgress color="success" size={30} />
                 </Stack>
             }
+
             {Datas.navigationbarcontent.map((items, index) => {
                 if (items.screenname !== "Home") {
                     return (

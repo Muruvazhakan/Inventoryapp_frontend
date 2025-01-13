@@ -22,31 +22,41 @@ const StockTable = (props) => {
         :
         (props.screen == "alladdedstocks" ? tabledetails.allStockAddedList
             :
-            (props.screen == "add" ? tabledetails.list
+            (props.screen == "allProfit" ? tabledetails.allProfitStockList
                 :
-                (props.screen == "sale" ? tabledetails.saleslist
-                    : tabledetails.allStockSalesList
-                )
-            ))
+                (props.screen == "add" ? tabledetails.list
+                    :
+                    (props.screen == "sale" ? tabledetails.saleslist
+                        : tabledetails.allStockSalesList
+                    )
+                )))
     );
-    console.log("displaylist  " + " ^^^" + displaylist)
+    console.log("displaylist  " + " ^^^" + displaylist);
+    console.log(displaylist)
     let localsum = (props.screen === "allstocks" ? tabledetails.allstockstotalamt
         :
         (props.screen == "alladdedstocks" ? tabledetails.alladdedstockstotalamt
             :
-            (props.screen == "add" ? tabledetails.totalamt
+            (props.screen === "allProfit" ? tabledetails.totalprofiramt
                 :
-                (props.screen == "sale" ? tabledetails.totalsalesamt
-                    : tabledetails.allstockssalestotalamt
+                (props.screen == "add" ? tabledetails.totalamt
+                    :
+                    (props.screen == "sale" ? tabledetails.totalsalesamt
+                        : tabledetails.allstockssalestotalamt
+                    )
                 )
             )
         )
     );
 
 
-    let localsumqty1 = 0;
+    let localsumqty1 = 0, localsumqty2 = 0, sumpurchaseamt = 0;
+
     let localsumqty = displaylist.map((item, index) => {
         localsumqty1 = localsumqty1 + (item.quantity * 1);
+        if (props.screen === "allProfit")
+            localsumqty2 = localsumqty2 + (item.salequantity * 1);
+        sumpurchaseamt = sumpurchaseamt + (item.purchaceamount * 1);
     });
     // let localtotal1 = 0;
     // let localtotal = displaylist.map((item, index) => {
@@ -66,17 +76,20 @@ const StockTable = (props) => {
         <Paper sx={{ width: '98%', overflow: 'hidden', padding: '1px', borderRadius: '10px', marginTop: "10px" }}>
 
             <TableContainer sx={{ minWidth: 650, borderRadius: '10px' }}>
-                
+
                 <Table aria-label="simple table">
                     <TableHead sx={{ fontWeight: 1130, color: "white" }}>
                         <TableRow className="table-header">
                             <TableCell sx={{ fontWeight: 700 }}>S.No</TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Product Id</TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Description of Goods </TableCell>
-                            <TableCell align='center' sx={{ fontWeight: 700 }}>Quantity</TableCell>
-                            <TableCell sx={{ fontWeight: 700 }}>{from === "add" ? "Purchace Rate" : "Sales Rate"}</TableCell>
-                            <TableCell sx={{ fontWeight: 700 }}>Amount (₹)</TableCell>
-
+                            {props.screen !== "allProfit" && <>
+                                <TableCell align='center' sx={{ fontWeight: 700 }}>Quantity</TableCell>
+                            </>}
+                            <TableCell sx={{ fontWeight: 700 }}>{from === "add" || from === "profit" ? "Purchace Rate" : "Sales Rate"}</TableCell>
+                            {props.screen !== "allProfit" && <>
+                                <TableCell sx={{ fontWeight: 700 }}>Amount (₹)</TableCell>
+                            </>}
                             {props.screen === "update" &&
                                 <>
                                     <TableCell sx={{ fontWeight: 700 }} >Edit rows
@@ -87,6 +100,13 @@ const StockTable = (props) => {
                                     </TableCell>
                                 </>
                             }
+                            {props.screen === "allProfit" && <>
+                                <TableCell sx={{ fontWeight: 700 }}>Purchace Amount (₹)</TableCell>
+                                <TableCell align='center' sx={{ fontWeight: 700 }}>Sold Quantity</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Sold Rate</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Sold Amount (₹)</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Profit Amount (₹)</TableCell>
+                            </>}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -106,19 +126,21 @@ const StockTable = (props) => {
                                     <TableCell align='center' className="table-header-td">{index + 1}</TableCell>
                                     <TableCell className="table-header-td">{item.productid}</TableCell>
                                     <TableCell className="table-header-td">{item.desc}</TableCell>
-                                    <TableCell align='center' className="table-header-td">{item.quantity}</TableCell>
+                                    {props.screen !== "allProfit" && <>
+                                        <TableCell align='center' className="table-header-td">{item.quantity}</TableCell>
+                                    </>}
                                     <TableCell className="table-header-td">{item.rate}</TableCell>
+                                    {props.screen !== "allProfit" && <>
+                                        <TableCell className="table-header-td">
 
-                                    <TableCell className="table-header-td">
-
-                                        {sum > 0 ? sum : (othersum)}
-                                        {/* ({Intl.NumberFormat("en-IN", digit2options).format(item.amount)} :
+                                            {sum > 0 ? sum : (othersum)}
+                                            {/* ({Intl.NumberFormat("en-IN", digit2options).format(item.amount)} :
                                     {item.quantity *item.rate}) */}
 
-                                        {/* {Intl.NumberFormat("en-IN", digit2options).format(item.amount)} */}
+                                            {/* {Intl.NumberFormat("en-IN", digit2options).format(item.amount)} */}
 
-                                    </TableCell>
-
+                                        </TableCell>
+                                    </>}
                                     {props.type === "update" &&
                                         <>
                                             <TableCell className="table-edit" onClick={() => tabledetails.editListRows(item, props.screen, displaylist, "update")} >
@@ -128,6 +150,13 @@ const StockTable = (props) => {
                                                 <MdDelete size={18} />
                                             </TableCell>
                                         </>}
+                                    {props.screen === "allProfit" && <>
+                                        <TableCell >{item.purchaceamount}</TableCell>
+                                        <TableCell align='center' >{item.salequantity}</TableCell>
+                                        <TableCell >{item.salerate}</TableCell>
+                                        <TableCell >{item.saleamount}</TableCell>
+                                        <TableCell >{Intl.NumberFormat("en-IN", digit2options).format(item.profit)}</TableCell>
+                                    </>}
                                 </TableRow>
                             )
 
@@ -139,10 +168,18 @@ const StockTable = (props) => {
                             <TableCell></TableCell>
                             <TableCell sx={{ fontSize: 18, fontWeight: 700 }} >Total Amount</TableCell>
                             <TableCell ></TableCell>
-
-                            <TableCell align='center' className="table-header-td" sx={{ fontSize: 18, fontWeight: 700 }}> {localsumqty1}</TableCell>
-
+                            {props.screen !== "allProfit" && <>
+                                <TableCell align='center' className="table-header-td" sx={{ fontSize: 18, fontWeight: 700 }}> {localsumqty1}</TableCell>
+                            </>}
                             <TableCell ></TableCell>
+                            {props.screen === "allProfit" && <>
+                                <TableCell  sx={{ fontSize: 18, fontWeight: 700 }}>{sumpurchaseamt}</TableCell> 
+                                {/* <TableCell align='center' >{tabledetails.alladdedstockstotalamt} </TableCell> */}
+                                <TableCell  sx={{ fontSize: 18, fontWeight: 700 }} align='center'  >{localsumqty2}</TableCell>
+                                <TableCell ></TableCell>
+                                <TableCell sx={{ fontSize: 18, fontWeight: 700 }}  >{tabledetails.allstockssalestotalamt}</TableCell>
+
+                            </>}
                             <TableCell sx={{ fontSize: 18, fontWeight: 700 }} className="table-amount">₹{Intl.NumberFormat("en-IN", digit2options).format(localsum)}</TableCell>
 
                         </TableRow>
