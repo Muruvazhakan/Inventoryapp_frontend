@@ -22,7 +22,7 @@ const DisplayAllComponent = (props) => {
         </Link>
 
         <div className=" displayelements" >
-            {!logindet.isloaded &&
+            {logindet.isloaded &&
                 <Stack sx={{ color: 'grey.500' }} spacing={2} alignItems={"center"} className="spinnerstyle">
                     <CircularProgress color="success" size={30} />
                 </Stack>

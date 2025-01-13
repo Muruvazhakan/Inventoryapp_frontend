@@ -1,8 +1,8 @@
 import companyperson from '../../Image/mycompanyf.png';
 import salestockimage from '../../Image/salestockimage.png';
 import mystock from '../../Image/mystocks.png';
+import profit from '../../Image/profit.png';
 import mysalesf from '../../Image/mysalesf.png';
-import  icon from '../../Image/favicon.ico';
 export const navigationbarcontent = [
     {
         screenname: 'Home',
@@ -36,7 +36,7 @@ export const navigationbarcontent = [
         links: '/profits',
         altname: 'profits',
         displays: true,
-        image: mysalesf
+        image: profit
     },
     // {
     //     screenname: 'Generate Estimate',

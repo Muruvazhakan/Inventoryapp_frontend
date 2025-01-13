@@ -847,7 +847,7 @@ const StocksContext = ({ children }) => {
     console.log(date);
     var stockDate =
       date.getDate() + "_" + date.getMonth() + "_" + date.getFullYear();
-    XLSX.writeFile(wb, `MyCurrrentStocks_${stockDate}.xlsx`);
+    XLSX.writeFile(wb, `My${screen}_${stockDate}.xlsx`);
   }
 
   const handleHistoryExportXlsx = (props) => {
@@ -992,42 +992,6 @@ const StocksContext = ({ children }) => {
 
   }
 
-  const handleInvoiceExportXlsx = () => {
-
-    let filtercolumn = stockHistoryData.map(data => {
-      return {
-
-        Invoice_id: data.stockid,
-        Invoice_date: data.stockdate,
-        Payment_date: data.paymentdate,
-        Payment_mode: data.paymentmode,
-        Client_Name: data.clientName,
-        Client_PhoneNo: data.clientPhno,
-        Client_Address: data.clientAdd,
-        Central_taxrate: data.ctrate,
-        State_taxrate: data.strate,
-        Total_centralaxamt: data.totalcentaxamt,
-        Total_statetaxamt: data.totalstatetaxamt,
-        Total_amount: data.totalamt,
-        Total_amountwords: data.totalamtwords,
-        Total_taxvalueamount: data.totaltaxvalueamt,
-        Total_hsnamount: data.totalhsnamt,
-        Total_hsnamountwords: data.totalhsnamtwords,
-      }
-    })
-    console.log(filtercolumn);
-    // console.log(estimateHistoryData);
-    // console.log(estimateHistoryData.length);
-    var wb = XLSX.utils.book_new(),
-      ws = XLSX.utils.json_to_sheet(filtercolumn);
-
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-    let date = (new Date());
-    console.log(date);
-    var stockdate =
-      date.getDate() + "_" + date.getMonth() + "_" + date.getFullYear();
-    XLSX.writeFile(wb, `MyInvoice_${stockdate}.xlsx`);
-  }
   const dateHandler = (type) => {
     const today = new Date();
     let todaydate;
@@ -1333,7 +1297,7 @@ const StocksContext = ({ children }) => {
     setsubtotalamt, gstCgstitem, setgstCgstitem, ctrate, setctrate, strate, setstrate, ctatm, setctatm, statm, setstatm, totaltaxvalueamt, settotaltaxvalueamt, dateHandler, gstincluded, setgstincluded,
     totalcentaxamt, settotalcentaxamt, totalstatetaxamt, settotalstatetaxamt, isinstallationcharge, setisinstallationcharge, otherchargedetail, setOtherchargedetail, editListRows, addOrEditOtherItems,
     stockid, setstockid, stockdate, setstockdate, paymentmode, setpaymentmode, paymentdate, setpaymentdate, stockidcount, setstockidcount, clientName, setclientName, clientPhno, setclientPhno, clientAdd, setclientAdd,
-    stockHistoryData, setstockHistoryData, invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag, selectedStockEdit, cleartallStock, handleInvoiceExportXlsx, displayhsntable, setdisplayhsntable,
+    stockHistoryData, setstockHistoryData, invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag, selectedStockEdit, cleartallStock,  displayhsntable, setdisplayhsntable,
 
 
     singlestockitem, setsinglestockitem, desc, setdesc, productid, setproductid, allStockData, setallStockData, productIdList, setproductIdList, clientid, setclientid, clientList, setclientList,
