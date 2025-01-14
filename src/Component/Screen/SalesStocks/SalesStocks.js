@@ -10,36 +10,29 @@ import { Stocks } from "../../Context/StocksContex";
 
 const SalesStocks = () => {
 
-     const Gridmenu = (props) => {
-            return <>
-                {window.innerWidth <= 960 ?
-                    <>  {props.children} </>
-                    : <Grid container spacing={2}>
-                        {props.children}
-                    </Grid>
-                }
-            </>
-        }
-const tabledet = useContext(Stocks);
+    const tabledet = useContext(Stocks);
     return <>
         <Box sx={{ flexGrow: 1 }}>
-        {tabledet.isloading &&
+            {tabledet.isloading &&
                 <Stack sx={{ color: 'grey.500' }} spacing={2} alignItems={"center"} className="spinnerstyle">
                     <CircularProgress color="success" size={30} />
                 </Stack>
             }
             <Card>
                 <Card className="screenHeader"> Sales Stocks </Card>
-                <Gridmenu>
-                    <Grid item xs={7}>
-                        <StockTable screen="sale" from="sale" type="update"/>
-                    </Grid>
-                    <Grid item xs={5}>
+                <Stack direction={{ xs: 'column', sm: 'row' }}
+                    useFlexGap
+                    spacing={{ xs: 2, sm: 1, md: 0 }}>
+                    <Stack
+                    >
+                        <StockTable screen="sale" from="sale" type="update" />
+                    </Stack>
+                    <Stack item xs={5}>
                         <AddStocksForm screen="sale" />
                         <AddStocksGenDetails screen="sale" />
 
-                    </Grid>
-                </Gridmenu>
+                    </Stack>
+                </Stack>
             </Card>
         </Box>
     </>

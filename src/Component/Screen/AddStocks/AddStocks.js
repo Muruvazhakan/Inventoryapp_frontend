@@ -9,16 +9,6 @@ import { Stocks } from "../../Context/StocksContex";
 const AddStocks = (props) => {
     const statckdet = useContext(Stocks);
 
-    const Gridmenu = (props) => {
-        return <>
-            {window.innerWidth <= 960 ?
-                <>  {props.children} </>
-                : <Grid container spacing={2}>
-                    {props.children}
-                </Grid>
-            }
-        </>
-    }
     return <>
         <Box sx={{ flexGrow: 1 }}>
 
@@ -30,16 +20,19 @@ const AddStocks = (props) => {
             <Card>
                 <Card className="screenHeader"> Add Stocks </Card>
 
-                <Gridmenu>
-                    <Grid item xs={7}>
+                <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    useFlexGap
+                    spacing={{ xs: 2, sm: 1, md: 0 }}>
+                    <Stack item >
                         <StockTable screen="add" from="add" type="update" />
-                    </Grid>
-                    <Grid item xs={5}>
+                    </Stack>
+                    <Stack item >
                         <AddStocksForm screen="add" />
                         <AddStocksGenDetails screen="add" />
 
-                    </Grid>
-                </Gridmenu>
+                    </Stack>
+                </Stack>
             </Card>
         </Box>
     </>

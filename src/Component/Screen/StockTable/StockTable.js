@@ -17,7 +17,7 @@ const StockTable = (props) => {
     const tabledetails = useContext(Stocks);
     useEffect(() => {
         console.log("refresh");
-    }, [tabledetails.allStockSalesList]);
+    }, []);
     let displaylist = (props.screen == "allstocks" ? tabledetails.allStockList
         :
         (props.screen == "alladdedstocks" ? tabledetails.allStockAddedList
