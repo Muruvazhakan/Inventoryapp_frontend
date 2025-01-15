@@ -11,6 +11,7 @@ import StockTable from "../../StockTable/StockTable";
 import './AllStocks.css';
 import { Link } from "react-router-dom";
 import Header from "../../Header/Header";
+import StyleHeader from "../../Header/StyleHeader";
 const AllStocks = (props) => {
     const tabledet = useContext(Stocks);
     const [viewAllAddedStock, setviewAllAddedStock] = useState(false);
@@ -47,11 +48,11 @@ const AllStocks = (props) => {
                 </Link>
 
             </Card>
-            
+
             <Card className="listofbuttons">
 
-                <Button variant="text" color={viewAllAddedStock ?"primary" :"warning" }
-                onClick={() => setviewAllAddedStock(!viewAllAddedStock)} endIcon={<RiTableView />}
+                <Button variant="text" color={viewAllAddedStock ? "primary" : "warning"}
+                    onClick={() => setviewAllAddedStock(!viewAllAddedStock)} endIcon={<RiTableView />}
                 >
                     {viewAllAddedStock ? "Click to hide All Added Stocks" : "Click to Expand All Added Stocks"
                     }
@@ -63,21 +64,24 @@ const AllStocks = (props) => {
                         <ReactToPrint
                             trigger={() => (
                                 <div >
-                                <Button variant="contained" color="info" endIcon={<BsFileEarmarkPdfFill />} >
-                                    Download All Stocks
-                                </Button>
+                                    <Button variant="contained" color="info" endIcon={<BsFileEarmarkPdfFill />} >
+                                        Download All Stocks
+                                    </Button>
                                 </div>
                             )}
                             content={() => componentRef.current}
                         />
-                       
+
                         <div className="excelexport" >
-                        <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
-                            onClick={() => tabledet.handleExportXlsx("alladdedstocks")}>Export All Stocks to Excel</Button>
-                            </div>
+                            <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
+                                onClick={() => tabledet.handleExportXlsx("alladdedstocks")}>Export All Stocks to Excel</Button>
+                        </div>
                     </div>
                     <div ref={componentRef}>
-                        <Header name="All Stocks" />
+                        <StyleHeader>
+                            All Stocks
+                        </StyleHeader>
+                        {/* <Header name="All Stocks" /> */}
 
                         {/* <div> All Stocks   </div> */}
                         <StockTable screen="alladdedstocks" from="add" />
@@ -90,20 +94,23 @@ const AllStocks = (props) => {
                     <ReactToPrint
                         trigger={() => (
                             <div className="" >
-                            <Button variant="contained" color="info" endIcon={<BsFileEarmarkPdfFill />} >
-                                Download Current Stocks
-                            </Button>
+                                <Button variant="contained" color="info" endIcon={<BsFileEarmarkPdfFill />} >
+                                    Download Current Stocks
+                                </Button>
                             </div>
                         )}
                         content={() => componentRef.current}
                     />
                     <div className="excelexport" >
-                    <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
-                        onClick={() => tabledet.handleExportXlsx("allstocks")}>Export Current Stocks to Excel</Button>
-                        </div>
+                        <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
+                            onClick={() => tabledet.handleExportXlsx("allstocks")}>Export Current Stocks to Excel</Button>
+                    </div>
                 </div>
                 <div ref={componentRef}>
-                    <Header name="Current Stocks" />
+                    <StyleHeader>
+                        {/* <Header name="Current Stocks" /> */}
+                        Current Stocks
+                    </StyleHeader>
                     <StockTable screen="allstocks" from="add" />
 
                 </div>

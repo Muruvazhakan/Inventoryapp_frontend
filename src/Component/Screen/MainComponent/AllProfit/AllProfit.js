@@ -11,6 +11,7 @@ import StockTable from "../../StockTable/StockTable";
 import { Link } from "react-router-dom";
 import Header from "../../Header/Header";
 import YourProfits from "../YourProfits/YourProfits";
+import StyleHeader from "../../Header/StyleHeader";
 
 
 const AllProfit = (props) => {
@@ -22,7 +23,7 @@ const AllProfit = (props) => {
     const componentRef = useRef();
     return <>
         <Box className="allstocksdisplaytable" sx={{ flexGrow: 1 }}>
-            <YourProfits/>
+            <YourProfits />
             {/* <StockTable screen="AllProfit" /> */}
             {/* <Card className="listofbuttons">
                 <Link to={{
@@ -65,8 +66,11 @@ const AllProfit = (props) => {
                     </div>
                 </div>
                 <div ref={componentRef}>
-                    <Header name="Your Profits!" />
-                    <StockTable screen="allProfit" from = "profit" />
+                    <StyleHeader>
+                        Consolidated Profits!
+                    </StyleHeader>
+                    {/* <Header name="Your Profits!" /> */}
+                    <StockTable screen="allProfit" from="profit" />
 
                 </div>
             </Card>

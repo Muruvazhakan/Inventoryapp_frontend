@@ -10,6 +10,7 @@ import StockTable from "../../StockTable/StockTable";
 import '../AllStocks/AllStocks.css';
 import { Link } from "react-router-dom";
 import Header from "../../Header/Header";
+import StyleHeader from "../../Header/StyleHeader";
 const AllSaleStocks = (props) => {
     const tabledet = useContext(Stocks);
     useEffect(() => {
@@ -62,7 +63,10 @@ const AllSaleStocks = (props) => {
                     </div>
                 </div>
                 <div ref={componentRef}>
-                    <Header name="All Sale Stocks" />
+                    <StyleHeader>
+                        All Sale Stocks
+                    </StyleHeader>
+                    {/* <Header name="All Sale Stocks" /> */}
                     <StockTable screen="allsalestocks" />
 
                 </div>

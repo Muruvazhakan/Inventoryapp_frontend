@@ -10,6 +10,7 @@ import { Button, CircularProgress, Stack } from "@mui/material";
 import { RiEditCircleFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { BsFiletypeXlsx } from "react-icons/bs";
+import StyleHeader from "../../Header/StyleHeader";
 // import img  from '.'
 
 const ListOfAddedStocks = () => {
@@ -17,12 +18,12 @@ const ListOfAddedStocks = () => {
     const stocksdet = useContext(Stocks);
     const companydet = useContext(CompanyDetail);
     const digit2options = { maximumFractionDigits: 2 }
-    useEffect(()=>{
+    useEffect(() => {
         console.log('ListOfAddedStocks');
 
         console.log(stocksdet.stockHistoryData);
-        
-    },[])
+
+    }, [])
 
     if (!companydet.isloaded) {
 
@@ -35,7 +36,11 @@ const ListOfAddedStocks = () => {
     return (
 
         <>
-            {stocksdet.stockHistoryData === null || stocksdet.stockHistoryData.length ===0 ?
+            <StyleHeader>
+                {/* <Header name="Current Stocks" /> */}
+                List Of Added Stocks
+            </StyleHeader>
+            {stocksdet.stockHistoryData === null || stocksdet.stockHistoryData.length === 0 ?
                 <>
                     <NoData details="Stock Found" />
                 </>
@@ -69,7 +74,7 @@ const ListOfAddedStocks = () => {
 
                                 <Card className="  allestimatedisplay" key={index}>
                                     {/* <div className="generaldetails "> */}
-                                   
+
                                     <ul className="details invoicedetails details ">
                                         <li >
                                             <div className="companyname"> Stock ID: {item.stockid}</div>
@@ -79,30 +84,30 @@ const ListOfAddedStocks = () => {
 
                                         </li>
                                     </ul>
-                                    {item.clientName  && 
-                                    <ul className="details">
-                                        <div className=" "> 
-                                            <h3>Client Details</h3>
-                                            {/* <h3> {item.clientid}</h3>
+                                    {item.clientName &&
+                                        <ul className="details">
+                                            <div className=" ">
+                                                <h3>Client Details</h3>
+                                                {/* <h3> {item.clientid}</h3>
                                             <h3> {clientdetail.clientid}</h3> */}
-                                            <li>
-                                                Client Name
-                                            </li> <div className="nameheigh">{item.clientName} </div>
-                                            <li>
-                                                Client Phone Number
-                                            </li>{item.clientPhno}
-                                            <li>
-                                                Client Address
-                                            </li> {item.clientAdd}
-                                        </div>
-                                    </ul>}
-                                   
+                                                <li>
+                                                    Client Name
+                                                </li> <div className="nameheigh">{item.clientName} </div>
+                                                <li>
+                                                    Client Phone Number
+                                                </li>{item.clientPhno}
+                                                <li>
+                                                    Client Address
+                                                </li> {item.clientAdd}
+                                            </div>
+                                        </ul>}
+
                                     <ul className="details  ">
                                         <div className="">
                                             <h3>Stock Value</h3>
                                             <li>
                                                 Total Cost
-                                            </li> <div className="nameheigh"> ₹ {Intl.NumberFormat("en-IN", digit2options).format(item.totalamt)} </div> 
+                                            </li> <div className="nameheigh"> ₹ {Intl.NumberFormat("en-IN", digit2options).format(item.totalamt)} </div>
                                         </div>
                                     </ul>
                                     <Link to={{
@@ -110,9 +115,9 @@ const ListOfAddedStocks = () => {
                                     }}
                                     >
                                         <Button className="gen-stocks" variant="outlined"
-                                            onClick={() => stocksdet.allStockHistoryEdit(item)}  
-                                            endIcon={<RiEditCircleFill />} 
-                                             >
+                                            onClick={() => stocksdet.allStockHistoryEdit(item)}
+                                            endIcon={<RiEditCircleFill />}
+                                        >
 
                                             Edit Stocks</Button>
                                     </Link>
@@ -121,7 +126,7 @@ const ListOfAddedStocks = () => {
                                 </Card>
 
                             </>
-                           
+
                         })}
                     </div>
                 </>

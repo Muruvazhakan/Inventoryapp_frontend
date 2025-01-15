@@ -10,6 +10,7 @@ import { Button, CircularProgress, Stack } from "@mui/material";
 import { RiEditCircleFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { BsFiletypeXlsx } from "react-icons/bs";
+import StyleHeader from "../../Header/StyleHeader";
 // import img  from '.'
 
 const ListOfAddedSaleStocks = (props) => {
@@ -17,12 +18,12 @@ const ListOfAddedSaleStocks = (props) => {
     const stocksdet = useContext(Stocks);
     const companydet = useContext(CompanyDetail);
     const digit2options = { maximumFractionDigits: 2 }
-    useEffect(()=>{
+    useEffect(() => {
         console.log('ListOfAddedSaleStocks');
 
         console.log(stocksdet.salesStockHistoryData);
-        
-    },[stocksdet.salesStockHistoryData])
+
+    }, [stocksdet.salesStockHistoryData])
 
     if (!companydet.isloaded) {
 
@@ -34,8 +35,11 @@ const ListOfAddedSaleStocks = (props) => {
     }
     return (
 
-        <>
-            {stocksdet.salesStockHistoryData === null || stocksdet.salesStockHistoryData.length ===0 ?
+        <> <StyleHeader>
+            {/* <Header name="Current Stocks" /> */}
+            List Of Added Sales Stocks
+        </StyleHeader>
+            {stocksdet.salesStockHistoryData === null || stocksdet.salesStockHistoryData.length === 0 ?
                 <>
                     <NoData details="Sales Stock Found" />
                 </>
@@ -59,12 +63,12 @@ const ListOfAddedSaleStocks = (props) => {
                             //         return data;
                             //     }
                             // });
-                           
+
                             return <>
 
                                 <Card className="  allestimatedisplay" key={index}>
                                     {/* <div className="generaldetails "> */}
-                                   
+
                                     <ul className="details invoicedetails details ">
                                         <li >
                                             <div className="companyname"> Sales Stock ID: {item.salestockid}</div>
@@ -74,28 +78,28 @@ const ListOfAddedSaleStocks = (props) => {
 
                                         </li>
                                     </ul>
-                                    {item.clientName && 
-                                    <ul className="details">
-                                        <div className=" ">
-                                            <h3>Client Details</h3>
-                                           
-                                            <li>
-                                                Client Name
-                                            </li> <div className="nameheigh">{item.clientName} </div>
-                                            <li>
-                                                Client Phone Number
-                                            </li>{item.clientPhno}
-                                            <li>
-                                                Client Address
-                                            </li> {item.clientAdd}
-                                        </div>
-                                    </ul>}
+                                    {item.clientName &&
+                                        <ul className="details">
+                                            <div className=" ">
+                                                <h3>Client Details</h3>
+
+                                                <li>
+                                                    Client Name
+                                                </li> <div className="nameheigh">{item.clientName} </div>
+                                                <li>
+                                                    Client Phone Number
+                                                </li>{item.clientPhno}
+                                                <li>
+                                                    Client Address
+                                                </li> {item.clientAdd}
+                                            </div>
+                                        </ul>}
                                     <ul className="details  ">
                                         <div className="">
                                             <h3>Sale Stock Value</h3>
                                             <li>
                                                 Total Cost
-                                            </li> <div className="nameheigh"> ₹ {Intl.NumberFormat("en-IN", digit2options).format(item.totalsalesamt)} </div> 
+                                            </li> <div className="nameheigh"> ₹ {Intl.NumberFormat("en-IN", digit2options).format(item.totalsalesamt)} </div>
                                         </div>
                                     </ul>
                                     <Link to={{
@@ -103,9 +107,9 @@ const ListOfAddedSaleStocks = (props) => {
                                     }}
                                     >
                                         <Button className="gen-stocks" variant="outlined"
-                                            onClick={() => stocksdet.allSaleStockHistoryEdit(item)}  
-                                            endIcon={<RiEditCircleFill />} 
-                                             >
+                                            onClick={() => stocksdet.allSaleStockHistoryEdit(item)}
+                                            endIcon={<RiEditCircleFill />}
+                                        >
 
                                             Edit Sales Stocks</Button>
                                     </Link>
@@ -114,7 +118,7 @@ const ListOfAddedSaleStocks = (props) => {
                                 </Card>
 
                             </>
-                           
+
                         })}
                     </div>
                 </>

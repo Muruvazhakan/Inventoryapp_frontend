@@ -7,6 +7,7 @@ import { MdOutlineSaveAlt } from "react-icons/md";
 import { CompanyDetail } from "../../../../Context/companyDetailContext";
 import './YourDetails.css';
 import Card from "../../../../Style/Card/Card";
+import StyleHeader from "../../../Header/StyleHeader";
 
 
 const YourDetails = () => {
@@ -32,7 +33,11 @@ const YourDetails = () => {
     <FormGroup>
       <FormControl>
         <Card>
-          <h3>Company Details</h3>
+          {/* <h3>Company Details</h3> */}
+          <StyleHeader>
+
+            Company Details
+          </StyleHeader>
           <Box component="form" className="alltextfiled" sx={{ '& .MuiTextField-root': { m: 1, width: '35ch' } }} >
             {/* companyImage, setcompanyImage */}
 
@@ -53,10 +58,10 @@ const YourDetails = () => {
                   />
 
                   <div>
-                  <Button variant="outlined" color="info" endIcon={<MdOutlineSaveAlt />}
-                    onClick={() => compayDet.uploadImage("upload")} >
-                    Upload Image
-                  </Button>
+                    <Button variant="outlined" color="info" endIcon={<MdOutlineSaveAlt />}
+                      onClick={() => compayDet.uploadImage("upload")} >
+                      Upload Image
+                    </Button>
                   </div>
                 </> : null}
             </div>
@@ -82,7 +87,7 @@ const YourDetails = () => {
               </div>
               </ImageListItem>
             </ImageList> */}
-            
+
             <TextField className="alltextfiled" required id="outlined-required" label="Company Name" value={compayDet.companyName}
               onChange={(e) => setval(e, compayDet.setcompanyName)}
               color={setboxColors(compayDet.companyName, 'color')}
