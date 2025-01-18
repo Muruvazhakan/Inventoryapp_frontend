@@ -4,9 +4,6 @@ import React from "react";
 import './Header.css';
 const Header = (props) =>{
 
-    const print = ()=>{
-        window.print();
-    }
     return <div className="header">
         <main>
         <header className="header-title">

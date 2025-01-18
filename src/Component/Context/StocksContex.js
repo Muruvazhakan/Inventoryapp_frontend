@@ -1160,8 +1160,7 @@ const StocksContext = ({ children }) => {
   }
 
   const deriveProfitStock = () => {
-    console.log("allStockList");
-    console.log(allStockList);
+
     console.log("allStockSalesList");
     console.log(allStockSalesList);
     let profitsum = 0;
@@ -1169,29 +1168,30 @@ const StocksContext = ({ children }) => {
       const mergedArray = allStockSalesList.map((obj1) => {
         // Find the corresponding object in array2 by Productid
         const obj2 = allStockAddedList.find((item) => item.productid === obj1.productid);
+        // console.log("obj1");
+        // console.log(obj1);
+        // console.log("obj2");
+        // console.log(obj2);
+        // console.log("obj1.rate + " + obj1.rate * 1 + " obj2.rate " + obj2.rate);
+        if (obj2!==undefined) {
 
-        // userid: userid,
-        // productid: singlestock.productid,
-        // quantity: singlestock.quantity,
-        // desc: singlestock.desc,
-        // rate: singlestock.rate,
-        // Merge the two objects
-        let profits = ((obj1.quantity * 1 * (obj1.rate)) - ((obj1.quantity * 1 * (obj2.rate))));
-        profitsum = profitsum + profits;
-        return {
-          productid: obj2.productid,
-          desc: obj2.desc,
-          quantity: obj2.quantity * 1,
-          rate: obj2.rate * 1,
-          amount: (obj2.rate * 1 * obj2.quantity),
-          // If a match is found in array2, merge its properties
-          salerate: obj1 ? obj1.rate * 1 : undefined,
-          saleamount: obj1 ? obj1.amount * 1 : undefined,
-          purchaceamount: obj1 ? obj1.quantity * 1 * obj2.rate : undefined,
-          salequantity: obj1 ? obj1.quantity * 1 : undefined,
-          profit: profits,
-        };
-      });
+          let profits = ((obj1.quantity * 1 * (obj1.rate * 1)) - ((obj1.quantity * 1 * (obj2.rate * 1))));
+          profitsum = profitsum + profits;
+          return {
+            productid: obj2.productid,
+            desc: obj2.desc,
+            quantity: obj2.quantity * 1,
+            rate: obj2.rate * 1,
+            amount: (obj2.rate * 1 * obj2.quantity),
+            // If a match is found in array2, merge its properties
+            salerate: obj1 ? obj1.rate * 1 : undefined,
+            saleamount: obj1 ? obj1.amount * 1 : undefined,
+            purchaceamount: obj1 ? obj1.quantity * 1 * obj2.rate : undefined,
+            salequantity: obj1 ? obj1.quantity * 1 : undefined,
+            profit: profits,
+          };
+        }
+      }).filter(x=>x!==undefined);
       console.log("mergedArray");
       console.log(mergedArray);
       console.log("profitsum");
@@ -1288,7 +1288,7 @@ const StocksContext = ({ children }) => {
     setTimeout(() => {
       deriveProfitStock();
     }, 1000)
-  }, [allStockSalesList,allStockAddedList]);
+  }, [allStockSalesList, allStockAddedList]);
 
   const context = {
     list, setList, totalamt, settotalamt, totalamtwords, settotalamtwords, singlehsnitem, setsinglehsnitem, setval, setboxColors, cleardetailoption, setcleardetailoption,
@@ -1297,7 +1297,7 @@ const StocksContext = ({ children }) => {
     setsubtotalamt, gstCgstitem, setgstCgstitem, ctrate, setctrate, strate, setstrate, ctatm, setctatm, statm, setstatm, totaltaxvalueamt, settotaltaxvalueamt, dateHandler, gstincluded, setgstincluded,
     totalcentaxamt, settotalcentaxamt, totalstatetaxamt, settotalstatetaxamt, isinstallationcharge, setisinstallationcharge, otherchargedetail, setOtherchargedetail, editListRows, addOrEditOtherItems,
     stockid, setstockid, stockdate, setstockdate, paymentmode, setpaymentmode, paymentdate, setpaymentdate, stockidcount, setstockidcount, clientName, setclientName, clientPhno, setclientPhno, clientAdd, setclientAdd,
-    stockHistoryData, setstockHistoryData, invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag, selectedStockEdit, cleartallStock,  displayhsntable, setdisplayhsntable,
+    stockHistoryData, setstockHistoryData, invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag, selectedStockEdit, cleartallStock, displayhsntable, setdisplayhsntable,
 
 
     singlestockitem, setsinglestockitem, desc, setdesc, productid, setproductid, allStockData, setallStockData, productIdList, setproductIdList, clientid, setclientid, clientList, setclientList,
