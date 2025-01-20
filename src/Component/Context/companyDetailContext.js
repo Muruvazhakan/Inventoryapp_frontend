@@ -359,6 +359,7 @@ const CompanyDetailContext = ({ children }) => {
         //console.log('loginuserid');
         //console.log(loginuserid);
         let refreshdata = false;
+        stockDetail.setisloading(true);
         if (loginuserid !== null && loginuserid !== '') {
 
             let companyBasicDetailslocal = localstore.getCompanyHandler();
@@ -412,22 +413,6 @@ const CompanyDetailContext = ({ children }) => {
             if(resultsgetAllSalesCount){
                 refreshdata = true;
             }
-
-            // let resultsgetAllHistoryStockData = stockDetail.getAllHistoryStockData(loginuserid);
-            // if(resultsgetAllHistoryStockData){
-            //     refreshdata = true;
-            // }
-
-            let resultsgetAllClientList = stockDetail.getAllClientList(loginuserid,"default");
-            if(resultsgetAllClientList){
-                refreshdata = true;
-            }
-
-            // let resultsgetAllHistorySalesStockData = stockDetail.getAllHistorySalesStockData(loginuserid);
-            // if(resultsgetAllHistorySalesStockData){
-            //     refreshdata = true;
-            // }
-
         }
 
         if (refreshdata === true) {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,17 +8,56 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
-
+import { TransitionProps } from '@mui/material/transitions';
 import { Stocks } from "../../Context/StocksContex";
 import Header from "../Header/Header";
 import './StockTable.css';
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, Stack } from "@mui/material";
+
+const Transition = React.forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement<any, any>;
+    },
+    ref: React.Ref<unknown>,
+) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
+
 const StockTable = (props) => {
 
     const tabledetails = useContext(Stocks);
     useEffect(() => {
         console.log("refresh");
     }, []);
-    let displaylist = (props.screen == "allstocks" ? tabledetails.allStockList
+
+    const [open, setOpen] = useState(false);
+
+    const [item, setItem] = useState([]);
+
+    const handleClickOpen = (items) => {
+        setOpen(true);
+        setItem(items);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleYes = (item) => {
+        setOpen(false);
+        tabledetails.deleteStock(item, props.screen, displaylist, "delete")
+    };
+    let sum1 = 0;
+    let displaylist = (props.screen == "allstocks" ?
+        tabledetails.allStockList.map((item, index) => {
+            if ((item.quantity === 0 || item.status === 'deleted' || item.status === 'Deleted' ) && props.screen === "allstocks") { }
+            else {
+                sum1 = sum1 + (item.quantity * 1 * item.rate)
+                return item;
+
+            }
+        }).filter(x => x !== undefined)
         :
         (props.screen == "alladdedstocks" ? tabledetails.allStockAddedList
             :
@@ -31,9 +70,9 @@ const StockTable = (props) => {
                     )
                 )))
     );
-    console.log("displaylist  " + " ^^^" + displaylist);
+    console.log("displaylist  " + " props.screen ^^^ " + props.screen);
     console.log(displaylist)
-    let localsum = (props.screen === "allstocks" ? tabledetails.allstockstotalamt
+    let localsum = (props.screen === "allstocks" ? sum1
         :
         (props.screen == "alladdedstocks" ? tabledetails.alladdedstockstotalamt
             :
@@ -72,7 +111,11 @@ const StockTable = (props) => {
 
 
     return <>
-
+        {tabledetails.isloading &&
+            <Stack sx={{ color: 'grey.500' }} spacing={2} alignItems={"center"} className="spinnerstyle">
+                <CircularProgress color="success" size={30} />
+            </Stack>
+        }
         <Paper sx={{ width: '98%', overflow: 'hidden', padding: '1px', borderRadius: '10px', marginTop: "10px" }}>
 
             <TableContainer sx={{ minWidth: 650, borderRadius: '10px' }}>
@@ -82,7 +125,10 @@ const StockTable = (props) => {
                         <TableRow className="table-header">
                             <TableCell sx={{ fontWeight: 700 }}>S.No</TableCell>
                             <TableCell sx={{ fontWeight: 700 }}>Product Id</TableCell>
-                            <TableCell sx={{ fontWeight: 700 }}>Description of Goods </TableCell>
+                            <TableCell sx={{ fontWeight: 700 }}>Product Description</TableCell>
+                            {props.screen !== "allProfit" &&
+                                <TableCell sx={{ fontWeight: 700 }}>Status</TableCell>
+                            }
                             {props.screen !== "allProfit" && <>
                                 <TableCell align='center' sx={{ fontWeight: 700 }}>Quantity</TableCell>
                             </>}
@@ -100,6 +146,14 @@ const StockTable = (props) => {
                                     </TableCell>
                                 </>
                             }
+                            {props.screen === "allstocks" && props.iseditable &&
+                                <>
+                                    {/* <TableCell sx={{ fontWeight: 700 }} >Edit rows
+                                    </TableCell> */}
+                                    <TableCell sx={{ fontWeight: 700 }} >Delete rows
+                                    </TableCell>
+                                </>
+                            }
                             {props.screen === "allProfit" && <>
                                 <TableCell sx={{ fontWeight: 700 }}>Purchace Amount (₹)</TableCell>
                                 <TableCell align='center' sx={{ fontWeight: 700 }}>Sold Quantity</TableCell>
@@ -113,7 +167,7 @@ const StockTable = (props) => {
                         {displaylist.map((item, index) => {
                             let sum = Intl.NumberFormat("en-IN", digit2options).format(item.amount);
                             let othersum = Intl.NumberFormat("en-IN", digit2options).format(item.quantity * item.rate * 1);
-                            if (item.quantity === 0 && props.screen == "allstocks")
+                            if ((item.quantity === 0 || item.status === 'deleted' || item.status === 'Deleted') && props.screen == "allstocks")
                                 return null;
 
                             return (
@@ -126,6 +180,11 @@ const StockTable = (props) => {
                                     <TableCell align='center' className="table-header-td">{index + 1}</TableCell>
                                     <TableCell className="table-header-td">{item.productid}</TableCell>
                                     <TableCell className="table-header-td">{item.desc}</TableCell>
+                                    {props.screen !== "allProfit" &&
+                                        <div style={item.status === "deleted" || item.status === "Deleted" ? { color: "white", border: "2px", background: "red" }
+                                            : (item.status === "Sold" ? { background: "#d6d363", color: "bisque", border: "2px" } : null)}>
+                                            <TableCell sx={{ fontWeight: 700 }}  >{item.status?item.status:"Active"}</TableCell></div>}
+
                                     {props.screen !== "allProfit" && <>
                                         <TableCell align='center' className="table-header-td">{item.quantity}</TableCell>
                                     </>}
@@ -150,6 +209,19 @@ const StockTable = (props) => {
                                                 <MdDelete size={18} />
                                             </TableCell>
                                         </>}
+                                    {props.screen === "allstocks" && props.iseditable &&
+                                        <>
+                                            {/* <TableCell sx={{ fontWeight: 700 }} >Edit rows
+                                    </TableCell> */}
+
+                                            <TableCell className="table-edit"
+                                                onClick={() => handleClickOpen(item)}
+                                            //  onClick={() => tabledetails.editListRows(item, props.screen, displaylist, "delete")} 
+                                            >
+                                                <MdDelete size={18} />
+                                            </TableCell>
+                                        </>
+                                    }
                                     {props.screen === "allProfit" && <>
                                         <TableCell >{item.purchaceamount}</TableCell>
                                         <TableCell align='center' >{item.salequantity}</TableCell>
@@ -166,22 +238,31 @@ const StockTable = (props) => {
                         // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell></TableCell>
-                            <TableCell sx={{ fontSize: 18, fontWeight: 700 }} >Total Amount</TableCell>
+                            <TableCell sx={{ fontSize: 18, fontWeight: 700 }} >Total</TableCell>
                             <TableCell ></TableCell>
+                            {props.screen !== "allProfit" &&
+                                <TableCell ></TableCell>}
                             {props.screen !== "allProfit" && <>
-                                <TableCell align='center' className="table-header-td" sx={{ fontSize: 18, fontWeight: 700 }}> {localsumqty1}</TableCell>
+                                <TableCell align='center' className="table-header-td" sx={{ fontSize: 18, fontWeight: 700 }}> {localsumqty1} Qty</TableCell>
                             </>}
                             <TableCell ></TableCell>
                             {props.screen === "allProfit" && <>
-                                <TableCell  sx={{ fontSize: 18, fontWeight: 700 }}>{sumpurchaseamt}</TableCell> 
+                                <TableCell sx={{ fontSize: 18, fontWeight: 700 }}>₹{sumpurchaseamt.toFixed(2)}</TableCell>
                                 {/* <TableCell align='center' >{tabledetails.alladdedstockstotalamt} </TableCell> */}
-                                <TableCell  sx={{ fontSize: 18, fontWeight: 700 }} align='center'  >{localsumqty2}</TableCell>
+                                <TableCell sx={{ fontSize: 18, fontWeight: 700 }} align='center'  >{localsumqty2} Qty</TableCell>
                                 <TableCell ></TableCell>
-                                <TableCell sx={{ fontSize: 18, fontWeight: 700 }}  >{tabledetails.allstockssalestotalamt}</TableCell>
+                                <TableCell sx={{ fontSize: 18, fontWeight: 700 }}  >{tabledetails.allstockssalestotalamt>0&& "₹"+tabledetails.allstockssalestotalamt}</TableCell>
 
                             </>}
                             <TableCell sx={{ fontSize: 18, fontWeight: 700 }} className="table-amount">₹{Intl.NumberFormat("en-IN", digit2options).format(localsum)}</TableCell>
-
+                            {props.screen === "allstocks" && props.iseditable &&
+                                <>
+                                    {/* <TableCell sx={{ fontWeight: 700 }} >Edit rows
+                                    </TableCell> */}
+                                    <TableCell sx={{ fontWeight: 700 }} >
+                                    </TableCell>
+                                </>
+                            }
                         </TableRow>
                     </TableBody>
                 </Table>
@@ -190,6 +271,25 @@ const StockTable = (props) => {
             </TableContainer>
 
         </Paper >
+
+        <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleClose}
+            aria-describedby="alert-dialog-slide-description"
+        >
+            <DialogTitle>{"Do you want to Delete?"}</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    System will permanently delete this product.
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>NO</Button>
+                <Button onClick={() => handleYes(item)}>YES</Button>
+            </DialogActions>
+        </Dialog>
     </>
 }
 

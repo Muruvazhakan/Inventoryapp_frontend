@@ -13,7 +13,7 @@ const AddStocksGenDetails = (props) => {
 
     const stockdet = useContext(Stocks);
     const [value, setValue] = React.useState(null);
-
+    const [isbuttonClicked, setisbuttonClicked] = useState(false);
     const [tit, setit] = useState([]);
     let title;
 
@@ -138,6 +138,14 @@ const AddStocksGenDetails = (props) => {
         );
     }
 
+    const onSaveHander = () => {
+        setisbuttonClicked(true);
+        stockdet.saveStock(props.screen);
+        setTimeout(() => {
+            setisbuttonClicked(false);
+        }, [5000])
+    }
+
     return <>
         <FormGroup>
             <FormControl>
@@ -218,7 +226,10 @@ const AddStocksGenDetails = (props) => {
 
                         <div className="button-warn">
                             <Button variant="contained" color="success" size="medium" endIcon={<FaFileInvoice />}
-                                onClick={() => stockdet.saveStock(props.screen)}>
+                             disabled={isbuttonClicked}
+                             onClick={() => onSaveHander()}
+                                // onClick={() => stockdet.saveStock(props.screen)}
+                                >
                                     {props.screen === "add" ? "Save Stocks" : "Save Sale Stocks"}
                                 </Button>
                         </div>

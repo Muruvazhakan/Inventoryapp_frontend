@@ -23,7 +23,7 @@ const StocksContext = ({ children }) => {
     amount: 0
   });
   const [productid, setproductid] = useState('');
-  const [isloading, setisloading] = useState(false);
+  const [isloading, setisloading] = useState(true);
   const [list, setList] = useState([]);
   const [saleslist, setSalesList] = useState([]);
   const [allStockList, setallStockList] = useState([]);
@@ -40,11 +40,12 @@ const StocksContext = ({ children }) => {
   const [availablestock, setavailablestock] = useState(0);
   const [quantity, setquantity] = useState(0);
   const [rate, setrate] = useState(0);
+  const [salerate, setsalerate] = useState(0);
   const [amount, setamount] = useState(0);
   const [productIdList, setproductIdList] = useState([]);
   const [clientList, setclientList] = useState([]);
   const [totalsubamt, setsubtotalamt] = useState(0);
-
+  const [editprodid, seteditprodid] = useState(false);
   const [totaltaxvalueamt, settotaltaxvalueamt] = useState(0);
   const [totalamtwords, settotalamtwords] = useState('');
 
@@ -112,6 +113,7 @@ const StocksContext = ({ children }) => {
   const [stockHistoryData, setstockHistoryData] = useState([]);
   const [salesStockHistoryData, setSalesstockHistoryData] = useState([]);
   const [invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag] = useState(false);
+  const [isEditStock, setisEditStock] = useState(false);
 
   const setval = (e, fun) => {
     fun(e.target.value);
@@ -155,6 +157,7 @@ const StocksContext = ({ children }) => {
       setdesc(item.desc);
       setquantity(item.quantity);
       setrate(item.rate);
+      setsalerate(item.salerate);
       setamount(item.amount);
       let filterdata = allStockData.find(data => {
         return data.productid == item.productid
@@ -303,21 +306,26 @@ const StocksContext = ({ children }) => {
             desc: desc,
             quantity: quantity,
             rate: rate,
-            amount: amount
+            salerate: salerate,
+            amount: amount,
+            status: "Active"
           };
 
           let found = false;
           let prev = list.map(data => {
             let avgrate = rate * 1;
+            let avgsalerate = salerate * 1;
             let avgquantity = quantity * 1;
             let avgamt = amount * 1;
 
             if (data.productid == productid) {
               avgrate = (((data.rate * 1 * data.quantity * 1) + (rate * 1 * quantity * 1)) / ((quantity * 1) + (data.quantity * 1))).toFixed(2);
+              avgsalerate = (((data.salerate * 1 * data.quantity * 1) + (salerate * 1 * quantity * 1)) / ((quantity * 1) + (data.quantity * 1))).toFixed(2);
               avgquantity = data.quantity * 1 + quantity * 1;
               found = true;
               avgamt = avgrate * 1 * avgquantity;
               data.rate = avgrate;
+              data.salerate = avgsalerate;
               data.quantity = avgquantity;
               data.amount = avgamt;
             }
@@ -343,7 +351,8 @@ const StocksContext = ({ children }) => {
             desc: desc,
             quantity: quantity,
             rate: rate,
-            amount: amount
+            amount: amount,
+            status: "Active"
           };
           let found = false;
           let highquantity = false;
@@ -369,6 +378,7 @@ const StocksContext = ({ children }) => {
               data.rate = avgrate;
               data.quantity = avgquantity;
               data.amount = avgamt;
+              data.status = data.status ? data.status : "Active";
             }
             return data
           });
@@ -415,6 +425,7 @@ const StocksContext = ({ children }) => {
     setrate(0);
     setamount(0);
     setavailablestock(0);
+    setsalerate(0);
   }
 
   const addOtherItems = () => {
@@ -554,7 +565,7 @@ const StocksContext = ({ children }) => {
       }
       console.log('savedataresponse');
       console.log(savedataresponse);
-      getAllClientList(loginuser, "add");
+      // getAllClientList(loginuser, "add");
 
       // getAllHistoryStockData(loginuser);
       // toast.success("New Stock saved");
@@ -594,13 +605,13 @@ const StocksContext = ({ children }) => {
       }
       console.log('savedataresponse');
       console.log(savedataresponse);
-      getAllClientList(loginuser, "sale");
+      // getAllClientList(loginuser, "sale");
       // getAllStockData(loginuser);
       // getAllHistorySalesStockData(loginuser);
 
       // toast.success("New Sale Stock saved");
     }
-    getAllStockData(loginuser);
+    getAllStockData(loginuser, screen);
     setisloading(false);
   };
 
@@ -635,8 +646,8 @@ const StocksContext = ({ children }) => {
       setclientAdd('');
     }
     setstockid(stockhistorydetail.stockid);
-
-
+    seteditprodid(true);
+    setisEditStock(true);
   }
 
   const allSaleStockHistoryEdit = (props) => {
@@ -668,7 +679,8 @@ const StocksContext = ({ children }) => {
     }
   }
 
-  const getAllClientList = async (loginuserid, type) => {
+  const getAllClientList = async (loginuserid, type, stockdetail) => {
+
     let allClientData = localstorage.addOrGetAllClientData('', 'get');
     console.log('loginuserid &&&& ' + loginuserid);
     if (loginuserid != '' || loginuserid != null)
@@ -687,20 +699,24 @@ const StocksContext = ({ children }) => {
         getAllHistoryStockData(loginuserid, getallClientDatafromdb.data);
       } else {
         getAllHistorySalesStockData(loginuserid, getallClientDatafromdb.data);
-        getAllHistoryStockData(loginuserid, getallClientDatafromdb.data);
+        getAllHistoryStockData(loginuserid, getallClientDatafromdb.data, stockdetail);
 
       }
 
       return true;
     }
+
     return false;
   }
 
   const handleExportXlsx = (screen) => {
     let filtercolumn = [];
-    let localsumqty1 = 0, localsumqty2 = 0, sumpurchaseamt = 0;
+    let localsumqty1 = 0, localsumqty2 = 0, sumpurchaseamt = 0, expectedprofitsum = 0;
 
-    let displaylist = (screen === "allstocks" ? allStockList
+    let displaylist = (screen === "allstocks" ? allStockList.map((item, index) => {
+      if ((item.quantity === 0 || item.status === 'deleted' || item.status === 'Deleted') && screen === "allstocks") { }
+      else return item
+    }).filter(x => x !== undefined)
       :
       (screen === "alladdedstocks" ? allStockAddedList
         :
@@ -730,29 +746,38 @@ const StocksContext = ({ children }) => {
     );
     let localsumqty = displaylist.map((item, index) => {
       localsumqty1 = localsumqty1 + (item.quantity * 1);
-      if (screen === "allProfit")
+      if (screen === "allProfit") {
         localsumqty2 = localsumqty2 + (item.salequantity * 1);
-      sumpurchaseamt = sumpurchaseamt + (item.purchaceamount * 1);
+        sumpurchaseamt = sumpurchaseamt + (item.purchaceamount * 1);
+      }
+      item.salerate= item.salerate===undefined? 0:item.salerate;
+      expectedprofitsum = expectedprofitsum + (item.quantity * item.salerate * 1 * 1);
     });
 
     if (screen === "allstocks") {
-      filtercolumn = allStockList.map((data, index) => {
+      filtercolumn = displaylist.map((data, index) => {
         return {
           Sno: index + 1,
           Productid: data.productid,
           ProductDescription: data.desc,
+          Status: data.status,
           Quantity: data.quantity,
           Rate: data.rate,
-          Amount: data.quantity * data.rate * 1
+          SaleRate: data.salerate===undefined? 0:data.salerate,
+          Amount: data.quantity * data.rate * 1,
+          ExpectedProfit: data.quantity * 1 * data.salerate
         }
       })
       let lastcolumn = {
-        Sno: "Total Amount",
+        Sno: "Total",
         Productid: '',
         ProductDescription: '',
+        Status: '',
         Quantity: localsumqty1,
         Rate: '',
-        Amount: localsum
+        SaleRate: '',
+        Amount: localsum,
+        ExpectedProfit: expectedprofitsum
       }
       filtercolumn.push(lastcolumn);
       console.log("filtercolumn");
@@ -786,15 +811,17 @@ const StocksContext = ({ children }) => {
           Sno: index + 1,
           Productid: data.productid,
           ProductDescription: data.desc,
+          Status: data.status,
           Quantity: data.quantity,
           Rate: data.rate,
           Amount: data.quantity * data.rate * 1
         }
       })
       let lastcolumn = {
-        Sno: "Total Amount",
+        Sno: "Total",
         Productid: '',
         ProductDescription: '',
+        Status: '',
         Quantity: localsumqty1,
         Rate: '',
         Amount: localsum
@@ -821,7 +848,9 @@ const StocksContext = ({ children }) => {
         }
       })
       let lastcolumn = {
-        Sno: "Total Amount",
+        Sno: "Total",
+        Productid: '',
+        ProductDescription: '',
         TotalQuantity: localsumqty1,
         PurchaceRate: '',
         TotalPurchaceAmount: alladdedstockstotalamt,
@@ -918,7 +947,8 @@ const StocksContext = ({ children }) => {
     XLSX.writeFile(wb, `My${filename}_${stockDate}.xlsx`); // use to generate files
   }
 
-  const getAllStockData = async (loginuserid) => {
+  const getAllStockData = async (loginuserid, type) => {
+    setisloading(true);
     let allStockData = localstorage.addOrGetAllStockData('', 'get');
     if (loginuserid != '' || loginuserid != null)
       setloginuser(loginuserid);
@@ -926,6 +956,7 @@ const StocksContext = ({ children }) => {
     console.log('getAllStockData !!!!!');
     console.log(allStockData);
     console.log(getstockfromdb);
+    // setisloading(false);
     if (getstockfromdb.status === 200) {
 
       // if (allStockData === null || (allStockData.length <= getstockfromdb.data.length)) {
@@ -936,6 +967,7 @@ const StocksContext = ({ children }) => {
       setallStockList(getstockfromdb.data);
       let localsum = calculateSum(getstockfromdb.data);
       setallstockstotalamt(localsum);
+      getAllClientList(loginuserid, type, getstockfromdb.data);
       // }
       // else {
       //     estdetail.setstockHistoryData(getstockfromdb.data);
@@ -951,7 +983,8 @@ const StocksContext = ({ children }) => {
   }
 
 
-  const getAllHistoryStockData = async (loginuserid, clientdata) => {
+  const getAllHistoryStockData = async (loginuserid, clientdata, stockdetail) => {
+    // setisloading(true);
     let allHistoryStockData = localstorage.addOrGetAllHistoryStockData('', 'get');
     if (loginuserid != '' || loginuserid != null)
       setloginuser(loginuserid);
@@ -965,9 +998,11 @@ const StocksContext = ({ children }) => {
       let deriveClientDetailValue = deriveClientDetail(getstockfromdb.data, clientdata, "add");
       localstorage.addOrGetAllHistoryStockData(deriveClientDetailValue, 'save');
       setstockHistoryData(deriveClientDetailValue);
-      deriveStockAddedFromHistory(deriveClientDetailValue);
+      deriveStockAddedFromHistory(deriveClientDetailValue, stockdetail);
+
       return true;
     }
+
     return false;
   }
 
@@ -986,7 +1021,7 @@ const StocksContext = ({ children }) => {
     setclientName(singlestock.clientName);
     setclientPhno(singlestock.clientPhno);
     console.log('inside ctrate ');
-
+    setisEditStock(true);
     // setcolumns(singleinvoice.columns);  
 
 
@@ -1021,6 +1056,24 @@ const StocksContext = ({ children }) => {
     // setstockid()
   }
 
+  const deleteStock = async (item, screen, displaylist, type) => {
+    setisloading(true);
+    console.log("deleteStock");
+    console.log(item);
+    let datas = {
+      authorization: header,
+      stocklist: item,
+    }
+    console.log(datas);
+    // saveLocalStock(datas, "add");
+
+    let savedataresponse = await stockDb.deleteStockBD(datas, loginuser);
+    console.log("savedataresponse");
+    console.log(savedataresponse);
+    getAllStockData(loginuser);
+    setisloading(false);
+    toast.success(`Product id ${item.productid} is marked as Deleted`);
+  }
   const cleartallStock = (screen) => {
 
     if (screen === "add") {
@@ -1037,6 +1090,8 @@ const StocksContext = ({ children }) => {
     setclientAdd('');
     setclientName('');
     setclientPhno('');
+    seteditprodid(false);
+    setisEditStock(false);
   };
 
   const deriveClientDetail = (details, clientdata, type) => {
@@ -1160,7 +1215,7 @@ const StocksContext = ({ children }) => {
   }
 
   const deriveProfitStock = () => {
-
+    setisloading(true);
     console.log("allStockSalesList");
     console.log(allStockSalesList);
     let profitsum = 0;
@@ -1173,7 +1228,7 @@ const StocksContext = ({ children }) => {
         // console.log("obj2");
         // console.log(obj2);
         // console.log("obj1.rate + " + obj1.rate * 1 + " obj2.rate " + obj2.rate);
-        if (obj2!==undefined) {
+        if (obj2 !== undefined) {
 
           let profits = ((obj1.quantity * 1 * (obj1.rate * 1)) - ((obj1.quantity * 1 * (obj2.rate * 1))));
           profitsum = profitsum + profits;
@@ -1191,7 +1246,7 @@ const StocksContext = ({ children }) => {
             profit: profits,
           };
         }
-      }).filter(x=>x!==undefined);
+      }).filter(x => x !== undefined);
       console.log("mergedArray");
       console.log(mergedArray);
       console.log("profitsum");
@@ -1200,42 +1255,56 @@ const StocksContext = ({ children }) => {
       // profitsum = (Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 }).format(profitsum));
       settotalprofiramt(profitsum.toFixed(2));
     }
+    setisloading(false);
   }
 
-  const deriveStockAddedFromHistory = (prop) => {
+  const deriveStockAddedFromHistory = (prop, stockdetail) => {
     console.log("props");
+    console.log("stockdetail");
     let accumalatevalue = [];
     let totalamt = 0;
     let listofsales = prop.map(data => {
       let singllistofsales = data.rows.map(innerrows => {
-        console.log("innerrows");
-        console.log(innerrows);
-        let found = false;
-        totalamt = (totalamt * 1) + (innerrows.amount * 1);
-        if (accumalatevalue.length > 0) {
-          for (let i = 0; i < accumalatevalue.length; i++) {
-            if (accumalatevalue[i].productid === innerrows.productid) {
-              found = true;
-              accumalatevalue[i].quantity = (accumalatevalue[i].quantity * 1) + (innerrows.quantity * 1);
-              accumalatevalue[i].amount = (accumalatevalue[i].amount * 1) + (innerrows.amount * 1);
-              accumalatevalue[i].rate = ((accumalatevalue[i].amount * 1) / (accumalatevalue[i].quantity * 1)).toFixed(2);
-              console.log(" found &&&");
-              console.log(accumalatevalue);
-            }
-          }
-          if (!found) {
-            accumalatevalue = [...accumalatevalue, innerrows];
 
-            console.log("nt found &&&");
-          }
-        } else {
-          accumalatevalue = [innerrows];
-          console.log("else &&&");
+        let found = false;
+        let obj2;
+        if (stockdetail !== undefined) {
+          obj2 = stockdetail.find((item) => item.productid === innerrows.productid);
         }
-        console.log("accumalatevalue &&&");
-        console.log(accumalatevalue);
-        // return accumalatevalue;
-      });
+          console.log("innerrows obj2");
+          console.log(obj2);
+          if (obj2 !== undefined) {
+            innerrows.status = obj2.status ? obj2.status : "Active";
+            if (obj2.quantity === 0)
+              innerrows.status = "Sold";
+          }
+          console.log("innerrows");
+          console.log(innerrows);
+          totalamt = (totalamt * 1) + (innerrows.amount * 1);
+          if (accumalatevalue.length > 0) {
+            for (let i = 0; i < accumalatevalue.length; i++) {
+              if (accumalatevalue[i].productid === innerrows.productid) {
+                found = true;
+                accumalatevalue[i].quantity = (accumalatevalue[i].quantity * 1) + (innerrows.quantity * 1);
+                accumalatevalue[i].amount = (accumalatevalue[i].amount * 1) + (innerrows.amount * 1);
+                accumalatevalue[i].rate = ((accumalatevalue[i].amount * 1) / (accumalatevalue[i].quantity * 1)).toFixed(2);
+                console.log(" found &&&");
+                console.log(accumalatevalue);
+              }
+            }
+            if (!found) {
+              accumalatevalue = [...accumalatevalue, innerrows];
+
+              console.log("nt found &&&");
+            }
+          } else {
+            accumalatevalue = [innerrows];
+            console.log("else &&&");
+          }
+          console.log("accumalatevalue &&&");
+          console.log(accumalatevalue);
+          // return accumalatevalue;
+        });
 
     });
 
@@ -1244,6 +1313,7 @@ const StocksContext = ({ children }) => {
     setallStockAddedList(accumalatevalue);
     let localsum = calculateSum(accumalatevalue);
     setaddedallstockstotalamt(localsum);
+    setisloading(false);
     // setallstockssalestotalamt(totalsaleamt);  
   }
   const getAllSalesCount = async (loginuserid) => {
@@ -1304,7 +1374,8 @@ const StocksContext = ({ children }) => {
     getAllStocks, allStockList, setallStockList, allstockstotalamt, setallstockstotalamt, calculateSum, getAllStockData, handleExportXlsx, getAllHistoryStockData, allStockHistoryEdit, saleslist, setSalesList,
     allStockSalesList, setallStockSalesList, allstockssalestotalamt, setallstockssalestotalamt, totalsalesamt, settotalsalesamt, salestockidcount, setsalestockidcount, salestockid, setsalestockid, getAllClientList,
     availablestock, setavailablestock, salestockdate, setsalestockdate, getAllSalesCount, salesStockHistoryData, setSalesstockHistoryData, getAllHistorySalesStockData, allSaleStockHistoryEdit, handleHistoryExportXlsx,
-    allStockAddedList, setallStockAddedList, alladdedstockstotalamt, setaddedallstockstotalamt, isloading, setisloading, allProfitStockList, setAllProfitStockList, totalprofiramt, settotalprofiramt
+    allStockAddedList, setallStockAddedList, alladdedstockstotalamt, setaddedallstockstotalamt, isloading, setisloading, allProfitStockList, setAllProfitStockList, totalprofiramt, settotalprofiramt, editprodid, seteditprodid,
+    isEditStock, setisEditStock, deleteStock,salerate, setsalerate
   };
   return <Stocks.Provider value={context}>{children}</Stocks.Provider>;
 }

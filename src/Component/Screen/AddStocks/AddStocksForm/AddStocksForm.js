@@ -21,7 +21,7 @@ const AddStocksForm = (props) => {
     const [value, setValue] = React.useState(null);
 
     const [tit, setit] = useState([]);
-    
+
 
     useEffect(() => {
         console.log('tabledet estimateState');
@@ -33,16 +33,18 @@ const AddStocksForm = (props) => {
         // let title = 
     }, [tabledet]);
 
-    const filterProdIdAndGetDesc = (prodid)=>{
+    const filterProdIdAndGetDesc = (prodid) => {
 
-        let filterdata = tabledet.allStockData.find(data =>{
-            return data.productid==prodid
+        let filterdata = tabledet.allStockData.find(data => {
+            return data.productid == prodid
         })
+        console.log("filterProdIdAndGetDesc filterdata");
         console.log(filterdata);
-        if(filterdata){
+        if (filterdata) {
             tabledet.setdesc(filterdata.desc);
             tabledet.setavailablestock(filterdata.quantity);
-            
+            if (filterdata.salerate)
+                tabledet.setrate(filterdata.salerate);
         }
     }
     const autocompleTitle = () => {
@@ -114,7 +116,7 @@ const AddStocksForm = (props) => {
         // console.log("newValue");
         // console.log(newValue);
         // console.log("event");
-       
+
         // console.log(event);
         if (newValue && newValue.inputValue) {
             // Create a new value from the user input
@@ -123,7 +125,7 @@ const AddStocksForm = (props) => {
             });
             tabledet.setproductid(newValue.inputValue);
             // filterProdIdAndGetDesc(newValue.inputValue);
-        } 
+        }
         else {
             if (newValue.productid != null) {
                 setValue(newValue.productid);
@@ -176,15 +178,15 @@ const AddStocksForm = (props) => {
     return <>
         <Card >
             <ToastContainer position="top-center" theme="colored" containerId="Invoice" />
-            <h3> 
-                {props.screen === "add" ? "Stocks Data" : "Sale Stocks Data"} 
+            <h3>
+                {props.screen === "add" ? "Stocks Data" : "Sale Stocks Data"}
             </h3>
             <FormGroup>
                 <FormControl>
                     <Card>
                         <h3>
-                        {props.screen === "add" ? "Add Stocks details below" : "Add Sale Stocks details below"} 
-                            
+                            {props.screen === "add" ? "Add Stocks details below" : "Add Sale Stocks details below"}
+
 
                         </h3>
                         <Box component="form" sx={{ '& .MuiTextField-root': { m: 1, width: '20ch' } }}>
@@ -203,24 +205,27 @@ const AddStocksForm = (props) => {
                                 renderOption={(props, option) => renderOptionOnAutoComplete(props, option)}
                                 // sx={{ width: 300 }}
                                 freeSolo
+                                // disabled={tabledet.editprodid}
+                                disabled={tabledet.isEditStock && tabledet.stockid !== ''}
                                 renderInput={(params) => (
                                     // <TextField label="Title" />
                                     <TextField required id="outlined-required" label="Product Id"
                                         onChange={(e) => tabledet.setval(e, tabledet.setproductid)}
                                         color={tabledet.setboxColors(tabledet.productid, 'color')}
                                         error={tabledet.setboxColors(tabledet.productid, 'error')}  {...params}
+
                                     />
                                 )}
                             />
-
+                            {tabledet.isEditStock && <div > Product Id is disabled </div>}
                             <TextField required id="outlined-required" label="Product description" value={tabledet.desc}
                                 onChange={(e) => tabledet.setval(e, tabledet.setdesc)}
                                 color={tabledet.setboxColors(tabledet.desc, 'color')}
                                 error={tabledet.setboxColors(tabledet.desc, 'error')}
                             />
-                            {props.screen =="sale" &&
-                             <TextField id="outlined-required" label="Available Quantity" value={tabledet.availablestock} disabled type="number"
-                            /> }
+                            {props.screen == "sale" &&
+                                <TextField id="outlined-required" label="Available Quantity" value={tabledet.availablestock} disabled type="number"
+                                />}
 
                             <TextField required id="outlined-required" label="Quantity" value={tabledet.quantity} type="number"
                                 onChange={(e) => tabledet.setval(e, tabledet.setquantity)}
@@ -233,7 +238,13 @@ const AddStocksForm = (props) => {
                                 color={tabledet.setboxColors(tabledet.rate, 'color')}
                                 error={tabledet.setboxColors(tabledet.rate, 'error')}
                             />
-
+                            {props.screen === "add" &&
+                                <TextField required id="outlined-required" label="Selling Rate" value={tabledet.salerate} type="number"
+                                    onChange={(e) => tabledet.setval(e, tabledet.setsalerate)}
+                                    color={tabledet.setboxColors(tabledet.salerate, 'color')}
+                                    error={tabledet.setboxColors(tabledet.salerate, 'error')}
+                                />
+                            }
                             <TextField required id="outlined-required" label="Amount" value={tabledet.amount} type="number"
                                 onChange={(e) => tabledet.setval(e, tabledet.setamount)}
                                 color={tabledet.setboxColors(tabledet.amount, 'color')}

@@ -158,3 +158,20 @@ export const saveStockBD = async (stock,userid) => {
          return err;
      }
  };
+
+ export const deleteStockBD = async (stock,userid) => {
+    //console.log(`${dbprop.saveStockUrl}/${userid}` + ' dbprop.saveStockUrl');
+     const data = {
+        stock
+     };
+    //console.log(data);
+     let response;
+     try {
+         response = await axios.post(`${dbprop.deleteStockUrl}/${userid}`,data, config);
+        //console.log(response);
+         return response;
+     } catch (err) {
+         console.log(err);
+         return err;
+     }
+ };

@@ -9,7 +9,7 @@ import StyleHeader from "../Header/StyleHeader";
 
 const AddStocks = (props) => {
     const statckdet = useContext(Stocks);
-
+   
     return <>
         <Box sx={{ flexGrow: 1, width: "100%" }}>
             <StyleHeader>
@@ -30,7 +30,7 @@ const AddStocks = (props) => {
                 <Stack item width={window.innerWidth <= 960 ? "100%" : "70%"}>
                     <Card>
                         <h2>Edit/Preview Section</h2>
-                        <StockTable screen="add" from="add" type="update" />
+                        <StockTable screen="add" from="add" type="update"  />
                     </Card>
                 </Stack>
                 <Stack item width={window.innerWidth <= 960 ? "100%" : "30%"}>

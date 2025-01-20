@@ -12,10 +12,11 @@ import './AllStocks.css';
 import { Link } from "react-router-dom";
 import Header from "../../Header/Header";
 import StyleHeader from "../../Header/StyleHeader";
+import { FiEdit } from "react-icons/fi";
 const AllStocks = (props) => {
     const tabledet = useContext(Stocks);
     const [viewAllAddedStock, setviewAllAddedStock] = useState(false);
-
+    const [iseditable, setiseditable] = useState(false);
     useEffect(() => {
         console.log(" useEffect AllStocks ");
         tabledet.getAllStocks("allstocks");
@@ -101,17 +102,22 @@ const AllStocks = (props) => {
                         )}
                         content={() => componentRef.current}
                     />
-                    <div className="excelexport" >
+                    {/* <div className="excelexport" > */}
                         <Button variant="contained" color="success" size="medium" endIcon={<BsFiletypeXlsx />}
                             onClick={() => tabledet.handleExportXlsx("allstocks")}>Export Current Stocks to Excel</Button>
-                    </div>
+                        <Button variant={iseditable ? "outlined" : "contained"} color="warning" size="medium"
+                            endIcon={<FiEdit size={18} />}
+                            onClick={() => setiseditable(!iseditable)}
+
+                        >Edit Stocks</Button>
+                    {/* </div> */}
                 </div>
                 <div ref={componentRef}>
                     <StyleHeader>
                         {/* <Header name="Current Stocks" /> */}
                         Current Stocks
                     </StyleHeader>
-                    <StockTable screen="allstocks" from="add" />
+                    <StockTable screen="allstocks" from="add" iseditable={iseditable} />
 
                 </div>
             </Card>
