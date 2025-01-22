@@ -76,6 +76,25 @@ export const siginUser = async (username, userpassword,type,role,oraganisationNa
     }
 };
 
+
+export const passwordReset = async (username, userpassword,tokenid) => {
+    const data = {
+        username: username,
+        password: userpassword,
+        tokenid:tokenid
+    };
+    //console.log(data);
+    let response
+    try {
+        response = await axios.post(dbprop.passwordResetUrl, data, config);
+        //console.log(response);
+        return response;
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+};
+
 export const getCompanyBasicDetails = async (userid) => {
     //console.log(`${dbprop.getCompanyBasicDetailsUrl}/${userid}` + 'dbprop.getCompanyBasicDetails');
     let response;

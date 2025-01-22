@@ -5,6 +5,7 @@ export const imageBaseUrl = "https://storage.googleapis.com/helpone-9bf33.appspo
 export const backendUrl = "https://assetsync-backend.onrender.com";
 export const userLoginUrl = `${backendUrl}/user/login`;
 export const userSigninUrl = `${backendUrl}/user/signin`;
+export const passwordResetUrl = `${backendUrl}/user/passwordReset`;
 
 export const getCompanyBasicDetailsUrl = `${backendUrl}/user/getcompanybasic`;
 export const saveCompanyBasicDetailsUrl = `${backendUrl}/user/savecompanybasic`;

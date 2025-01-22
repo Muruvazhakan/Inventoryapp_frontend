@@ -13,7 +13,7 @@ export const CompanyDetail = createContext();
 
 
 const CompanyDetailContext = ({ children }) => {
-   
+
     const stockDetail = useContext(Stocks);
 
 
@@ -277,16 +277,17 @@ const CompanyDetailContext = ({ children }) => {
                 else {
                     toast.warning(userExsist.data);
                 }
-            } else {
+            }
+            else if (logintype === 'sigin') {
                 if (loginUserPassword !== loginUserConfirmPassword) {
-                    toast.error("Password is not match iwth Confirm Password");
+                    toast.error("Password is not match with Confirm Password");
                     return;
                 }
                 // if (tokenid !== 'Billedge123') {
                 //     toast.error("Invalid Token");
                 //     return;
                 // }
-                userExsist = await companyDetailsDB.siginUser(loginuser, encrypted_pass, type, role, oraganisationName,tokenid);
+                userExsist = await companyDetailsDB.siginUser(loginuser, encrypted_pass, type, role, oraganisationName, tokenid);
                 //console.log(userExsist);
                 if (userExsist.data === "User already exist") {
                     toast.error(" User already exist");
@@ -294,6 +295,27 @@ const CompanyDetailContext = ({ children }) => {
                 } else if (userExsist.status === 201) {
 
                     toast.success(" User successfully registered");
+                    //console.log(userExsist.data);
+                } else {
+                    toast.warning(userExsist.data);
+                }
+            } else if (logintype === 'reset') {
+                if (loginUserPassword !== loginUserConfirmPassword) {
+                    toast.error("Password is not match with Confirm Password");
+                    return;
+                }
+                // if (tokenid !== 'Billedge123') {
+                //     toast.error("Invalid Token");
+                //     return;
+                // }
+                userExsist = await companyDetailsDB.passwordReset(loginuser, encrypted_pass, tokenid);
+                //console.log(userExsist);
+                if (userExsist.data === "User does not exist") {
+                    toast.error("User does not exist");
+                    // setloginstatus(true);
+                } else if (userExsist.status === 201) {
+
+                    toast.success("Password Changed!");
                     //console.log(userExsist.data);
                 } else {
                     toast.warning(userExsist.data);
@@ -324,7 +346,7 @@ const CompanyDetailContext = ({ children }) => {
         localstore.addOrGetAllStockData('', 'remove');
         localstore.addOrGetAllHistoryStockData('', 'remove');
         localstore.addOrGetAllHistorySalesStockData('', 'remove');
-        
+
         setloginstatus(false);
         setloginuserid(null);
         setloginuser('');
@@ -349,7 +371,7 @@ const CompanyDetailContext = ({ children }) => {
     };
 
 
-    
+
     const getAlldataFromDB = async () => {
 
 
@@ -391,12 +413,12 @@ const CompanyDetailContext = ({ children }) => {
             else {
                 toast.warning(companyBasicDetailsfromdb.data);
             }
-            
+
             let stockidcounter = localstore.addOrGetStockid('', "get");
             console.log(stockidcounter + ' addOrGetStockid');
             let getStockfromDb = await stockDetailBD.getStockidDB(loginuserid);
-            console.log( 'getStockfromDb.data');
-            console.log(getStockfromDb );
+            console.log('getStockfromDb.data');
+            console.log(getStockfromDb);
             if (getStockfromDb.status === 200 && stockidcounter < getStockfromDb.data) {
                 localstore.addOrGetStockid(getStockfromDb.data, "save");
                 stockDetail.setstockidcount(getStockfromDb.data);
@@ -405,12 +427,12 @@ const CompanyDetailContext = ({ children }) => {
             }
 
             let results = stockDetail.getAllStockData(loginuserid);
-            if(results){
+            if (results) {
                 refreshdata = true;
             }
 
             let resultsgetAllSalesCount = stockDetail.getAllSalesCount(loginuserid);
-            if(resultsgetAllSalesCount){
+            if (resultsgetAllSalesCount) {
                 refreshdata = true;
             }
         }
@@ -422,7 +444,7 @@ const CompanyDetailContext = ({ children }) => {
         setisloaded(true);
     };
 
-   
+
     const getAlldataOnLogin = () => {
 
         let companydetail = localstore.getCompanyHandler();
@@ -503,7 +525,7 @@ const CompanyDetailContext = ({ children }) => {
     }
 
     const saveHandler = async (funcs, item, type) => {
-        
+
         setisloaded(true);
 
         toast.success("Details are saved");
