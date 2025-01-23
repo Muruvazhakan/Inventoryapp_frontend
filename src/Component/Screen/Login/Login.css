@@ -11,7 +11,11 @@
     margin-top: 5%;
 }
 .logintext{
-    color: rgb(17, 87, 68);
+    color: rgb(110 111 17);
+    
+}
+.resetlogintext{
+    color: rgb(170 103 42);  
 }
 .loginbutton{
     margin-top:15px;

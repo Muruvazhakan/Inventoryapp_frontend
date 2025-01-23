@@ -35,7 +35,7 @@ const ScreenRoute = (props) => {
                     <Route  path='/' Component={Login} /> 
                     <Route path='/login' Component={Login} />
                     <Route  path='/signup' Component={SignUp} /> 
-                    <Route  path='/resetpassword' Component={ResetPassword} /> 
+                    <Route  path='/passwordreset' Component={ResetPassword} /> 
                     </>
                     :
                         <>

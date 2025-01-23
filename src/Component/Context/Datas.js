@@ -76,9 +76,9 @@ export const userLogin = [
         displays: true
     },
     {
-        screenname: 'Password Rest',
-        links: '/resetpassword',
-        altname: 'resetpassword',
+        screenname: 'Reset Password',
+        links: '/passwordreset',
+        altname: 'passwordreset',
         displays: true
     },
 ]
