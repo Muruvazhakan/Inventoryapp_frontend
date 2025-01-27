@@ -27,7 +27,7 @@ const AllProfit = (props) => {
             {/* <YourProfits /> */}
             <EarningScreen/>
             {/* <StockTable screen="AllProfit" /> */}
-            {/* <Card>
+            <Card>
                 <div className="exportExcelbttn " >
                     <ReactToPrint
                         trigger={() => (
@@ -52,7 +52,7 @@ const AllProfit = (props) => {
                     <StockTable screen="allProfit" from="profit" />
 
                 </div>
-            </Card> */}
+            </Card>
         </Box>
     </>
 }

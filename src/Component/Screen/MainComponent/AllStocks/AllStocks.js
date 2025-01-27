@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import Header from "../../Header/Header";
 import StyleHeader from "../../Header/StyleHeader";
 import { FiEdit } from "react-icons/fi";
+import StockChart from "../AllSaleStocks/StockChart";
 const AllStocks = (props) => {
     const tabledet = useContext(Stocks);
     const [viewAllAddedStock, setviewAllAddedStock] = useState(false);
@@ -21,6 +22,15 @@ const AllStocks = (props) => {
         console.log(" useEffect AllStocks ");
         tabledet.getAllStocks("allstocks");
     }, [tabledet.allStockData, tabledet.allstockstotalamt, tabledet.stockHistoryData, tabledet.allStockList]);
+
+    let displaylist = tabledet.allStockList.map((item, index) => {
+        if ((item.quantity === 0 || item.status === 'deleted' || item.status === 'Deleted' )) { }
+        else {
+            // sum1 = sum1 + (item.quantity * 1 * item.rate)
+            return item;
+        }
+    }).filter(x => x !== undefined)
+
     const componentRef = useRef();
     return <>
         <Box className="allstocksdisplaytable" sx={{ flexGrow: 1 }}>
@@ -59,6 +69,11 @@ const AllStocks = (props) => {
                     }
                 </Button>
             </Card>
+
+            <Card>
+                <StockChart data = {displaylist} title="Available Stock Count" chartlable ="Stock Available per product" />
+            </Card>
+
             {viewAllAddedStock &&
                 <Card>
                     <div className="exportExcelbttn " >

@@ -11,6 +11,7 @@ import '../AllStocks/AllStocks.css';
 import { Link } from "react-router-dom";
 import Header from "../../Header/Header";
 import StyleHeader from "../../Header/StyleHeader";
+import StockChart from "./StockChart";
 const AllSaleStocks = (props) => {
     const tabledet = useContext(Stocks);
     useEffect(() => {
@@ -18,6 +19,7 @@ const AllSaleStocks = (props) => {
         tabledet.getAllStocks("AllSaleStocks");
     }, [tabledet.allStockData, tabledet.allstockstotalamt, tabledet.stockHistoryData, tabledet.allStockList]);
     const componentRef = useRef();
+  
     return <>
         <Box className="allstocksdisplaytable" sx={{ flexGrow: 1 }}>
 
@@ -45,6 +47,11 @@ const AllSaleStocks = (props) => {
                 </Link>
 
             </Card>
+
+            <Card>
+                <StockChart data = {tabledet.allStockSalesList} title="Sales Count" chartlable ="Sales per product" />
+            </Card>
+
             <Card>
                 <div className="exportExcelbttn " >
                     <ReactToPrint

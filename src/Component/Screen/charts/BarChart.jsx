@@ -9,25 +9,30 @@ const Barchart = ({ labels, datas, chartLabel, style }) => {
       {
         label: chartLabel ?? "",
         data: datas ?? [],
+        fill: {
+          opacity: 1,
+        },
         backgroundColor: [
-          "rgba(255, 99, 132)",
-          "rgba(255, 159, 64)",
-          "rgba(255, 205, 86)",
-          "rgba(75, 192, 192)",
-          "rgba(54, 162, 235)",
-          "rgba(153, 102, 255)",
-          "rgba(201, 203, 207)",
+          // "rgba(255, 99, 132)",
+
+          "rgba(27, 85, 121)",
+          // "rgba(255, 159, 64)",
+          // "rgba(255, 205, 86)",
+          // "rgba(75, 192, 192)",
+          // "rgba(54, 162, 235)",
+          // "rgba(153, 102, 255)",
+          // "rgba(201, 203, 207)",
         ],
         borderColor: [
           "rgb(255, 99, 132)",
-          "rgb(255, 159, 64)",
-          "rgb(255, 205, 86)",
-          "rgb(75, 192, 192)",
-          "rgb(54, 162, 235)",
-          "rgb(153, 102, 255)",
-          "rgb(201, 203, 207)",
+          // "rgb(255, 159, 64)",
+          // "rgb(255, 205, 86)",
+          // "rgb(75, 192, 192)",
+          // "rgb(54, 162, 235)",
+          // "rgb(153, 102, 255)",
+          // "rgb(201, 203, 207)",
         ],
-        borderRadius: 3,
+        borderRadius: 5,
       },
     ],
   };
@@ -48,12 +53,16 @@ const Barchart = ({ labels, datas, chartLabel, style }) => {
     },
   };
   return (
-    <div
-      className="chart-container"
-      style={{ position: "relative", width: "100%", height: "100%", ...style }}
-    >
-      <Bar data={data} options={options} />
-    </div>
+    <>
+      {datas.length > 0 &&
+        <div
+          className="chart-container"
+          style={{ position: "relative", width: "100%", height: "100%", ...style }}
+        >
+          <Bar data={data} options={options} />
+        </div>
+      }
+    </>
   );
 };
 
