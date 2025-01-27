@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import Header from "../../Header/Header";
 import YourProfits from "../YourProfits/YourProfits";
 import StyleHeader from "../../Header/StyleHeader";
+import EarningScreen from "../EarningScreen/EarningScreen";
 
 
 const AllProfit = (props) => {
@@ -23,32 +24,10 @@ const AllProfit = (props) => {
     const componentRef = useRef();
     return <>
         <Box className="allstocksdisplaytable" sx={{ flexGrow: 1 }}>
-            <YourProfits />
+            {/* <YourProfits /> */}
+            <EarningScreen/>
             {/* <StockTable screen="AllProfit" /> */}
-            {/* <Card className="listofbuttons">
-                <Link to={{
-                    pathname: `/salestock`
-                }}
-                >
-                    <Button variant="outlined" color="success" endIcon={<MdAddChart />}
-                    >
-                        Sale Stocks</Button>
-                </Link>
-
-            </Card> */}
-
-            {/* <Card className="listofbuttons">
-                <Link to={{
-                    pathname: `/listofaddedsalestocks`
-                }}
-                >
-                    <Button variant="outlined" color="secondary" endIcon={<FaRegListAlt />} >
-                        View List of added Sale Stocks
-                    </Button>
-                </Link>
-
-            </Card> */}
-            <Card>
+            {/* <Card>
                 <div className="exportExcelbttn " >
                     <ReactToPrint
                         trigger={() => (
@@ -69,11 +48,11 @@ const AllProfit = (props) => {
                     <StyleHeader>
                         Consolidated Profits!
                     </StyleHeader>
-                    {/* <Header name="Your Profits!" /> */}
+                   
                     <StockTable screen="allProfit" from="profit" />
 
                 </div>
-            </Card>
+            </Card> */}
         </Box>
     </>
 }

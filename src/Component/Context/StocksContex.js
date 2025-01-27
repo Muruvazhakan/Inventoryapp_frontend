@@ -114,6 +114,7 @@ const StocksContext = ({ children }) => {
   const [salesStockHistoryData, setSalesstockHistoryData] = useState([]);
   const [invoiceHistroyUpdateFlag, setinvoiceHistroyUpdateFlag] = useState(false);
   const [isEditStock, setisEditStock] = useState(false);
+  const [segregatedMonthData, setSegregatedMonthData] = useState({});
 
   const setval = (e, fun) => {
     fun(e.target.value);
@@ -711,6 +712,7 @@ const StocksContext = ({ children }) => {
 
   const handleExportXlsx = (screen) => {
     let filtercolumn = [];
+    console.log("handleExportXlsx screen " + screen);
     let localsumqty1 = 0, localsumqty2 = 0, sumpurchaseamt = 0, expectedprofitsum = 0;
 
     let displaylist = (screen === "allstocks" ? allStockList.map((item, index) => {
@@ -750,7 +752,7 @@ const StocksContext = ({ children }) => {
         localsumqty2 = localsumqty2 + (item.salequantity * 1);
         sumpurchaseamt = sumpurchaseamt + (item.purchaceamount * 1);
       }
-      item.salerate= item.salerate===undefined? 0:item.salerate;
+      item.salerate = item.salerate === undefined ? 0 : item.salerate;
       expectedprofitsum = expectedprofitsum + (item.quantity * item.salerate * 1 * 1);
     });
 
@@ -763,7 +765,7 @@ const StocksContext = ({ children }) => {
           Status: data.status,
           Quantity: data.quantity,
           Rate: data.rate,
-          SaleRate: data.salerate===undefined? 0:data.salerate,
+          SaleRate: data.salerate === undefined ? 0 : data.salerate,
           Amount: data.quantity * data.rate * 1,
           ExpectedProfit: data.quantity * 1 * data.salerate
         }
@@ -1163,7 +1165,15 @@ const StocksContext = ({ children }) => {
       let deriveClientDetailValue = deriveClientDetail(getSalesStockfromdb.data, clientdata, "sale");
       localstorage.addOrGetAllHistorySalesStockData(deriveClientDetailValue, 'save');
       setSalesstockHistoryData(deriveClientDetailValue);
+
       deriveSaleStockFromHistory(deriveClientDetailValue);
+
+      const resultsegregateDataByMonth = segregateDataByMonth(deriveClientDetailValue);
+      setSegregatedMonthData(resultsegregateDataByMonth);
+
+      console.log("resultsegregateDataByMonth");
+      console.log(resultsegregateDataByMonth);
+
       return true;
     }
     return false;
@@ -1211,6 +1221,7 @@ const StocksContext = ({ children }) => {
     console.log(accumalatevalue);
     setallStockSalesList(accumalatevalue);
     setallstockssalestotalamt(totalsaleamt);
+
     // allstockssalestotalamt
   }
 
@@ -1271,40 +1282,40 @@ const StocksContext = ({ children }) => {
         if (stockdetail !== undefined) {
           obj2 = stockdetail.find((item) => item.productid === innerrows.productid);
         }
-          console.log("innerrows obj2");
-          console.log(obj2);
-          if (obj2 !== undefined) {
-            innerrows.status = obj2.status ? obj2.status : "Active";
-            if (obj2.quantity === 0)
-              innerrows.status = "Sold";
-          }
-          console.log("innerrows");
-          console.log(innerrows);
-          totalamt = (totalamt * 1) + (innerrows.amount * 1);
-          if (accumalatevalue.length > 0) {
-            for (let i = 0; i < accumalatevalue.length; i++) {
-              if (accumalatevalue[i].productid === innerrows.productid) {
-                found = true;
-                accumalatevalue[i].quantity = (accumalatevalue[i].quantity * 1) + (innerrows.quantity * 1);
-                accumalatevalue[i].amount = (accumalatevalue[i].amount * 1) + (innerrows.amount * 1);
-                accumalatevalue[i].rate = ((accumalatevalue[i].amount * 1) / (accumalatevalue[i].quantity * 1)).toFixed(2);
-                console.log(" found &&&");
-                console.log(accumalatevalue);
-              }
+        console.log("innerrows obj2");
+        console.log(obj2);
+        if (obj2 !== undefined) {
+          innerrows.status = obj2.status ? obj2.status : "Active";
+          if (obj2.quantity === 0)
+            innerrows.status = "Sold";
+        }
+        console.log("innerrows");
+        console.log(innerrows);
+        totalamt = (totalamt * 1) + (innerrows.amount * 1);
+        if (accumalatevalue.length > 0) {
+          for (let i = 0; i < accumalatevalue.length; i++) {
+            if (accumalatevalue[i].productid === innerrows.productid) {
+              found = true;
+              accumalatevalue[i].quantity = (accumalatevalue[i].quantity * 1) + (innerrows.quantity * 1);
+              accumalatevalue[i].amount = (accumalatevalue[i].amount * 1) + (innerrows.amount * 1);
+              accumalatevalue[i].rate = ((accumalatevalue[i].amount * 1) / (accumalatevalue[i].quantity * 1)).toFixed(2);
+              console.log(" found &&&");
+              console.log(accumalatevalue);
             }
-            if (!found) {
-              accumalatevalue = [...accumalatevalue, innerrows];
+          }
+          if (!found) {
+            accumalatevalue = [...accumalatevalue, innerrows];
 
-              console.log("nt found &&&");
-            }
-          } else {
-            accumalatevalue = [innerrows];
-            console.log("else &&&");
+            console.log("nt found &&&");
           }
-          console.log("accumalatevalue &&&");
-          console.log(accumalatevalue);
-          // return accumalatevalue;
-        });
+        } else {
+          accumalatevalue = [innerrows];
+          console.log("else &&&");
+        }
+        console.log("accumalatevalue &&&");
+        console.log(accumalatevalue);
+        // return accumalatevalue;
+      });
 
     });
 
@@ -1328,6 +1339,46 @@ const StocksContext = ({ children }) => {
       console.log('saving setinvoiceidount ' + getSalesStockfromDb.data);
     }
   }
+
+  const segregateDataByMonth = (data) => {
+    console.log("segregateDataByMonth");
+    console.log(data);
+    return data.reduce((acc, item) => {
+      // Get the month and year from the salestockdate 
+      console.log("item segra");
+      console.log(item);
+      if (item.salestockdate && item.salestockdate !== "") {
+
+        const monthYear = new Date(item.salestockdate).toLocaleString('default', { month: 'short', year: 'numeric' });
+        console.log("item monthYear");
+        console.log(monthYear);
+
+        if (monthYear) {
+
+
+          console.log(acc[monthYear]);
+          // Initialize the month entry if not exists
+          if (!acc[monthYear]) {
+            acc[monthYear] = {
+              totalSalesAmount: 0,
+              totalProfit: 0,
+            };
+          }
+          console.log("item acc");
+          console.log(acc);
+          // Add the totalsalesamt to the respective month
+          acc[monthYear].totalSalesAmount += item.totalsalesamt * 1;
+          // Assuming profit is the same as totalsalesamt for simplicity; adjust as necessary
+          acc[monthYear].totalProfit += item.totalsalesamt * 1;
+          console.log("item acc");
+          console.log(acc);
+          return acc;
+        }
+      }
+    }, {});
+
+  };
+
   useEffect(() => {
     // //console.log('local invoice history');
     let count = localstorage.addOrGetStockid('', 'get');
@@ -1375,7 +1426,7 @@ const StocksContext = ({ children }) => {
     allStockSalesList, setallStockSalesList, allstockssalestotalamt, setallstockssalestotalamt, totalsalesamt, settotalsalesamt, salestockidcount, setsalestockidcount, salestockid, setsalestockid, getAllClientList,
     availablestock, setavailablestock, salestockdate, setsalestockdate, getAllSalesCount, salesStockHistoryData, setSalesstockHistoryData, getAllHistorySalesStockData, allSaleStockHistoryEdit, handleHistoryExportXlsx,
     allStockAddedList, setallStockAddedList, alladdedstockstotalamt, setaddedallstockstotalamt, isloading, setisloading, allProfitStockList, setAllProfitStockList, totalprofiramt, settotalprofiramt, editprodid, seteditprodid,
-    isEditStock, setisEditStock, deleteStock,salerate, setsalerate
+    isEditStock, setisEditStock, deleteStock, salerate, setsalerate, segregatedMonthData, setSegregatedMonthData
   };
   return <Stocks.Provider value={context}>{children}</Stocks.Provider>;
 }

@@ -27,9 +27,9 @@ const Transition = React.forwardRef(function Transition(
 const StockTable = (props) => {
 
     const tabledetails = useContext(Stocks);
-    useEffect(() => {
-        console.log("refresh");
-    }, []);
+    // useEffect(() => {
+    //     console.log("refresh");
+    // }, []);
 
     const [open, setOpen] = useState(false);
 
@@ -70,8 +70,8 @@ const StockTable = (props) => {
                     )
                 )))
     );
-    console.log("displaylist  " + " props.screen ^^^ " + props.screen);
-    console.log(displaylist)
+    // console.log("displaylist  " + " props.screen ^^^ " + props.screen);
+    // console.log(displaylist)
     let localsum = (props.screen === "allstocks" ? sum1
         :
         (props.screen == "alladdedstocks" ? tabledetails.alladdedstockstotalamt
