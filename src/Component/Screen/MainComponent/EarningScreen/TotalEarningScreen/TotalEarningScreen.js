@@ -21,10 +21,10 @@ const TotalEarningScreen = (props) => {
   const primary = "rgb(27, 85, 121)";
   const primarylight = "rgb(236,242,255)";
   const successlight = "rgb(230,255,250)";
- 
+
   const totalProfitArray = Object.values(props.data.segregatedMonthData).map(item => item.totalProfit);
 
-  
+
   // const totalMonthArray = Object.values(props.data.segregatedMonthData).map(item => item.month);
   const totalMonthArray = Object.keys(props.data.segregatedMonthData);
 
@@ -42,12 +42,38 @@ const TotalEarningScreen = (props) => {
       sparkline: {
         enabled: true,
       },
-      
+
     },
     xaxis: {
-      categories: totalMonthArray.length ===0?["Jan","Feb","Mar","Apr"]:totalMonthArray,
+      categories: totalMonthArray.length === 0 ? ["Jan", "Feb", "Mar", "Apr"] : totalMonthArray,
+      // title: {
+      //   text: 'Months',  // You can add a label here
+      // },
+      position: 'top',
+      axisBorder: {
+        show: false
+      },
+      axisTicks: {
+        show: false
+      },
+      crosshairs: {
+        fill: {
+          type: 'gradient',
+          gradient: {
+            colorFrom: '#D8E3F0',
+            colorTo: '#BED1E6',
+            stops: [0, 100],
+            opacityFrom: 0.4,
+            opacityTo: 0.5,
+          }
+        }
+      },
+      tooltip: {
+        enabled: true,
+      },
       labels: {
         show: true,
+        rotate: -45,
         style: {
           fontSize: '12px', // Adjust the font size as needed
           colors: ['#000'], // Adjust color of x-axis labels
@@ -60,7 +86,7 @@ const TotalEarningScreen = (props) => {
         show: false,
 
       },
-      
+
     },
     // annotations: {
     //   xaxis: {
@@ -93,14 +119,14 @@ const TotalEarningScreen = (props) => {
         // minWidth: 0,
         // maxWidth: 260,
         style: {
-            colors: [],
-            fontSize: '12px',
-            fontFamily: 'Helvetica, Arial, sans-serif',
-            fontWeight: 400,
-            cssClass: 'apexcharts-yaxis-label',
+          colors: [],
+          fontSize: '12px',
+          fontFamily: 'Helvetica, Arial, sans-serif',
+          fontWeight: 400,
+          cssClass: 'apexcharts-yaxis-label',
         },
       },
-      
+
     },
     title: {
       text: 'Total Earning per month',
@@ -146,13 +172,14 @@ const TotalEarningScreen = (props) => {
           </Typography>
           <Typography variant="h5">₹ {props.data.allstockssalestotalamt}</Typography>
           <Box mt={2}>
-
+          {totalMonthArray.length>0 && 
             <Chart
               options={optionscolumnchart}
               series={seriescolumnchart}
               type="bar"
-              height="100px"
-            />
+              // height="100px"
+              
+            />}
           </Box>
         </CardContent>
       </Card>
