@@ -12,6 +12,7 @@ import {
   Alert,
 } from "@mui/material";
 import Linechart from "../../../charts/LineChart";
+import PieChart from "../../../charts/PieChart";
 // import { IconArrowUpLeft } from "@tabler/icons";
 // import { IconArrowDownRight } from "@tabler/icons";
 
@@ -22,7 +23,7 @@ const TotalSalesScreen = (props) => {
   const primary = "rgb(93, 135, 255)";
   const primarylight = "rgb(236,242,255)";
   const successlight = "rgb(230,255,250)";
-  
+
   const chartDatas = props.data.allProfitStockList.map(
     (stockDetail) => stockDetail.profit
   );
@@ -54,12 +55,20 @@ const TotalSalesScreen = (props) => {
             Sales Profit
           </Typography>
           <Typography variant="h5">₹ {props.data.totalprofiramt}</Typography>
-          <Linechart
+          {/* <Linechart
+            chartLabel={"Profit per product"}
+            labels={chartLabels}
+            datas={chartDatas}
+            style={{ height: "300px" }}
+          /> */}
+
+          <PieChart
             chartLabel={"Profit per product"}
             labels={chartLabels}
             datas={chartDatas}
             style={{ height: "300px" }}
           />
+
           {/* <Stack direction="row" spacing={1} mt={1} alignItems="center">
                     <Avatar sx={{ bgcolor: errorlight, width: 20, height: 20 }}>
                       <IconArrowDownRight width={16} color="#FA896B" />
