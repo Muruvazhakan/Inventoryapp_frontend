@@ -26,7 +26,7 @@ const AutoStockTable = (props) => {
         },
         {
             field: "quantity",
-            headerName: (props.from === "add" || props.from === "profit" ? "Purchace Rate" : "Sales Rate"),
+            headerName: (props.from === "add" || props.from === "profit" ? "Purchace Rate (₹)" : "Sales Rate (₹)"),
             width: 150,
         },
         {
@@ -36,7 +36,51 @@ const AutoStockTable = (props) => {
         },
         {
             field: "amt",
-            headerName: "Amount",
+            headerName: "Amount (₹)",
+            width: 150,
+        },
+    ];
+
+    const profitcolumns = [
+        { field: "id", headerName: "S.NO", width: 90 },
+        {
+            field: "productid",
+            headerName: "Product Id",
+            width: 150,
+        },
+        {
+            field: "desc",
+            headerName: "Product Description",
+            width: 350,
+        },
+        {
+            field: "rate",
+            headerName: "Purchace Rate (₹)",
+            width: 150,
+        },
+        {
+            field: "purchaceamount",
+            headerName: "Purchace Amount (₹)",
+            width: 180,
+        },
+        {
+            field: "salequantity",
+            headerName: "Sold Quantity",
+            width: 150,
+        },
+        {
+            field: "salerate",
+            headerName: "Sold Rate (₹)",
+            width: 150,
+        },
+        {
+            field: "saleamount",
+            headerName: "Sold Amount (₹)",
+            width: 150,
+        },
+        {
+            field: "profit",
+            headerName: "Profit Amount (₹)",
             width: 150,
         },
     ];
@@ -87,9 +131,12 @@ const AutoStockTable = (props) => {
     );
      displaylist = displaylist?.map((item, index) => {
         item.amt= (item.rate*1*item.quantity).toFixed(2);
+        
         item.status = item.status?item.status:"Active";
         if ((item.quantity === 0 || item.status === 'deleted' || item.status === 'Deleted') && props.screen == "allstocks")
             return null;
+        if(props.screen === "allProfit" )
+            item.profit=(item.profit*1 ).toFixed(2);
         return {...item , id: index + 1
            
              };
@@ -152,7 +199,7 @@ const AutoStockTable = (props) => {
         >
             <ReactTable
                 loading = {tabledetails.isloading}
-                columns={basiccolumns}
+                columns={props.screen !== "allProfit" ? basiccolumns: profitcolumns}
                 data={displaylist.length ? displaylist : []}
                 pageSize={10}
                 enableExportAndPrint={true}

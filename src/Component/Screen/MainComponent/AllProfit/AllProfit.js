@@ -14,73 +14,75 @@ import YourProfits from "../YourProfits/YourProfits";
 import StyleHeader from "../../Header/StyleHeader";
 import EarningScreen from "../EarningScreen/EarningScreen";
 import ReactTable from "../../../table/ReactTable";
+import AutoStockTable from "../../StockTable/AutoStockTable";
 
 const columns = [
-  { field: "id", headerName: "S.NO", width: 90 },
-  {
-    field: "productid",
-    headerName: "Product Id",
-    width: 150,
-  },
-  {
-    field: "desc",
-    headerName: "Product Description",
-    width: 150,
-  },
-  {
-    field: "rate",
-    headerName: "Purchace Rate",
-    width: 150,
-  },
-  {
-    field: "purchaceamount",
-    headerName: "Purchace Amount (₹)",
-    width: 180,
-  },
-  {
-    field: "salequantity",
-    headerName: "Sold Quantity",
-    width: 150,
-  },
-  {
-    field: "salerate",
-    headerName: "Sold Rate",
-    width: 150,
-  },
-  {
-    field: "saleamount",
-    headerName: "Sold Amount (₹)",
-    width: 150,
-  },
-  {
-    field: "profit",
-    headerName: "Profit Amount (₹)",
-    width: 150,
-  },
+    { field: "id", headerName: "S.NO", width: 90 },
+    {
+        field: "productid",
+        headerName: "Product Id",
+        width: 150,
+    },
+    {
+        field: "desc",
+        headerName: "Product Description",
+        width: 350,
+    },
+    {
+        field: "rate",
+        headerName: "Purchace Rate (₹)",
+        width: 150,
+    },
+    {
+        field: "purchaceamount",
+        headerName: "Purchace Amount (₹)",
+        width: 180,
+    },
+    {
+        field: "salequantity",
+        headerName: "Sold Quantity",
+        width: 150,
+    },
+    {
+        field: "salerate",
+        headerName: "Sold Rate (₹)",
+        width: 150,
+    },
+    {
+        field: "saleamount",
+        headerName: "Sold Amount (₹)",
+        width: 150,
+    },
+    {
+        field: "profit",
+        headerName: "Profit Amount (₹)",
+        width: 150,
+    },
 ];
 
 const AllProfit = (props) => {
-  const tabledet = useContext(Stocks);
-  const tableDatas = tabledet.allProfitStockList?.map((item, index) => {
-    return { id: index + 1, ...item };
-  });
-  //   useEffect(() => {
-  //     console.log(" useEffect AllProfit ", tabledet.allProfitStockList, "test");
-  //     tabledet.getAllStocks("AllProfit");
-  //   }, [
-  //     tabledet.allStockData,
-  //     tabledet.allstockstotalamt,
-  //     tabledet.stockHistoryData,
-  //     tabledet.allStockList,
-  //   ]);
-  //   const componentRef = useRef();
-  return (
-    <>
-      {/* <Box className="allstocksdisplaytable" sx={{ flexGrow: 1 }}> */}
-      {/* <YourProfits /> */}
-      <EarningScreen />
-      {/* <StockTable screen="AllProfit" /> */}
-      {/* <Card>
+    const tabledet = useContext(Stocks);
+    const tableDatas = tabledet.allProfitStockList?.map((item, index) => {
+        // item.profit= (item.profit).toFixed(2);
+        return { id: index + 1, ...item };
+    });
+    //   useEffect(() => {
+    //     console.log(" useEffect AllProfit ", tabledet.allProfitStockList, "test");
+    //     tabledet.getAllStocks("AllProfit");
+    //   }, [
+    //     tabledet.allStockData,
+    //     tabledet.allstockstotalamt,
+    //     tabledet.stockHistoryData,
+    //     tabledet.allStockList,
+    //   ]);
+      const componentRef = useRef();
+    return (
+        <>
+            {/* <Box className="allstocksdisplaytable" sx={{ flexGrow: 1 }}> */}
+            {/* <YourProfits /> */}
+            <EarningScreen />
+            {/* <StockTable screen="AllProfit" /> */}
+            <Card>
           <div className="exportExcelbttn ">
             <ReactToPrint
               trigger={() => (
@@ -111,8 +113,11 @@ const AllProfit = (props) => {
           <div ref={componentRef}>
             <StyleHeader>Consolidated Profits!</StyleHeader>
 
-            <StockTable screen="allProfit" from="profit" /> */}
-      <Box
+            {/* <StockTable screen="allProfit" from="profit" /> */}
+
+            <AutoStockTable screen="allProfit" from="profit" />
+
+            {/* <Box
         sx={{
           marginLeft: "20px",
           marginRight: "20px",
@@ -128,12 +133,15 @@ const AllProfit = (props) => {
           pageSize={5}
           enableExportAndPrint={true}
         />
-      </Box>
-      {/* </div>
-        </Card> */}
-      {/* </Box> */}
-    </>
-  );
+      </Box> */}
+
+          
+
+            </div>
+        </Card>
+            {/* </Box> */}
+        </>
+    );
 };
 
 export default AllProfit;
