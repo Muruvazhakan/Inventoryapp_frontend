@@ -118,11 +118,15 @@ const AllProfit = (props) => {
           marginRight: "20px",
           marginTop: "20px",
           marginBottom: "5px",
+        //   borderRadius:"20px",
+        //   border:"25px"
         }}
       >
         <ReactTable
           columns={columns}
           data={tableDatas.length ? tableDatas : []}
+          pageSize={5}
+          enableExportAndPrint={true}
         />
       </Box>
       {/* </div>

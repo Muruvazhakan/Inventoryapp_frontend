@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import Header from "../../Header/Header";
 import StyleHeader from "../../Header/StyleHeader";
 import StockChart from "./StockChart";
+import AutoStockTable from "../../StockTable/AutoStockTable";
 const AllSaleStocks = (props) => {
     const tabledet = useContext(Stocks);
     useEffect(() => {
@@ -73,9 +74,9 @@ const AllSaleStocks = (props) => {
                     <StyleHeader>
                         All Sale Stocks
                     </StyleHeader>
-                    {/* <Header name="All Sale Stocks" /> */}
-                    <StockTable screen="allsalestocks" />
-
+                  
+                    {/* <StockTable screen="allsalestocks" /> */}
+                    <AutoStockTable screen="allsalestocks" />
                 </div>
             </Card>
         </Box>

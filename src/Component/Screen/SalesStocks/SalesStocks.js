@@ -8,6 +8,7 @@ import Header from "../Header/Header";
 import AddStocksGenDetails from "../AddStocks/AddStocksGenDetails";
 import { Stocks } from "../../Context/StocksContex";
 import StyleHeader from "../Header/StyleHeader";
+import AutoStockTable from "../StockTable/AutoStockTable";
 
 const SalesStocks = () => {
 
@@ -31,7 +32,9 @@ const SalesStocks = () => {
                 >
                     <Card>
                         <h2>Edit/Preview Section</h2>
-                        <StockTable screen="sale" from="sale" type="update" />
+                        {/* <StockTable screen="sale" from="sale" type="update" /> */}
+                        <AutoStockTable screen="sale" from="sale" type="update" />
+                       
                     </Card>
                 </Stack>
                 <Stack item width={window.innerWidth <= 960 ? "100%" : "30%"}>

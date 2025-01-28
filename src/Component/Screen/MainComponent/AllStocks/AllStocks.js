@@ -14,6 +14,7 @@ import Header from "../../Header/Header";
 import StyleHeader from "../../Header/StyleHeader";
 import { FiEdit } from "react-icons/fi";
 import StockChart from "../AllSaleStocks/StockChart";
+import AutoStockTable from "../../StockTable/AutoStockTable";
 const AllStocks = (props) => {
     const tabledet = useContext(Stocks);
     const [viewAllAddedStock, setviewAllAddedStock] = useState(false);
@@ -100,8 +101,8 @@ const AllStocks = (props) => {
                         {/* <Header name="All Stocks" /> */}
 
                         {/* <div> All Stocks   </div> */}
-                        <StockTable screen="alladdedstocks" from="add" />
-
+                        {/* <StockTable screen="alladdedstocks" from="add" /> */}
+                        <AutoStockTable screen="alladdedstocks" from="add" />
                     </div>
                 </Card>
             }
@@ -132,9 +133,10 @@ const AllStocks = (props) => {
                         {/* <Header name="Current Stocks" /> */}
                         Current Stocks
                     </StyleHeader>
-                    <StockTable screen="allstocks" from="add" iseditable={iseditable} />
-
+                    {/* <StockTable screen="allstocks" from="add" iseditable={iseditable} /> */}
+                    <AutoStockTable screen="allstocks" from="add" iseditable={iseditable} />
                 </div>
+               
             </Card>
 
 
