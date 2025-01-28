@@ -2,7 +2,16 @@ import React from "react";
 import "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 
-const Barchart = ({ labels, datas, chartLabel, style }) => {
+const Barchart = ({
+  labels,
+  datas,
+  chartLabel,
+  style,
+  enableLineChart,
+  lineChartDatas,
+  lineChartLabel,
+  chartTitle,
+}) => {
   const data = {
     labels: labels ?? [],
     datasets: [
@@ -36,6 +45,21 @@ const Barchart = ({ labels, datas, chartLabel, style }) => {
       },
     ],
   };
+
+  if (enableLineChart) {
+    data.datasets.push({
+      label: lineChartLabel ? lineChartLabel : chartLabel ?? "",
+      data: lineChartDatas ? lineChartDatas : datas ?? [],
+      fill: {
+        opacity: 1,
+      },
+      backgroundColor: ["rgba(27, 85, 121)"],
+      borderColor: ["rgb(255, 99, 132)"],
+      borderRadius: 5,
+      type: "line",
+    });
+  }
+
   const options = {
     maintainAspectRatio: false,
     animation: {
@@ -51,17 +75,28 @@ const Barchart = ({ labels, datas, chartLabel, style }) => {
         });
       },
     },
+    plugins: {
+      title: {
+        display: true,
+        text: chartTitle ?? "Title",
+      },
+    },
   };
   return (
     <>
-      {datas.length > 0 &&
+      {datas.length > 0 && (
         <div
           className="chart-container"
-          style={{ position: "relative", width: "100%", height: "100%", ...style }}
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "100%",
+            ...style,
+          }}
         >
           <Bar data={data} options={options} />
         </div>
-      }
+      )}
     </>
   );
 };

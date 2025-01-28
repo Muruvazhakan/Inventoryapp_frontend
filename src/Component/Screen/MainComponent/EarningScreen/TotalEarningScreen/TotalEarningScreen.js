@@ -19,7 +19,6 @@ const TotalEarningScreen = (props) => {
   // const totalMonthArray = Object.values(props.data.segregatedMonthData).map(item => item.month);
   const totalMonthArray = Object.keys(props.data.segregatedMonthData);
 
-
   return (
     <Container maxWidth="lg">
       <Card variant="elevation">
@@ -43,10 +42,12 @@ const TotalEarningScreen = (props) => {
             <Barchart
               labels={totalMonthArray}
               datas={totalProfitArray}
-              chartLabel={"Total Earning per month"}
+              chartLabel={"Bar Chart"}
+              chartTitle={"Total Earning per month"}
               style={{ height: "300px" }}
+              enableLineChart={true}
+              lineChartLabel={"Line Chart"}
             />
-
           </Box>
         </CardContent>
       </Card>
