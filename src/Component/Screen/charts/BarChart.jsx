@@ -42,6 +42,7 @@ const Barchart = ({
           // "rgb(201, 203, 207)",
         ],
         borderRadius: 5,
+        order: 1,
       },
     ],
   };
@@ -57,6 +58,7 @@ const Barchart = ({
       borderColor: ["rgb(255, 99, 132)"],
       borderRadius: 5,
       type: "line",
+      order: 0,
     });
   }
 
