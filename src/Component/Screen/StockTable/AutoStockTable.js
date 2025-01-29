@@ -1,12 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Stocks } from "../../Context/StocksContex";
-
+import { CompanyDetail } from "../../Context/companyDetailContext";
 import './StockTable.css';
-import { Box, CircularProgress,Stack } from "@mui/material";
+import { Box } from "@mui/material";
 import ReactTable from "../../table/ReactTable";
 
 const AutoStockTable = (props) => {
 
+    const logindet = useContext(CompanyDetail);
     const basiccolumns = [
         { field: "id", headerName: "S.NO", width: 90 },
         {
@@ -26,7 +27,8 @@ const AutoStockTable = (props) => {
         },
         {
             field: "quantity",
-            headerName: (props.from === "add" || props.from === "profit" ? "Purchace Rate (₹)" : "Sales Rate (₹)"),
+            // headerName: (props.from === "add" || props.from === "profit" ? "Purchace Rate (₹)" : "Sales Rate (₹)"),
+            headerName: "Quantity",
             width: 150,
         },
         {
@@ -193,11 +195,13 @@ const AutoStockTable = (props) => {
             }}
         >
             <ReactTable
-                loading = {tabledetails.isloading}
+                loading = {tabledetails.isloading && logindet.isloaded}
                 columns={props.screen !== "allProfit" ? basiccolumns: profitcolumns}
                 data={displaylist.length ? displaylist : []}
                 pageSize={10}
                 enableExportAndPrint={true}
+                totalQuantity={localsumqty1}
+                totalPrice={localsum}
             />
         </Box>
 

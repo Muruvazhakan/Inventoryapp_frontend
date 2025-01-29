@@ -1343,7 +1343,9 @@ const StocksContext = ({ children }) => {
   const segregateDataByMonth = (data) => {
     console.log("segregateDataByMonth");
     console.log(data);
-    return data.reduce((acc, item) => {
+    let valudata = [];
+    data = data.filter(data => data.salestockdate !== "");
+    data.reduce((acc, item) => {
       // Get the month and year from the salestockdate 
       console.log("item segra");
       console.log(item);
@@ -1372,13 +1374,38 @@ const StocksContext = ({ children }) => {
           acc[monthYear].totalProfit += item.totalsalesamt * 1;
           console.log("item acc");
           console.log(acc);
+          valudata = acc;
           return acc;
         }
       }
     }, {});
 
+    console.log("after resultsegregateDataByMonth");
+    console.log(valudata);
+
+    valudata = sortBydate(valudata);
+    console.log("sortedDates valudata");
+    return valudata;
   };
 
+  const sortBydate = (data) => {
+    return Object.fromEntries(
+      Object.entries(data).sort((a, b) => {
+        const [monthA, yearA] = a[0].split(' ');
+        const [monthB, yearB] = b[0].split(' ');
+
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const monthAIndex = months.indexOf(monthA);
+        const monthBIndex = months.indexOf(monthB);
+
+        if (yearA !== yearB) {
+          return yearA - yearB;  // Sort by year
+        }
+        return monthAIndex - monthBIndex;  // Sort by month if years are the same
+      })
+    );
+
+  }
   useEffect(() => {
     // //console.log('local invoice history');
     let count = localstorage.addOrGetStockid('', 'get');

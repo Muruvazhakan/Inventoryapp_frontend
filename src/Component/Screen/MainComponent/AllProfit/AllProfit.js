@@ -6,59 +6,13 @@ import Card from "../../../Style/Card/Card";
 import ReactToPrint from "react-to-print";
 import { Box, Button } from "@mui/material";
 import { Stocks } from "../../../Context/StocksContex";
-import StockTable from "../../StockTable/StockTable";
+
 // import '../AllStocks/AllStocks.css';
-import { Link } from "react-router-dom";
-import Header from "../../Header/Header";
-import YourProfits from "../YourProfits/YourProfits";
+
 import StyleHeader from "../../Header/StyleHeader";
 import EarningScreen from "../EarningScreen/EarningScreen";
-import ReactTable from "../../../table/ReactTable";
-import AutoStockTable from "../../StockTable/AutoStockTable";
 
-const columns = [
-    { field: "id", headerName: "S.NO", width: 90 },
-    {
-        field: "productid",
-        headerName: "Product Id",
-        width: 150,
-    },
-    {
-        field: "desc",
-        headerName: "Product Description",
-        width: 350,
-    },
-    {
-        field: "rate",
-        headerName: "Purchace Rate (₹)",
-        width: 150,
-    },
-    {
-        field: "purchaceamount",
-        headerName: "Purchace Amount (₹)",
-        width: 180,
-    },
-    {
-        field: "salequantity",
-        headerName: "Sold Quantity",
-        width: 150,
-    },
-    {
-        field: "salerate",
-        headerName: "Sold Rate (₹)",
-        width: 150,
-    },
-    {
-        field: "saleamount",
-        headerName: "Sold Amount (₹)",
-        width: 150,
-    },
-    {
-        field: "profit",
-        headerName: "Profit Amount (₹)",
-        width: 150,
-    },
-];
+import AutoStockTable from "../../StockTable/AutoStockTable";
 
 const AllProfit = (props) => {
     const tabledet = useContext(Stocks);

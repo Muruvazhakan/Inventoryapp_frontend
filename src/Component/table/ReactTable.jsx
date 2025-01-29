@@ -22,12 +22,20 @@ const CustomToolbar = () => {
   );
 };
 
-const ReactTable = ({ enableExportAndPrint, columns,loading, data,pageSize, ...props }) => {
+const ReactTable = ({ enableExportAndPrint, columns,loading, data,pageSize,totalQuantity,totalPrice, ...props }) => {
   return (
     <Box sx={{ height: "100%", width: "100%" }}>
       <DataGrid
       loading={loading} 
-      // slots={{ toolbar: GridToolbar }}
+      
+      // components={{
+      //   Footer: () => (
+      //     <div style={{ padding: 10, background: '#f5f5f5', textAlign: 'right' }}>
+      //       <strong>Total Quantity:</strong> {totalQuantity} | <strong>Total Price:</strong> ${totalPrice.toFixed(2)}
+      //     </div>
+      //   ),
+      // }}
+
         rows={data}
         columns={columns}
         initialState={{
@@ -36,11 +44,18 @@ const ReactTable = ({ enableExportAndPrint, columns,loading, data,pageSize, ...p
               pageSize: pageSize,
             },
           },
+          aggregation: {
+            model: {
+              profit: 'sum',
+            },
+          },
         }}
         pageSizeOptions={[5]}
         disableRowSelectionOnClick
         slots={{ toolbar: enableExportAndPrint  ? GridToolbar  : CustomToolbar }}
         {...props}
+
+       
         
       />
     </Box>
