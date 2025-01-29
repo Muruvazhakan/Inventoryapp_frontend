@@ -23,42 +23,41 @@ import ResetPassword from "../Screen/Login/ResetPassword";
 const ScreenRoute = (props) => {
     const logindet = useContext(CompanyDetail);
     return <>
-    <div className="websitecontainer">
-        <ToastContainer position="top-center" theme="colored"/>
-        <Router>
-          
+        <div className="websitecontainer">
+            <ToastContainer position="top-center" theme="colored" />
+            <Router>
                 <div>
                     <NavigationBar />
                     <Routes>
-                    {!logindet.loginstatus ? 
-                    <>
-                    <Route  path='/' Component={Login} /> 
-                    <Route path='/login' Component={Login} />
-                    <Route  path='/signup' Component={SignUp} /> 
-                    <Route  path='/passwordreset' Component={ResetPassword} /> 
-                    </>
-                    :
-                        <>
-                        <Route exact path='/' Component={DisplayAllComponent} />
-                        <Route path='/yourdetail' Component={CompanyEditeScreen} />
-                        <Route path='/addstock' Component={AddStocks} />
-                        <Route path='/stocks' Component={AllStocks} />
-                        <Route path='/listofaddedstocks' Component={ListOfAddedStocks} />
-                        <Route path='/sales' Component={AllSaleStocks} />
-                        <Route path='/salestock' Component={SalesStocks} />
-                        <Route path='/profits' Component={AllProfit} />
-                        <Route path='/listofaddedsalestocks' Component={ListOfAddedSaleStocks} />
-                        <Route path='/login' Component={Login} />
-                        <Route path='/' Component={NoData} />
-                        </> }
+                        {!logindet.loginstatus ?
+                            <>
+                                <Route path='/' Component={Login} />
+                                <Route path='/login' Component={Login} />
+                                <Route path='/signup' Component={SignUp} />
+                                <Route path='/passwordreset' Component={ResetPassword} />
+                            </>
+                            :
+                            <>
+                                <Route exact path='/' Component={DisplayAllComponent} />
+                                <Route path='/yourdetail' Component={CompanyEditeScreen} />
+                                <Route path='/addstock' Component={AddStocks} />
+                                <Route path='/stocks' Component={AllStocks} />
+                                <Route path='/listofaddedstocks' Component={ListOfAddedStocks} />
+                                <Route path='/sales' Component={AllSaleStocks} />
+                                <Route path='/salestock' Component={SalesStocks} />
+                                <Route path='/profits' Component={AllProfit} />
+                                <Route path='/listofaddedsalestocks' Component={ListOfAddedSaleStocks} />
+                                <Route path='/login' Component={Login} />
+                                <Route path='/' Component={NoData} />
+                            </>}
 
-                        
+
                     </Routes>
                     {/* <MainComponent/> */}
-                   
+
                 </div>
-        </Router>
-        
+            </Router>
+
         </div>
         {/* <Developer /> */}
     </>

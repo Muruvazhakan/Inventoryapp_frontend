@@ -1,24 +1,22 @@
-import React from 'react';
+import React from "react";
 
-import './App.css';
+import "./App.css";
 
-import ScreenRoute from './Component/Router/ScreenRoute';
-import Developer from './Component/Screen/ViewScreen/Developer';
+import ScreenRoute from "./Component/Router/ScreenRoute";
+import Developer from "./Component/Screen/ViewScreen/Developer";
 
-import { disableReactDevTools } from '@fvilers/disable-react-devtools';
+import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   disableReactDevTools();
-  console.log = () =>{};
-}
-else{
-  console.log(process.env );
+  console.log = () => {};
+} else {
+  console.log(process.env);
 }
 function App() {
- 
   return (
-    <div className="App">      
-         <ScreenRoute />
+    <div className="App">
+      <ScreenRoute />
     </div>
   );
 }
