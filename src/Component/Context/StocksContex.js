@@ -171,13 +171,14 @@ const StocksContext = ({ children }) => {
       toast.info("Item is added in edit section");
     }
     if (screen == "allstocks" || (screen == "add")) {
-      setList(removedist);
+      // setList(removedist);
     }
-    else {
+    else {  
       setSalesList(removedist)
     }
 
     if (type === "delete") {
+      
       toast.warning("Item Deleted");
     }
     // console.log(hsnlist.length + "list.length " +list.length + "otherchargedetail " + otherchargedetail.length );

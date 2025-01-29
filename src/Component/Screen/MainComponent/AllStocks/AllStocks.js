@@ -9,16 +9,19 @@ import { RiTableView } from "react-icons/ri";
 import { Stocks } from "../../../Context/StocksContex";
 import StockTable from "../../StockTable/StockTable";
 import "./AllStocks.css";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Header from "../../Header/Header";
 import StyleHeader from "../../Header/StyleHeader";
 import { FiEdit } from "react-icons/fi";
 import StockChart from "../AllSaleStocks/StockChart";
 import AutoStockTable from "../../StockTable/AutoStockTable";
+import { PopupModel } from "../../../PopupModel/PopupModel";
+import AddStocks from "../../AddStocks/AddStocks";
 const AllStocks = (props) => {
   const tabledet = useContext(Stocks);
   const [viewAllAddedStock, setviewAllAddedStock] = useState(false);
   const [iseditable, setiseditable] = useState(false);
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     console.log(" useEffect AllStocks ");
     tabledet.getAllStocks("allstocks");
@@ -42,12 +45,11 @@ const AllStocks = (props) => {
       }
     })
     .filter((x) => x !== undefined);
-
+  const handleClose = () => setOpen(false);
   const componentRef = useRef();
   return (
     <>
       <Box className="allstocksdisplaytable" sx={{ flexGrow: 1 }}>
-        {/* <StockTable screen="allstocks" /> */}
         <Card className="listofbuttons">
           <Link
             to={{
@@ -59,7 +61,6 @@ const AllStocks = (props) => {
             </Button>
           </Link>
         </Card>
-
         <Card className="listofbuttons">
           <Link
             to={{
@@ -75,7 +76,6 @@ const AllStocks = (props) => {
             </Button>
           </Link>
         </Card>
-
         <Card className="listofbuttons">
           <Button
             variant="text"
@@ -99,95 +99,26 @@ const AllStocks = (props) => {
 
         {viewAllAddedStock && (
           <Card>
-            <div className="exportExcelbttn ">
-              <ReactToPrint
-                trigger={() => (
-                  <div>
-                    <Button
-                      variant="contained"
-                      color="info"
-                      endIcon={<BsFileEarmarkPdfFill />}
-                    >
-                      Download All Stocks
-                    </Button>
-                  </div>
-                )}
-                content={() => componentRef.current}
-              />
-
-              <div className="excelexport">
-                <Button
-                  variant="contained"
-                  color="success"
-                  size="medium"
-                  endIcon={<BsFiletypeXlsx />}
-                  onClick={() => tabledet.handleExportXlsx("alladdedstocks")}
-                >
-                  Export All Stocks to Excel
-                </Button>
-              </div>
-            </div>
-            <div ref={componentRef}>
-              <StyleHeader>All Stocks</StyleHeader>
-              {/* <Header name="All Stocks" /> */}
-
-              {/* <div> All Stocks   </div> */}
-              {/* <StockTable screen="alladdedstocks" from="add" /> */}
-              <AutoStockTable screen="alladdedstocks" from="add" />
-            </div>
+            <StyleHeader>All Stocks</StyleHeader>
+            <AutoStockTable screen="alladdedstocks" from="add" />
           </Card>
         )}
         <Card>
-          <div className="exportExcelbttn">
-            <ReactToPrint
-              trigger={() => (
-                <div className="">
-                  <Button
-                    variant="contained"
-                    color="info"
-                    endIcon={<BsFileEarmarkPdfFill />}
-                  >
-                    Download Current Stocks
-                  </Button>
-                </div>
-              )}
-              content={() => componentRef.current}
-            />
-            {/* <div className="excelexport" > */}
-            <Button
-              variant="contained"
-              color="success"
-              size="medium"
-              endIcon={<BsFiletypeXlsx />}
-              onClick={() => tabledet.handleExportXlsx("allstocks")}
-            >
-              Export Current Stocks to Excel
-            </Button>
-            <Button
-              variant={iseditable ? "outlined" : "contained"}
-              color="warning"
-              size="medium"
-              endIcon={<FiEdit size={18} />}
-              onClick={() => setiseditable(!iseditable)}
-            >
-              Edit Stocks
-            </Button>
-            {/* </div> */}
-          </div>
-          <div ref={componentRef}>
-            <StyleHeader>
-              {/* <Header name="Current Stocks" /> */}
-              Current Stocks
-            </StyleHeader>
-            {/* <StockTable screen="allstocks" from="add" iseditable={iseditable} /> */}
-            <AutoStockTable
-              screen="allstocks"
-              from="add"
-              iseditable={iseditable}
-            />
-          </div>
+          <StyleHeader>
+            {/* <Header name="Current Stocks" /> */}
+            Current Stocks
+          </StyleHeader>
+          {/* <StockTable screen="allstocks" from="add" iseditable={iseditable} /> */}
+          <AutoStockTable
+            screen="allstocks"
+            from="add"
+            iseditable={iseditable}
+          />
         </Card>
       </Box>
+      <PopupModel open={open} handleClose={handleClose} title="Add Stocks">
+        <AddStocks />
+      </PopupModel>
     </>
   );
 };

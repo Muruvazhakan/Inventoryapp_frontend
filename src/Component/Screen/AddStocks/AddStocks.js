@@ -6,6 +6,7 @@ import { Box, CircularProgress, Grid, Stack } from "@mui/material";
 import Card from "../../Style/Card/Card";
 import { Stocks } from "../../Context/StocksContex";
 import StyleHeader from "../Header/StyleHeader";
+import AutoStockTable from "../StockTable/AutoStockTable";
 
 const AddStocks = (props) => {
   const statckdet = useContext(Stocks);
@@ -18,7 +19,7 @@ const AddStocks = (props) => {
                 <Stack sx={{ color: 'grey.500' }} spacing={2} alignItems={"center"} className="spinnerstyle">
                     <CircularProgress color="success" size={30} />
                 </Stack>
-            } */}
+            } */} 
 
         {/* <Card className="screenHeader"> Add Stocks </Card> */}
 
@@ -31,6 +32,7 @@ const AddStocks = (props) => {
             <Card>
               <h2>Edit/Preview Section</h2>
               <StockTable screen="add" from="add" type="update" />
+              <AutoStockTable screen="add" from="add" type="update" />
             </Card>
           </Stack>
           <Stack item width={window.innerWidth <= 960 ? "100%" : "30%"}>
