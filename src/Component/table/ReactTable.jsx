@@ -3,31 +3,37 @@ import {
   DataGrid,
   GridToolbarContainer,
   GridToolbarExport,
-  GridToolbar
+  GridToolbar,
 } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
-
 
 import "./ReactTable.css";
 
 const CustomToolbar = () => {
   return (
     <GridToolbarContainer>
-      <GridToolbarExport 
-  //      excelOptions={{
-    
-  // }}
-  />
+      <GridToolbarExport
+      //      excelOptions={{
+
+      // }}
+      />
     </GridToolbarContainer>
   );
 };
 
-const ReactTable = ({ enableExportAndPrint, columns,loading, data,pageSize,totalQuantity,totalPrice, ...props }) => {
+const ReactTable = ({
+  enableExportAndPrint,
+  columns,
+  loading,
+  data,
+  pageSize,
+  totalQuantity,
+  totalPrice,
+  ...props
+}) => {
   return (
-    <Box sx={{ height: "100%", width: "100%" }}>
-      <DataGrid
-      loading={loading} 
-      
+    <DataGrid
+      loading={loading}
       // components={{
       //   Footer: () => (
       //     <div style={{ padding: 10, background: '#f5f5f5', textAlign: 'right' }}>
@@ -35,30 +41,26 @@ const ReactTable = ({ enableExportAndPrint, columns,loading, data,pageSize,total
       //     </div>
       //   ),
       // }}
-
-        rows={data}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: pageSize,
-            },
+      sx={{ "& > .MuiDataGrid-main": { display: "grid" } }}
+      rows={data}
+      columns={columns}
+      initialState={{
+        pagination: {
+          paginationModel: {
+            pageSize: pageSize,
           },
-          aggregation: {
-            model: {
-              profit: 'sum',
-            },
+        },
+        aggregation: {
+          model: {
+            profit: "sum",
           },
-        }}
-        pageSizeOptions={[5]}
-        disableRowSelectionOnClick
-        slots={{ toolbar: enableExportAndPrint  ? GridToolbar  : CustomToolbar }}
-        {...props}
-
-       
-        
-      />
-    </Box>
+        },
+      }}
+      pageSizeOptions={[5]}
+      disableRowSelectionOnClick
+      slots={{ toolbar: enableExportAndPrint ? GridToolbar : CustomToolbar }}
+      {...props}
+    />
   );
 };
 

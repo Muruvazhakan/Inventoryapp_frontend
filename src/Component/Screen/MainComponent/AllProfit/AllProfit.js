@@ -13,6 +13,7 @@ import StyleHeader from "../../Header/StyleHeader";
 import EarningScreen from "../EarningScreen/EarningScreen";
 
 import AutoStockTable from "../../StockTable/AutoStockTable";
+import ProfitTable from "./ProfitTable";
 
 const AllProfit = (props) => {
   const tabledet = useContext(Stocks);
@@ -26,12 +27,9 @@ const AllProfit = (props) => {
       <EarningScreen />
 
       <Card>
-        <div ref={componentRef}>
-          <StyleHeader>Consolidated Profits!</StyleHeader>
+        <StyleHeader>Consolidated Profits!</StyleHeader>
 
-          {/* <StockTable screen="allProfit" from="profit" /> */}
-          <AutoStockTable screen="allProfit" from="profit" />
-        </div>
+        <ProfitTable />
       </Card>
     </>
   );

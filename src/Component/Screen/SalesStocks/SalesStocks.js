@@ -1,51 +1,42 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 
-import StockTable from "../StockTable/StockTable";
-import { Box, CircularProgress, Grid, Stack } from "@mui/material";
-import AddStocksForm from "../AddStocks/AddStocksForm/AddStocksForm";
-import Card from "../../Style/Card/Card";
-import Header from "../Header/Header";
-import AddStocksGenDetails from "../AddStocks/AddStocksGenDetails";
-import { Stocks } from "../../Context/StocksContex";
+import { Box, Stack } from "@mui/material";
 import StyleHeader from "../Header/StyleHeader";
-import AutoStockTable from "../StockTable/AutoStockTable";
+import AddedStockListTable from "../AddStocks/AddedStockListTable";
+import ClientForm from "../AddStocks/ClientForm";
+import StockForm from "../AddStocks/AddStocksForm/StockForm";
+import { Stocks } from "../../Context/StocksContex";
 
 const SalesStocks = () => {
+  const tabledetails = useContext(Stocks);
+  const [tableData, setTableData] = useState(tabledetails.saleslist ?? []);
 
-    const tabledet = useContext(Stocks);
-    return <>
-        <Box sx={{ flexGrow: 1, width: "100%" }}>
-            <StyleHeader>
-                Sales Stocks
-            </StyleHeader>
-            {tabledet.isloading &&
-                <Stack sx={{ color: 'grey.500' }} spacing={2} alignItems={"center"} className="spinnerstyle">
-                    <CircularProgress color="success" size={30} />
-                </Stack>
-            }
-
-            {/* <Card className="screenHeader"> Sales Stocks </Card> */}
-            <Stack direction={{ xs: 'column', sm: 'row' }}
-                useFlexGap
-                spacing={{ xs: 1, sm: 1, md: 0 }}>
-                <Stack width={window.innerWidth <= 960 ? "100%" : "70%"}
-                >
-                    <Card>
-                        <h2>Edit/Preview Section</h2>
-                        {/* <StockTable screen="sale" from="sale" type="update" /> */}
-                        <AutoStockTable screen="sale" from="sale" type="update" />
-                       
-                    </Card>
-                </Stack>
-                <Stack item width={window.innerWidth <= 960 ? "100%" : "30%"}>
-                    <AddStocksForm screen="sale" />
-                    <AddStocksGenDetails screen="sale" />
-
-                </Stack>
-            </Stack>
-
+  return (
+    <Box sx={{ padding: "10px" }}>
+      <StyleHeader>Sales Stocks</StyleHeader>
+      <Stack direction={"row"} width={"100%"} flexWrap={"wrap"}>
+        <Box
+          sx={{
+            height: "calc(100vh - 175px)",
+            flex: 0.7,
+          }}
+        >
+          <h2>Edit/Preview Section</h2>
+          <AddedStockListTable tableData={tableData} />
         </Box>
-    </>
-}
+        <Box
+          sx={{
+            height: "calc(100vh - 155px)",
+            overflow: "auto",
+            flex: 0.3,
+          }}
+        >
+          <StockForm getStock={(val) => setTableData([...tableData, val])} />
+          <ClientForm />
+        </Box>
+      </Stack>
+    </Box>
+  );
+};
 
 export default SalesStocks;

@@ -1,27 +1,26 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { BsFileEarmarkPdfFill, BsFiletypeXlsx } from "react-icons/bs";
+import React, { useContext, useEffect, useState } from "react";
 import { FaRegListAlt } from "react-icons/fa";
 import { MdAddChart } from "react-icons/md";
 import Card from "../../../Style/Card/Card";
-import ReactToPrint from "react-to-print";
 import { Box, Button } from "@mui/material";
 import { RiTableView } from "react-icons/ri";
 import { Stocks } from "../../../Context/StocksContex";
-import StockTable from "../../StockTable/StockTable";
 import "./AllStocks.css";
-import { Link, Outlet } from "react-router-dom";
-import Header from "../../Header/Header";
+import { Link } from "react-router-dom";
 import StyleHeader from "../../Header/StyleHeader";
-import { FiEdit } from "react-icons/fi";
 import StockChart from "../AllSaleStocks/StockChart";
-import AutoStockTable from "../../StockTable/AutoStockTable";
-import { PopupModel } from "../../../PopupModel/PopupModel";
-import AddStocks from "../../AddStocks/AddStocks";
-const AllStocks = (props) => {
+
+import CurrentStocksTable from "./CurrentStocksTable";
+import AllStocksTable from "./AllStocksTable";
+
+const AllStocks = () => {
   const tabledet = useContext(Stocks);
   const [viewAllAddedStock, setviewAllAddedStock] = useState(false);
-  const [iseditable, setiseditable] = useState(false);
-  const [open, setOpen] = useState(false);
+  const paths = [`addstock`, `listofaddedstocks`];
+  const buttonNames = [" Add Stocks", "View List of added Stocks"];
+  const icons = [<MdAddChart />, <FaRegListAlt />];
+  const colors = ["success", "secondary"];
+
   useEffect(() => {
     console.log(" useEffect AllStocks ");
     tabledet.getAllStocks("allstocks");
@@ -32,50 +31,29 @@ const AllStocks = (props) => {
     tabledet.allStockList,
   ]);
 
-  let displaylist = tabledet.allStockList
-    .map((item, index) => {
-      if (
+  //chart data
+  let displaylist = tabledet.allStockList.filter(
+    (item) =>
+      !(
         item.quantity === 0 ||
         item.status === "deleted" ||
         item.status === "Deleted"
-      ) {
-      } else {
-        // sum1 = sum1 + (item.quantity * 1 * item.rate)
-        return item;
-      }
-    })
-    .filter((x) => x !== undefined);
-  const handleClose = () => setOpen(false);
-  const componentRef = useRef();
+      )
+  );
+
   return (
     <>
-      <Box className="allstocksdisplaytable" sx={{ flexGrow: 1 }}>
-        <Card className="listofbuttons">
-          <Link
-            to={{
-              pathname: `/addstock`,
-            }}
-          >
-            <Button variant="outlined" color="success" endIcon={<MdAddChart />}>
-              Add Stocks
-            </Button>
-          </Link>
-        </Card>
-        <Card className="listofbuttons">
-          <Link
-            to={{
-              pathname: `/listofaddedstocks`,
-            }}
-          >
-            <Button
-              variant="outlined"
-              color="secondary"
-              endIcon={<FaRegListAlt />}
-            >
-              View List of added Stocks
-            </Button>
-          </Link>
-        </Card>
+      <Box className="allstocksdisplaytable">
+        {paths.map((item, index) => (
+          <CustomCard
+            key={index}
+            path={item}
+            buttonName={buttonNames[index]}
+            icon={icons[index]}
+            color={colors[index]}
+          />
+        ))}
+
         <Card className="listofbuttons">
           <Button
             variant="text"
@@ -97,29 +75,33 @@ const AllStocks = (props) => {
           />
         </Card>
 
-        {viewAllAddedStock && (
-          <Card>
-            <StyleHeader>All Stocks</StyleHeader>
-            <AutoStockTable screen="alladdedstocks" from="add" />
-          </Card>
-        )}
         <Card>
-          <StyleHeader>
-            {/* <Header name="Current Stocks" /> */}
-            Current Stocks
-          </StyleHeader>
-          {/* <StockTable screen="allstocks" from="add" iseditable={iseditable} /> */}
-          <AutoStockTable
-            screen="allstocks"
-            from="add"
-            iseditable={iseditable}
-          />
+          {viewAllAddedStock ? (
+            <>
+              <StyleHeader>All Stocks</StyleHeader>
+              <AllStocksTable data={tabledet.allStockAddedList} />
+            </>
+          ) : (
+            <>
+              <StyleHeader>Current Stocks</StyleHeader>
+              <CurrentStocksTable />
+            </>
+          )}
         </Card>
       </Box>
-      <PopupModel open={open} handleClose={handleClose} title="Add Stocks">
-        <AddStocks />
-      </PopupModel>
     </>
+  );
+};
+
+const CustomCard = ({ path, buttonName, icon, color }) => {
+  return (
+    <Card className="listofbuttons">
+      <Link to={path}>
+        <Button variant="outlined" color={color} endIcon={icon}>
+          {buttonName}
+        </Button>
+      </Link>
+    </Card>
   );
 };
 

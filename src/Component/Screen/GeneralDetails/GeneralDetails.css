@@ -1,66 +1,64 @@
 .generaldetails {
-    display: flex;
-    align-items: center;
-    text-align: justify;
-    justify-content: space-between;
-    margin: -2% 1% 0 0;
-    font-size: small;
+  display: flex;
+  align-items: center;
+  text-align: justify;
+  justify-content: space-between;
+  font-size: small;
 }
-.allestimatedisplay{
-   
-    /* display: flex;
-    align-items: center;
-    text-align: justify; */
-    /* justify-content: space-evenly; */
-    /* margin: -2% 1% 0 0; */
-    font-size: medium;
-    padding-right: 2%;
+.allestimatedisplay {
+  font-size: medium;
+  padding-right: 2%;
 }
-.nameheigh{
-    font-weight: bolder;
-    font-size: larger;
-    padding: 2px;
+.nameheigh {
+  font-weight: bolder;
+  font-size: larger;
+  padding: 2px;
 }
 .details {
-
-    list-style-type: none;
-    /* margin-top: -1px; */
-
+  list-style-type: none;
 }
 
 .invoicedetails {
-    margin-right: 20px;
+  margin-right: 20px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
 }
 
 .companyname {
-    font-size: larger;
-    font-weight: bolder;
+  font-size: larger;
+  font-weight: bolder;
 }
 
 .estimatedetails {
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
 }
 
 .big {
-    margin-top: 5%;
-    font-size: x-large;
-
+  margin-top: 5%;
+  font-size: x-large;
 }
 
 .gap {
-    margin-top: 10px;
+  margin-top: 10px;
 }
-.tagline{
-    color: rgb(189, 81, 62);
+.tagline {
+  color: rgb(189, 81, 62);
 }
-.estimateheader{
-    padding-bottom: 5px;
-   
+.estimateheader {
+  padding-bottom: 5px;
 }
-.estimateheadercenter{
-    display: flex;
-    justify-content: center;
+.estimateheadercenter {
+  display: flex;
+  justify-content: center;
+}
+
+.marginTop {
+  margin-top: 5px;
+}
+.marginBottom {
+  margin-top: 5px;
 }

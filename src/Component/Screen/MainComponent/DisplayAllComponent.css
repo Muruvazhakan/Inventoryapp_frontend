@@ -2,35 +2,26 @@
   cursor: pointer;
   border-radius: 20px;
   display: flex;
-  /* width: 400px;
-  height: 300px; */
   align-items: center;
-  /* background-color: #4f4f4f; */
   background: linear-gradient(#2376a3, #010101db);
   color: aliceblue;
   justify-content: center;
-  /* flex-direction: column; */
-
-  /* height: 100px; */
 }
 
-.listofstickexcelbtn{
+.listofstickexcelbtn {
   margin-top: 5px;
 }
 
 .displayelements {
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  /* margin-top: 1%; */
+  /* display: flex;
+  align-items: stretch; */
+  /* justify-content: center; */
   padding-top: 5px;
-  flex-flow: wrap;
-  /* flex-direction: column; */
+  /* flex-flow: wrap; */
 }
 
 .linkdecor {
   text-decoration: none;
-  /* color: rgb(238, 193, 56); */
   color: black;
 }
 
@@ -51,5 +42,4 @@
   margin-left: 50%;
   display: flex;
   position: absolute;
-
 }

@@ -1,47 +1,39 @@
-import React, { useContext, useEffect } from "react";
-import AddStocksForm from "./AddStocksForm/AddStocksForm";
-import AddStocksGenDetails from "./AddStocksGenDetails";
-import StockTable from "../StockTable/StockTable";
-import { Box, CircularProgress, Grid, Stack } from "@mui/material";
-import Card from "../../Style/Card/Card";
-import { Stocks } from "../../Context/StocksContex";
-import StyleHeader from "../Header/StyleHeader";
-import AutoStockTable from "../StockTable/AutoStockTable";
+import React, { useState } from "react";
 
-const AddStocks = (props) => {
-  const statckdet = useContext(Stocks);
+import { Box, Stack } from "@mui/material";
+import StyleHeader from "../Header/StyleHeader";
+import AddedStockListTable from "./AddedStockListTable";
+import StockForm from "./AddStocksForm/StockForm";
+import ClientForm from "./ClientForm";
+
+const AddStocks = () => {
+  const [tableData, setTableData] = useState([]);
 
   return (
-    <>
-      <Box sx={{ flexGrow: 1, width: "100%" }}>
-        <StyleHeader>Add Stocks</StyleHeader>
-        {/* {statckdet.isloading &&
-                <Stack sx={{ color: 'grey.500' }} spacing={2} alignItems={"center"} className="spinnerstyle">
-                    <CircularProgress color="success" size={30} />
-                </Stack>
-            } */} 
-
-        {/* <Card className="screenHeader"> Add Stocks </Card> */}
-
-        <Stack
-          direction={{ xs: "column", sm: "row" }}
-          useFlexGap
-          spacing={{ xs: 1, sm: 1, md: 0 }}
+    <Box sx={{ padding: "10px" }}>
+      <StyleHeader>Add Stocks</StyleHeader>
+      <Stack direction={"row"} width={"100%"} flexWrap={"wrap"}>
+        <Box
+          sx={{
+            height: "calc(100vh - 175px)",
+            flex: 0.7,
+          }}
         >
-          <Stack item width={window.innerWidth <= 960 ? "100%" : "70%"}>
-            <Card>
-              <h2>Edit/Preview Section</h2>
-              <StockTable screen="add" from="add" type="update" />
-              <AutoStockTable screen="add" from="add" type="update" />
-            </Card>
-          </Stack>
-          <Stack item width={window.innerWidth <= 960 ? "100%" : "30%"}>
-            <AddStocksForm screen="add" />
-            <AddStocksGenDetails screen="add" />
-          </Stack>
-        </Stack>
-      </Box>
-    </>
+          <h2>Edit/Preview Section</h2>
+          <AddedStockListTable tableData={tableData} />
+        </Box>
+        <Box
+          sx={{
+            height: "calc(100vh - 155px)",
+            overflow: "auto",
+            flex: 0.3,
+          }}
+        >
+          <StockForm getStock={(val) => setTableData([...tableData, val])} />
+          <ClientForm />
+        </Box>
+      </Stack>
+    </Box>
   );
 };
 
