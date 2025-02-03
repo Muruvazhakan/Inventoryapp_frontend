@@ -61,6 +61,7 @@ const ScreenRoute = () => {
             path="*"
             element={
               <h1>
+                <Home />
                 <NoData details="Page Found" />
               </h1>
             }
