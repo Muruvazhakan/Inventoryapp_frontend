@@ -48,18 +48,6 @@ const CompanyDetailContext = ({ children }) => {
   const [type, settype] = useState("temp");
   const [oraganisationName, setoraganisationName] = useState("");
 
-  // let companydet = [
-  //     { id: 1, title: 'Prices', isvisible: true, desc: 'Prices quoted are strictly as per the size, quantity and design SPECIFIED only, Any change in either one will result in change in quoted price, If any change in Government taxes & regulations it will be implicated in pricing as per actual.' },
-  //     { id: 2, title: 'Billing format', isvisible: true, desc: 'Billing will be done for individual items & rates specified for individual items only tolerance of (+/-) 25mm will not affect the rate per Sqft quoted.' },
-  //     { id: 3, title: 'Payment & Supply of Materials', isvisible: true, desc: '50% Advance' },
-  //     { id: 4, title: '', isvisible: true, desc: '30% after start work' },
-  //     { id: 5, title: '', isvisible: true, desc: '20% after completion' },
-  //     { id: 6, title: '', isvisible: true, desc: 'Supply of materials will be done within 15 days from the date of receipt order and advance payments along with confirmed sizes & Design.' },
-  //     { id: 7, title: '', isvisible: true, desc: 'The materials will be taken for production once the Order and advance payments are received. Work order & Payments to be made. We can also work in line with your schedule of works.' },
-  //     { id: 8, title: 'Installation', isvisible: true, desc: 'We carry out the work once the materials reach the site. The Sequence of work will however have to be mutually agreed upon.' },
-  //     { id: 9, title: 'Warranty', isvisible: true, desc: 'All the Extrusions used will carry a warranty of 15 years. All the accessories used will have a warranty of one year under any manufacturing defects. The above warranty does not include mishandling of products & natural calamities like fire, earth quake etc.,' },
-  // ];
-
   const [companydetails, setcompanydetails] = useState([]);
   const [companydetailtitle, setcompanydetailtitle] = useState("");
   const [companydetaildesc, setcompanydetaildesc] = useState("");
@@ -589,8 +577,6 @@ const CompanyDetailContext = ({ children }) => {
     setcompanyOwner,
     companydetails,
     setcompanydetails,
-    companyBankdetails,
-    setcompanyBankdetails,
     companythankyou,
     setcompanythankyou,
     companytitle,
@@ -615,14 +601,6 @@ const CompanyDetailContext = ({ children }) => {
     tokenid,
     settokenid,
     logoutHandler,
-    companyBankdetailtitle,
-    setcompanyBankdetailtitle,
-    companyBankdetailvalue,
-    setcompanyBankdetailvalue,
-    companyBankdetailIsVisible,
-    setcompanyBankdetailIsVisible,
-    companydetailIsVisible,
-    setcompanydetailIsVisible,
     loginuserid,
     setloginuserid,
     saveHandler,

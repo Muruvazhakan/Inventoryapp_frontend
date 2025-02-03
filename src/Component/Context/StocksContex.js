@@ -43,12 +43,7 @@ const StocksContext = ({ children }) => {
   const [clientList, setclientList] = useState([]);
   const [totalsubamt, setsubtotalamt] = useState(0);
   const [editprodid, seteditprodid] = useState(false);
-  const [totaltaxvalueamt, settotaltaxvalueamt] = useState(0);
   const [totalamtwords, settotalamtwords] = useState("");
-
-  const [hsn, sethsn] = useState(0);
-
-  const [rateinctax, setrateinctax] = useState(0);
 
   const [per, setper] = useState("");
   const [disc, setdisc] = useState(15);
@@ -62,8 +57,6 @@ const StocksContext = ({ children }) => {
   const [salestockid, setsalestockid] = useState("");
   const [clientid, setclientid] = useState(null);
   const [cleardetailoption, setcleardetailoption] = useState(true);
-  const [gstincluded, setgstincluded] = useState(true);
-  const [displayhsntable, setdisplayhsntable] = useState(false);
   const [stockidcount, setstockidcount] = useState(1000);
   const [salestockidcount, setsalestockidcount] = useState(1000);
   const [stockdate, setstockdate] = useState("");
@@ -73,44 +66,9 @@ const StocksContext = ({ children }) => {
   const [loginuser, setloginuser] = useState(
     localstorage.addOrGetUserdetail("", "userid", "get")
   );
-  const [gstCgstitem, setgstCgstitem] = useState([
-    {
-      desc: "OUTPUTCGST9%",
-      name: "cgst",
-      amount: 0,
-    },
-    {
-      desc: "OUTPUTSGST9%",
-      name: "sgst",
-      amount: 0,
-    },
-  ]);
-  const [singlehsnitem, setsinglehsnitem] = useState({
-    id: 1,
-    hsndesc: "",
-    taxvalue: 0,
-    ctrate: 0,
-    ctamount: 0,
-    strate: 0,
-    stamount: 0,
-    amount: 0,
-  });
-  const [ctrate, setctrate] = useState(0);
-  const [ctatm, setctatm] = useState(0);
-  const [strate, setstrate] = useState(0);
-  const [statm, setstatm] = useState(0);
 
-  const [totalhsnamt, settotalhsnamt] = useState(0);
-
-  const [totalcentaxamt, settotalcentaxamt] = useState(0);
-  const [totalstatetaxamt, settotalstatetaxamt] = useState(0);
-  const [hsnlist, sethsnList] = useState([]);
-  const [totalhsnamtwords, settotalhsnamtwords] = useState("");
   const [isinstallationcharge, setisinstallationcharge] = useState(false);
   const [otherchargedetail, setOtherchargedetail] = useState([]);
-  const [otherdesc, setotherdesc] = useState("");
-  const [ischargedinhsn, setischargedinhsn] = useState(true);
-  const [otherdescamt, setotherdescamt] = useState(0);
   const [allStockData, setallStockData] = useState([]);
   const [stockHistoryData, setstockHistoryData] = useState([]);
   const [salesStockHistoryData, setSalesstockHistoryData] = useState([]);
@@ -216,52 +174,6 @@ const StocksContext = ({ children }) => {
       // console.log(localsum);
       // settotalamt(localsum);
       return localsum;
-    }
-  };
-
-  const addOrEditOtherItems = (item, type) => {
-    const removedist = otherchargedetail.filter((alllist) => {
-      return alllist.id != item.id;
-    });
-
-    if (type === "update") {
-      // console.log("addOrEditOtherItems ");
-
-      // console.log("removalitem ");
-
-      // console.log(item);
-      // setotherdesc()
-      setotherdesc(item.otheritemdesc);
-      setotherdescamt(item.otherdesctaxamt);
-      setischargedinhsn(item.ischargedinhsn);
-      setOtherchargedetail(removedist);
-      // toast.info("Other Item added to edit section");
-    } else if (type === "delete") {
-      setOtherchargedetail(removedist);
-      // toast.success("Other Item Deleted");
-    } else if (type === "add") {
-      if (
-        otherdesc.length > 0 &&
-        otherdescamt > 0 &&
-        ctrate > 0 &&
-        strate > 0
-      ) {
-        let singleOtherItem = {
-          id: uuidv4(),
-          otheritemdesc: otherdesc,
-          otherdescamt: otherdescamt,
-          otherdesctaxamt: otherdescamt,
-          ischargedinhsn: ischargedinhsn,
-        };
-
-        setOtherchargedetail([...otherchargedetail, singleOtherItem]);
-
-        // toast.success("Other Item added");
-      } else if (ctrate <= 0 && strate <= 0) {
-        // toast.error("Please fill HSN Tax rate");
-      } else {
-        // toast.error("Please fill in all inputs in Other details");
-      }
     }
   };
 
@@ -405,19 +317,6 @@ const StocksContext = ({ children }) => {
     setamount(0);
     setavailablestock(0);
     setsalerate(0);
-  };
-
-  const addOtherItems = () => {
-    addOrEditOtherItems("", "add");
-    if (cleardetailoption) {
-      clearOtherDetails();
-    }
-  };
-
-  const clearOtherDetails = () => {
-    setotherdesc("");
-    setotherdescamt(0);
-    setischargedinhsn(true);
   };
 
   const saveLocalStock = (singlestock, screen) => {
@@ -1463,70 +1362,27 @@ const StocksContext = ({ children }) => {
     settotalamt,
     totalamtwords,
     settotalamtwords,
-    singlehsnitem,
-    setsinglehsnitem,
     setval,
     setboxColors,
     cleardetailoption,
     setcleardetailoption,
-    hsn,
-    sethsn,
     quantity,
     setquantity,
-    rateinctax,
-    setrateinctax,
     rate,
     setrate,
-    per,
-    setper,
-    disc,
-    setdisc,
     amount,
     setamount,
-    otherdesc,
-    setotherdesc,
-    ischargedinhsn,
-    setischargedinhsn,
-    otherdescamt,
-    setotherdescamt,
-    totalhsnamt,
-    settotalhsnamt,
-    hsnlist,
-    sethsnList,
-    totalhsnamtwords,
-    settotalhsnamtwords,
     totalsubamt,
     saveStock,
     addOrUpdateItemHandler,
     clearlistcontent,
-    clearOtherDetails,
-    addOtherItems,
     setsubtotalamt,
-    gstCgstitem,
-    setgstCgstitem,
-    ctrate,
-    setctrate,
-    strate,
-    setstrate,
-    ctatm,
-    setctatm,
-    statm,
-    setstatm,
-    totaltaxvalueamt,
-    settotaltaxvalueamt,
     dateHandler,
-    gstincluded,
-    setgstincluded,
-    totalcentaxamt,
-    settotalcentaxamt,
-    totalstatetaxamt,
-    settotalstatetaxamt,
     isinstallationcharge,
     setisinstallationcharge,
     otherchargedetail,
     setOtherchargedetail,
     editListRows,
-    addOrEditOtherItems,
     stockid,
     setstockid,
     stockdate,
@@ -1549,8 +1405,6 @@ const StocksContext = ({ children }) => {
     setinvoiceHistroyUpdateFlag,
     selectedStockEdit,
     cleartallStock,
-    displayhsntable,
-    setdisplayhsntable,
 
     singlestockitem,
     setsinglestockitem,
