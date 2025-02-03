@@ -1,4 +1,3 @@
-import Chart from "react-apexcharts";
 import { Container, Card, CardContent, Box, Typography } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { axisClasses } from "@mui/x-charts/ChartsAxis";

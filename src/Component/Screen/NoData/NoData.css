@@ -1,7 +1,7 @@
 .nodata-stytle{
     justify-content: center;
     /* text-decoration: solid; */
-    color: red;
+    color: rgba(194, 51, 51, 0.886);
     font-weight: 800;
     font-size: 25px;
     display: flex;

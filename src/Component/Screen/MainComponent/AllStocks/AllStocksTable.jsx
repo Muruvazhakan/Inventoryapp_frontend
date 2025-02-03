@@ -4,7 +4,7 @@ import { CompanyDetail } from "../../../Context/companyDetailContext";
 import ReactTable from "../../../table/ReactTable";
 
 const basiccolumns = [
-  { field: "id", headerName: "S.NO", width: 90 },
+  { field: "sno", headerName: "S.NO", width: 90 },
   {
     field: "productid",
     headerName: "Product Id",
@@ -41,7 +41,12 @@ const basiccolumns = [
 const AllStocksTable = ({ data }) => {
   const logindet = useContext(CompanyDetail);
   const tabledetails = useContext(Stocks);
-
+  data = data.map((data,index)=>{
+    return {
+      sno : index+1,
+      ...data
+    }
+  })
   const tableList = data ?? [];
 
   return (

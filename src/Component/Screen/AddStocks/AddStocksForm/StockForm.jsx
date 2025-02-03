@@ -9,7 +9,6 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useContext, useState } from "react";
-import { ToastContainer } from "react-toastify";
 import { Stocks } from "../../../Context/StocksContex";
 import { GrClearOption } from "react-icons/gr";
 import { BsSave } from "react-icons/bs";
@@ -31,11 +30,7 @@ const StockForm = ({ getStock }) => {
   return (
     <FormGroup>
       <Card>
-        <ToastContainer
-          position="top-center"
-          theme="colored"
-          containerId="Invoice"
-        />
+
         <h3> Stocks Data</h3>
         <FormGroup>
           <FormControl>

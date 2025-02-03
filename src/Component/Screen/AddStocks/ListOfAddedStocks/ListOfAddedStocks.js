@@ -67,7 +67,7 @@ const ListOfAddedStocks = () => {
               return (
                 <Box sx={{ width: "300px" }}>
                   <Card key={index}>
-                    <ul className="details invoicedetails ">
+                    <ul className="details invoicedetails details ">
                       <li>
                         <div className="companyname">
                           Stock ID: {item.stockid}

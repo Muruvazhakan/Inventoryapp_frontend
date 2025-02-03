@@ -13,7 +13,6 @@ import CompanyEditeScreen from "../Screen/ViewScreen/CompanyotherDetail/CompanyE
 import Login from "../Screen/Login/Login";
 import { CompanyDetail } from "../Context/companyDetailContext";
 import SignUp from "../Screen/Login/SignUp";
-import { ToastContainer } from "react-toastify";
 import AddStocks from "../Screen/AddStocks/AddStocks";
 import AllStocks from "../Screen/MainComponent/AllStocks/AllStocks";
 
@@ -26,11 +25,11 @@ import AllProfit from "../Screen/MainComponent/AllProfit/AllProfit";
 import ResetPassword from "../Screen/Login/ResetPassword";
 import Stocks from "../Screen/MainComponent/AllStocks/Stocks";
 import Home from "./Home";
+import NoData from "../Screen/NoData/NoData";
 
 const ScreenRoute = () => {
   return (
     <div style={{ width: "100%", height: "100%", overflow: "auto" }}>
-      <ToastContainer position="top-center" theme="colored" />
       <Router>
         <Routes>
           <Route path="/" Component={Home}>
@@ -58,7 +57,14 @@ const ScreenRoute = () => {
             </Route>
           </Route>
 
-          <Route path="*" element={<h1>Page not found</h1>} />
+          <Route
+            path="*"
+            element={
+              <h1>
+                <NoData details="Page Found" />
+              </h1>
+            }
+          />
         </Routes>
       </Router>
     </div>

@@ -3,12 +3,8 @@ import { BsFileEarmarkPdfFill, BsFiletypeXlsx } from "react-icons/bs";
 import { FaRegListAlt } from "react-icons/fa";
 import { MdAddChart } from "react-icons/md";
 import Card from "../../../Style/Card/Card";
-import ReactToPrint from "react-to-print";
 import { Box, Button } from "@mui/material";
 import { Stocks } from "../../../Context/StocksContex";
-
-// import '../AllStocks/AllStocks.css';
-
 import StyleHeader from "../../Header/StyleHeader";
 import EarningScreen from "../EarningScreen/EarningScreen";
 

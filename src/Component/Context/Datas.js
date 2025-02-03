@@ -1,5 +1,4 @@
 import companyperson from "../../Image/mycompanyf.png";
-import salestockimage from "../../Image/salestockimage.png";
 import mystock from "../../Image/mystocks.png";
 import profit from "../../Image/profit.png";
 import mysalesf from "../../Image/mysalesf.png";
@@ -63,13 +62,8 @@ export const userLogin = [
 
 export const userLoginname = [
   {
-    userid: "12",
-    username: "JR modular",
-    userPass: "jrmodular123",
-  },
-  {
-    userid: "13",
+    userid: "11",
     username: "Other1",
-    userPass: "jrmodular123",
+    userPass: "11",
   },
 ];

@@ -5,7 +5,6 @@ import { MdLogin } from "react-icons/md";
 
 import Card from "../../Style/Card/Card";
 import { CompanyDetail } from "../../Context/companyDetailContext";
-import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
@@ -34,12 +33,6 @@ const Login = (props) => {
 
   return (
     <div className="displaycontent">
-      <ToastContainer
-        position="top-center"
-        theme="colored"
-        containerId="Login"
-        autoClose={50}
-      />
       <Card className="logincard displaycontent">
         <Box
           component="form"

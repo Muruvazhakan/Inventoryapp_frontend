@@ -15,11 +15,11 @@ const basiccolumns = [
     headerName: "Product Description",
     width: 350,
   },
-  {
-    field: "status",
-    headerName: "Status",
-    width: 150,
-  },
+  // {
+  //   field: "status",
+  //   headerName: "Status",
+  //   width: 150,
+  // },
   {
     field: "quantity",
     // headerName: (props.from === "add" || props.from === "profit" ? "Purchace Rate (₹)" : "Sales Rate (₹)"),

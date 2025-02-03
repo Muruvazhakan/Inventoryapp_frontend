@@ -5,7 +5,6 @@ import React, {
   useState,
   useTimeout,
 } from "react";
-import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import * as Datas from "../Context/Datas";
 import * as localstore from "./localStorageData";
@@ -204,7 +203,7 @@ const CompanyDetailContext = ({ children }) => {
     console.log(response);
     if (response.status === 200) {
       // setstate('');
-      toast.success("Image Uploaded!");
+      // toast.success("Image Uploaded!");
       // const reader = new FileReader();
       // reader.addEventListener('load', () => {
       //     localStorage.setItem('recent-image', reader.result);
@@ -218,7 +217,7 @@ const CompanyDetailContext = ({ children }) => {
       setcompanyImage(`${imageBaseUrl}/${response.data}`);
       // setuploadimg(event.target.files[0]);
     } else {
-      toast.warning(" Something went wrong" + response.data);
+      // toastwarning(" Something went wrong" + response.data);
     }
     setisloaded(true);
   };
@@ -255,7 +254,7 @@ const CompanyDetailContext = ({ children }) => {
         );
         //console.log(userExsist);
         if (userExsist.status === 200) {
-          toast.success(" Welcome " + loginuser + "!");
+          // toast.success(" Welcome " + loginuser + "!");
           // localStorage.setItem('loginuser', loginuser);
           //console.log(userExsist[0].userid + ' userExsist.userid');
           setloginuserid(userExsist.data);
@@ -270,17 +269,17 @@ const CompanyDetailContext = ({ children }) => {
           getAlldataOnLogin();
           return true;
         } else if (userExsist.status === 224) {
-          toast.warning("User Not Found");
+          // toastwarning("User Not Found");
         } else if (userExsist.status === 250) {
-          toast.warning(
-            "Sorry! Your account Expired. Contact your System Admin."
-          );
+          // toast.warning(
+          //   "Sorry! Your account Expired. Contact your System Admin."
+          // );
         } else {
-          toast.warning(userExsist.data);
+          // toastwarning(userExsist.data);
         }
       } else if (logintype === "sigin") {
         if (loginUserPassword !== loginUserConfirmPassword) {
-          toast.error("Password is not match with Confirm Password");
+          // toasterror("Password is not match with Confirm Password");
           return;
         }
         // if (tokenid !== 'Billedge123') {
@@ -297,17 +296,17 @@ const CompanyDetailContext = ({ children }) => {
         );
         //console.log(userExsist);
         if (userExsist.data === "User already exist") {
-          toast.error(" User already exist");
+          // toasterror(" User already exist");
           // setloginstatus(true);
         } else if (userExsist.status === 201) {
-          toast.success(" User successfully registered");
+          // toast.success(" User successfully registered");
           //console.log(userExsist.data);
         } else {
-          toast.warning(userExsist.data);
+          // toastwarning(userExsist.data);
         }
       } else if (logintype === "reset") {
         if (loginUserPassword !== loginUserConfirmPassword) {
-          toast.error("Password is not match with Confirm Password");
+          // toasterror("Password is not match with Confirm Password");
           return;
         }
         // if (tokenid !== 'Billedge123') {
@@ -321,22 +320,22 @@ const CompanyDetailContext = ({ children }) => {
         );
         //console.log(userExsist);
         if (userExsist.data === "User does not exist") {
-          toast.error("User does not exist");
+          // toasterror("User does not exist");
           // setloginstatus(true);
         } else if (userExsist.status === 201) {
-          toast.success("Password Changed!");
+          // toast.success("Password Changed!");
           //console.log(userExsist.data);
         } else {
-          toast.warning(userExsist.data);
+          // toastwarning(userExsist.data);
         }
       }
       setisloaded(true);
       // if (loginuser === "JR modular" && loginUserPassword === "jrmodular123") {
-      //     toast.success(" Welcome " + loginuser + "!");
+      //    // toast.success(" Welcome " + loginuser + "!");
       //     setloginstatus(true);
       // }
     } else {
-      toast.error("Please fill both User Name and Password");
+      // toasterror("Please fill both User Name and Password");
       return;
     }
   };
@@ -354,7 +353,7 @@ const CompanyDetailContext = ({ children }) => {
     setloginstatus(false);
     setloginuserid(null);
     setloginuser("");
-    toast.success("You have successfully logedout");
+    // toast.success("You have successfully logedout");
     return true;
   };
 
@@ -410,16 +409,16 @@ const CompanyDetailContext = ({ children }) => {
         //     setcompanyImage(getCompanyImage);
         // }
       } else if (companyBasicDetailsfromdb.status === 250) {
-        toast.warning(
-          "Sorry! Your account Expired, You will be logout in 5 sec"
-        );
+        // toast.warning(
+        //   "Sorry! Your account Expired, You will be logout in 5 sec"
+        // );
         // useTimeout(()=>{
         //     logoutHandler();
         // }, 5000)
         handletimeoutLogin(5000);
         return false;
       } else {
-        toast.warning(companyBasicDetailsfromdb.data);
+        // toastwarning(companyBasicDetailsfromdb.data);
       }
 
       let stockidcounter = localstore.addOrGetStockid("", "get");
@@ -495,7 +494,7 @@ const CompanyDetailContext = ({ children }) => {
       companydetailtitle.length === 0 &&
       companydetaildesc.length === 0
     ) {
-      toast.error("Both Details are Empty");
+      // toasterror("Both Details are Empty");
       return;
     }
     //console.log('type ' + type);
@@ -515,7 +514,7 @@ const CompanyDetailContext = ({ children }) => {
       } else {
         setcompanydetails([getresul]);
       }
-      toast.success("Details are Added");
+      // toast.success("Details are Added");
       setcompanydetailtitle("");
       setcompanydetaildesc("");
       setcompanydetailIsVisible(false);
@@ -526,14 +525,14 @@ const CompanyDetailContext = ({ children }) => {
       });
       //console.log(getresul);
       setcompanydetails(getresul);
-      toast.success("Details deleted");
+      //// toast.success("Details deleted");
     }
   };
 
   const saveHandler = async (funcs, item, type) => {
     setisloaded(true);
 
-    toast.success("Details are saved");
+    // toast.success("Details are saved");
   };
 
   useEffect(() => {
@@ -549,7 +548,7 @@ const CompanyDetailContext = ({ children }) => {
       setloginstatus(true);
       setloginuserid(loginuserids);
       setloginuser(useralreadyloggedin);
-      // toast.success('Welcome Back ' +useralreadyloggedin);
+      //// toast.success('Welcome Back ' +useralreadyloggedin);
     }
     //    //console.log(useralreadyloggedin);
     // const [loginstatus, setloginstatus] = useState(localStorage.getItem('loginuser').length> 0 ? true: false);
