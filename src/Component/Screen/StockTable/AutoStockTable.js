@@ -1,8 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Stocks } from "../../Context/StocksContex";
 import { CompanyDetail } from "../../Context/companyDetailContext";
 import "./StockTable.css";
-import { Box } from "@mui/material";
 import ReactTable from "../../table/ReactTable";
 
 const basiccolumns = [

@@ -31,7 +31,10 @@ const SalesStocks = () => {
             flex: 0.3,
           }}
         >
-          <StockForm getStock={(val) => setTableData([...tableData, val])} />
+          <StockForm
+            screen="Sale Stocks"
+            getStock={(val) => setTableData([...tableData, val])}
+          />
           <ClientForm />
         </Box>
       </Stack>

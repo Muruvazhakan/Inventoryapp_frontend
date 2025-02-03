@@ -2,26 +2,23 @@ import {
   Autocomplete,
   Box,
   Button,
-  Card,
   FormControl,
   FormGroup,
-  Stack,
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
-import { FaFileInvoice, FaRegIdCard } from "react-icons/fa";
 import { GrClearOption } from "react-icons/gr";
-import { v4 as uuid } from "uuid";
+import Card from "../../Style/Card/Card";
 
 const initialState = {
   clientName: "",
   clientPhno: 0,
   clientAdd: "",
-  stockid: "",
-  stockdate: "",
+  
 };
 
-const ClientForm = () => {
+const ClientForm = (props) => {
+
   const [clientData, setClientData] = useState(initialState);
 
   return (
@@ -29,7 +26,10 @@ const ClientForm = () => {
       <FormGroup>
         <FormControl>
           <Card sx={{ marginTop: "40px" }}>
-            <h3>Client Details</h3>
+          <Card>
+          <h3>Client Details</h3>
+      </Card>
+            
             <Box
               component="form"
               sx={{
@@ -85,59 +85,7 @@ const ClientForm = () => {
               />
             </Box>
 
-            <h3>Stocks Details</h3>
-            <Box component="form">
-              {clientData.stockid.length == 0 ? (
-                <div>
-                  <Button
-                    className="gen-invoice"
-                    variant="outlined"
-                    endIcon={<FaRegIdCard />}
-                    onClick={() =>
-                      setClientData({ ...clientData, stockid: uuid() })
-                    }
-                  >
-                    Generate Stock Id
-                  </Button>
-                </div>
-              ) : (
-                <div className="invoicegen">
-                  Stock Id Generated: {clientData.stockid}
-                </div>
-              )}
-              Bought date:
-              <input
-                type="date"
-                className="date-field"
-                onChange={(e) =>
-                  setClientData({ ...clientData, stockdate: e.target.value })
-                }
-                title="payement"
-                size={210}
-                id="dateDefault"
-                value={clientData.stockdate}
-                aria-label="stock"
-              />
-            </Box>
-
-            <Stack
-              component="form"
-              direction={"row"}
-              justifyContent={"center"}
-              gap={"10px"}
-              sx={{ marginBottom: "15px" }}
-            >
-              <Button
-                variant="contained"
-                color="success"
-                size="medium"
-                endIcon={<FaFileInvoice />}
-                onClick={() => {}}
-              >
-                Save Stocks
-              </Button>
-
-              <Button
+            <Button
                 variant="contained"
                 color="warning"
                 size="medium"
@@ -146,7 +94,6 @@ const ClientForm = () => {
               >
                 Reset Screen
               </Button>
-            </Stack>
           </Card>
         </FormControl>
       </FormGroup>

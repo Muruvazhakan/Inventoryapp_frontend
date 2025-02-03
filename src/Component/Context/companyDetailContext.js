@@ -63,27 +63,10 @@ const CompanyDetailContext = ({ children }) => {
   const [loginUserPassword, setloginUserPassword] = useState("");
   const [loginUserConfirmPassword, setloginUserConfirmPassword] = useState("");
 
-  // const [loginstatus, setloginstatus] = useState(localStorage.getItem('loginuser').length> 0 ? true: false);
   const [loginstatus, setloginstatus] = useState(false);
 
   const [loginId, setloginId] = useState("");
   const [tokenid, settokenid] = useState("");
-
-  // const bankdet = [
-  //     { id: 1, title: 'Bank Name', isvisible: true, value: 'AXIS BANK' },
-  //     { id: 2, title: 'Branch', isvisible: true, value: 'Chromepet' },
-  //     { id: 3, title: 'IFS Ccode', isvisible: true, value: 'UTIB0003905' },
-  //     { id: 4, title: 'Account Number', isvisible: true, value: '923020005067138' },
-  //     { id: 5, title: 'Account Holder Name', isvisible: true, value: 'JR MODULAR ENTERPRISES' },
-  // ];
-  const bankdet = [
-    { id: 1, title: "Bank Name", isvisible: true, value: "" },
-    { id: 2, title: "Branch", isvisible: true, value: "" },
-    { id: 3, title: "IFS Ccode", isvisible: true, value: "" },
-    { id: 4, title: "Account Number", isvisible: true, value: "" },
-    { id: 5, title: "Account Holder Name", isvisible: true, value: "" },
-  ];
-  const [companyBankdetails, setcompanyBankdetails] = useState(bankdet);
 
   //     Invoice id
   // Invoice date
@@ -134,29 +117,6 @@ const CompanyDetailContext = ({ children }) => {
 
     //console.log(getresul);
     setcompanydetails(getresul);
-  };
-
-  const updateBankDetailHandler = (id, value, type) => {
-    //console.log(value + ' ids ' + id);
-    //console.log(value );
-
-    const getresul = companyBankdetails.map((items) => {
-      //console.log(items.id + ' ids ' + id);
-      if (items.id === id) {
-        //console.log(items.id + ' inside ids ' + id);
-        if (type === "title") {
-          items.title = value;
-        } else if (type === "value") {
-          items.value = value;
-        } else {
-          items.isvisible = !items.isvisible;
-        }
-      }
-      return items;
-    });
-
-    //console.log(getresul);
-    setcompanyBankdetails(getresul);
   };
 
   const uploadImage = async (props) => {
@@ -462,14 +422,6 @@ const CompanyDetailContext = ({ children }) => {
       setcompanydetaildesc(companydetail.companydetaildesc);
       setcompanymailid(companydetail.companymailid);
       setcompanythankyou(companydetail.companythankyou);
-
-      //console.log('companydetail.estimateidcount');
-      //console.log(companydetail.estimateidcount);
-      // if (companydetail.estimateidcount !== undefined && companydetail.estimateidcount > estdetail.estimateidcount) {
-      //     //console.log('companydetail.estimateidcount');
-      //     //console.log(companydetail.estimateidcount);
-      //     // estdetail.setestimateidcount(companydetail.estimateidcount);
-      // }
     }
     setisloaded(false);
   };
@@ -567,7 +519,6 @@ const CompanyDetailContext = ({ children }) => {
     setcompanyGstin,
     companyGstinStatename,
     setcompanyGstinStatename,
-    updateBankDetailHandler,
     uploadImage,
     companyDeleration,
     setcompanyDeleration,

@@ -1,7 +1,4 @@
 import React, { useContext, useEffect } from "react";
-
-import { CompanyDetail } from "../../../Context/companyDetailContext";
-
 import "../../GeneralDetails/GeneralDetails.css";
 import { Stocks } from "../../../Context/StocksContex";
 import Card from "../../../Style/Card/Card";
@@ -14,7 +11,6 @@ import StyleHeader from "../../Header/StyleHeader";
 
 const ListOfAddedStocks = () => {
   const stocksdet = useContext(Stocks);
-  const companydet = useContext(CompanyDetail);
   const digit2options = { maximumFractionDigits: 2 };
 
   useEffect(() => {
@@ -23,7 +19,7 @@ const ListOfAddedStocks = () => {
     console.log(stocksdet.stockHistoryData);
   }, []);
 
-  if (!companydet.isloaded) {
+  if (stocksdet.isloading) {
     return (
       <Stack
         sx={{ color: "grey.500" }}
