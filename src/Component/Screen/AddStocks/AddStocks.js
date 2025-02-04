@@ -8,7 +8,12 @@ import ClientForm from "./ClientForm";
 
 const AddStocks = () => {
   const [tableData, setTableData] = useState([]);
+  const [clientDetails, setclientDetails] = useState({});
 
+  const handelSaveStock = (props) => {
+    console.log("handelSaveStock");
+    console.log(props);
+  };
   return (
     <Box sx={{ padding: "10px" }}>
       <StyleHeader>Add Stocks</StyleHeader>
@@ -32,8 +37,10 @@ const AddStocks = () => {
           <StockForm
             screen="Stocks"
             getStock={(val) => setTableData([...tableData, val])}
+            onSubmit={handelSaveStock}
           />
-          <ClientForm />
+
+          <ClientForm getclientDetails={(val) => setclientDetails(val)} />
         </Box>
       </Stack>
     </Box>

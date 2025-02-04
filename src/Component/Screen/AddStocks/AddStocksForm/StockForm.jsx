@@ -25,7 +25,7 @@ const initialState = {
   amt: 0,
 };
 
-const StockForm = ({ getStock ,screen}) => {
+const StockForm = ({ getStock, screen, onSubmit }) => {
   const tabledet = useContext(Stocks);
   const [stock, setStock] = useState(initialState);
   const [stockid, setstockid] = useState("");
@@ -33,14 +33,15 @@ const StockForm = ({ getStock ,screen}) => {
   const [stockidcount, setstockidcount] = useState(1000);
   const [salestockid, setsalestockid] = useState("");
   const [salestockidcount, setsalestockidcount] = useState(1000);
-  console.log(stock, tabledet);
+  // console.log(stock, tabledet);
 
   useEffect(() => {
-    if (tabledet.loginuser !== undefined) {
-      getStockIdCounter(tabledet.loginuser);
-    } else {
+    if (screen === "Stocks")
       getStockIdCounter(localstorage.addOrGetUserdetail("", "userid", "get"));
-    }
+    else
+      getSalesStockIdCounter(
+        localstorage.addOrGetUserdetail("", "userid", "get")
+      );
   }, [tabledet.loginuser]);
 
   const getStockIdCounter = async (loginuserid) => {
@@ -57,6 +58,28 @@ const StockForm = ({ getStock ,screen}) => {
     }
   };
 
+  const getSalesStockIdCounter = async (loginuserid) => {
+    let salesstockidcounter = localstorage.addOrGetSaleStockid("", "get");
+    console.log(salesstockidcounter + " addOrGetStockid");
+    let getSalesStockfromDb = await stockDb.getSalesStockidDB(loginuserid);
+    console.log("getSalesStockfromDb.data");
+    console.log(getSalesStockfromDb);
+    if (getSalesStockfromDb.status === 200) {
+      localstorage.addOrGetSaleStockid(getSalesStockfromDb.data, "save");
+      setsalestockidcount(getSalesStockfromDb.data);
+      console.log("saving setinvoiceidount " + getSalesStockfromDb.data);
+    }
+  };
+
+  const saveForm = (props) => {
+    let datas = {
+      id: stockid,
+      count: stockidcount,
+      date: stockdate,
+    };
+    onSubmit(datas);
+  };
+
   const stockIdgenerator = (type) => {
     const today = new Date();
     let todaydate;
@@ -65,7 +88,7 @@ const StockForm = ({ getStock ,screen}) => {
     const year = today.getFullYear();
     const date = today.getDate();
 
-    let idcounttype = type === "stock" ? stockidcount : salestockidcount;
+    let idcounttype = type === "Stocks" ? stockidcount : salestockidcount;
 
     let count = idcounttype * 1;
     console.log(
@@ -76,16 +99,22 @@ const StockForm = ({ getStock ,screen}) => {
         " salestockidcount " +
         salestockidcount
     );
-    if (type === "stock") {
+    if (type === "Stocks") {
       todaydate = `ST${year}${month}${date}${idcounttype}`;
-      setstockid(todaydate);
-      setstockidcount(++count);
     } else {
       todaydate = `SA${year}${month}${date}${idcounttype}`;
-      setsalestockid(todaydate);
-      setsalestockidcount(++count);
+      // setsalestockid(todaydate);
+      // setsalestockidcount(++count);
     }
-    // setstockid()
+    setstockid(todaydate);
+    setstockidcount(++count);
+    console.log("todaydate " + todaydate);
+  };
+
+  const resetScreen = () => {
+    setStock(initialState);
+    setstockid("");
+    setstockstockdate("");
   };
   return (
     <FormGroup>
@@ -184,64 +213,71 @@ const StockForm = ({ getStock ,screen}) => {
                 >
                   Add Item
                 </Button>
-                <Button
-                  variant="contained"
-                  color="warning"
-                  size="medium"
-                  endIcon={<GrClearOption />}
-                  onClick={() => setStock(initialState)}
-                >
-                  Clear Form
-                </Button>
               </Stack>
             </Box>
           </Card>
 
           <Card>
-            <h3>{screen} Details</h3>
-            <Box component="form">
-              {stockid.length == 0 ? (
-                <div>
-                  <Button
-                    className="gen-invoice"
-                    variant="outlined"
-                    endIcon={<FaRegIdCard />}
-                    onClick={() => stockIdgenerator("add")}
-                  >
-                    Generate {screen} Id
-                  </Button>
-                </div>
-              ) : (
-                <div className="invoicegen">Stock Id Generated: {stockid}</div>
-              )}
-              Bought date:
-              <input
-                type="date"
-                className="date-field"
-                onChange={(e) => setstockstockdate(e.target.value)}
-                title="payement"
-                size={210}
-                id="dateDefault"
-                value={stockdate}
-                aria-label="stock"
-              />
-            </Box>
-
             <Stack
               component="form"
-              direction={"row"}
               justifyContent={"center"}
               gap={"10px"}
               sx={{ marginBottom: "15px" }}
             >
+              <Card>
+                <h3> {screen} Details</h3>
+              </Card>
+
+              <Box component="form">
+                <>
+                  {stockid.length === 0 ? (
+                    <div>
+                      <Button
+                        className="gen-invoice"
+                        variant="outlined"
+                        endIcon={<FaRegIdCard />}
+                        onClick={() => stockIdgenerator(screen)}
+                      >
+                        Generate {screen} Id
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="invoicegen">
+                      {screen} Id Generated: {stockid}
+                    </div>
+                  )}
+                </>
+                Bought date:
+                <input
+                  type="date"
+                  className="date-field"
+                  onChange={(e) => setstockstockdate(e.target.value)}
+                  title="payement"
+                  size={210}
+                  id="dateDefault"
+                  value={stockdate}
+                  aria-label="stock"
+                />
+              </Box>
+
               <Button
                 variant="contained"
                 color="success"
                 size="medium"
                 endIcon={<FaFileInvoice />}
-                onClick={() => {}}
+                onClick={saveForm}
               >
-                Save Stocks
+                Save {screen}
+              </Button>
+
+              <Button
+                variant="contained"
+                color="warning"
+                size="medium"
+                endIcon={<GrClearOption />}
+                onClick={() => resetScreen()}
+              >
+                Clear Form
               </Button>
             </Stack>
           </Card>

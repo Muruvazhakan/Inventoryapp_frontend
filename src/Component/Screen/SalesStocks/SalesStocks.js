@@ -10,6 +10,13 @@ import { Stocks } from "../../Context/StocksContex";
 const SalesStocks = () => {
   const tabledetails = useContext(Stocks);
   const [tableData, setTableData] = useState(tabledetails.saleslist ?? []);
+  const [clientDetails, setclientDetails] = useState({});
+
+  const handelSaveSalesStock = (props) => {
+    console.log("handelSaveStock");
+    console.log(props);
+    console.log(clientDetails);
+  };
 
   return (
     <Box sx={{ padding: "10px" }}>
@@ -34,8 +41,9 @@ const SalesStocks = () => {
           <StockForm
             screen="Sale Stocks"
             getStock={(val) => setTableData([...tableData, val])}
+            onSubmit={handelSaveSalesStock}
           />
-          <ClientForm />
+          <ClientForm getclientDetails={(val) => setclientDetails(val)} />
         </Box>
       </Stack>
     </Box>

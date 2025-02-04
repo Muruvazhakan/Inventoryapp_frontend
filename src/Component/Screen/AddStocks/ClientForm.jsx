@@ -9,16 +9,14 @@ import {
 import React, { useState } from "react";
 import { GrClearOption } from "react-icons/gr";
 import Card from "../../Style/Card/Card";
-
+import { FaRegIdCard } from "react-icons/fa";
 const initialState = {
   clientName: "",
   clientPhno: 0,
   clientAdd: "",
-  
 };
 
 const ClientForm = (props) => {
-
   const [clientData, setClientData] = useState(initialState);
 
   return (
@@ -26,10 +24,10 @@ const ClientForm = (props) => {
       <FormGroup>
         <FormControl>
           <Card sx={{ marginTop: "40px" }}>
-          <Card>
-          <h3>Client Details</h3>
-      </Card>
-            
+            <Card>
+              <h3>Client Details</h3>
+            </Card>
+
             <Box
               component="form"
               sx={{
@@ -83,17 +81,25 @@ const ClientForm = (props) => {
                   setClientData({ ...clientData, clientAdd: e.target.value })
                 }
               />
-            </Box>
-
-            <Button
+              <Button
+                variant="contained"
+                color="success"
+                size="medium"
+                endIcon={<FaRegIdCard />}
+                onClick={() => props.getclientDetails(clientData)}
+              >
+                Save Client details
+              </Button>
+              <Button
                 variant="contained"
                 color="warning"
                 size="medium"
                 endIcon={<GrClearOption />}
                 onClick={() => setClientData(initialState)}
               >
-                Reset Screen
+                Reset
               </Button>
+            </Box>
           </Card>
         </FormControl>
       </FormGroup>
