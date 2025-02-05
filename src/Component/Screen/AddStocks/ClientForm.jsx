@@ -10,14 +10,9 @@ import React, { useState } from "react";
 import { GrClearOption } from "react-icons/gr";
 import Card from "../../Style/Card/Card";
 import { FaRegIdCard } from "react-icons/fa";
-const initialState = {
-  clientName: "",
-  clientPhno: 0,
-  clientAdd: "",
-};
 
 const ClientForm = (props) => {
-  const [clientData, setClientData] = useState(initialState);
+  const [clientData, setClientData] = useState(props.initialClientState);
 
   return (
     <>
@@ -95,7 +90,7 @@ const ClientForm = (props) => {
                 color="warning"
                 size="medium"
                 endIcon={<GrClearOption />}
-                onClick={() => setClientData(initialState)}
+                onClick={() => setClientData(props.initialClientState)}
               >
                 Reset
               </Button>

@@ -25,7 +25,7 @@ const initialState = {
   amt: 0,
 };
 
-const StockForm = ({ getStock, screen, onSubmit }) => {
+const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
   const tabledet = useContext(Stocks);
   const [stock, setStock] = useState(initialState);
   const [stockid, setstockid] = useState("");
@@ -36,12 +36,8 @@ const StockForm = ({ getStock, screen, onSubmit }) => {
   // console.log(stock, tabledet);
 
   useEffect(() => {
-    if (screen === "Stocks")
-      getStockIdCounter(localstorage.addOrGetUserdetail("", "userid", "get"));
-    else
-      getSalesStockIdCounter(
-        localstorage.addOrGetUserdetail("", "userid", "get")
-      );
+    if (screen === "Stocks") getStockIdCounter(loginuser);
+    else getSalesStockIdCounter(loginuser);
   }, [tabledet.loginuser]);
 
   const getStockIdCounter = async (loginuserid) => {
