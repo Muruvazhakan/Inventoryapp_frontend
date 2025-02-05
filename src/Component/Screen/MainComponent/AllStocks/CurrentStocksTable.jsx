@@ -44,21 +44,28 @@ const CurrentStocksTable = () => {
 
   let sum1 = 0;
   let tableList = [];
-  tableList = tabledetails.allStockList.map((item) => {
-    if (
-      item.quantity === 0 ||
-      item.status === "deleted" ||
-      item.status === "Deleted"
-    ) {
-    } else {
-      sum1 = sum1 + item.quantity * 1 * item.rate;
-      return item;
-    }
-  });
+  tableList = tabledetails.allStockList
+    .map((item, index) => {
+      item.amt = (item.quantity * 1 * item.rate).toFixed(2);
+      item.id = index + 1;
+      if (
+        item.quantity === 0 ||
+        item.status === "deleted" ||
+        item.status === "Deleted"
+      ) {
+      } else {
+        sum1 = sum1 + item.quantity * 1 * item.rate;
+        return item;
+      }
+    })
+    .filter((data) => data !== undefined);
+  console.log("tableList ^^ ");
+  console.log(tableList);
 
-  tableList = tableList.map((item, index) => {
-    return { id: index + 1, ...item };
-  });
+  // tableList = tableList.map((item, index) => {
+
+  //   return { id: index + 1, ...item, amt: amt };
+  // });
 
   return (
     <>

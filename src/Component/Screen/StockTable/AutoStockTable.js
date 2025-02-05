@@ -112,7 +112,8 @@ const AutoStockTable = (props) => {
   } else {
     tableList = tabledetails.allStockSalesList;
   }
-
+  console.log("tableList ^^ ");
+  console.log(tableList);
   tableList = tableList.map((item, index) => {
     return { id: index + 1, ...item };
   });

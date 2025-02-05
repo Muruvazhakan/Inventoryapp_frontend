@@ -53,6 +53,8 @@ const ProfitTable = () => {
 
   let tableList = tabledetails.allProfitStockList;
   tableList = tableList.map((item, index) => {
+    item.profit = (item.profit * 1).toFixed(2);
+    // item.amt = (item.quantity * 1 * item.rate).toFixed(2);
     return { id: index + 1, ...item };
   });
 
