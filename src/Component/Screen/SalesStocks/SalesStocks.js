@@ -49,7 +49,7 @@ const SalesStocks = () => {
       .toFixed(2);
     console.log("totalamount" + totalamount);
     let clientidtemp;
-    if (clientDetails.clientid === null) {
+    if (clientDetails.clientid === undefined) {
       clientidtemp = uuidv4();
       setclientDetails({ ...clientDetails, clientid: clientidtemp });
     } else {
@@ -114,6 +114,7 @@ const SalesStocks = () => {
           <ClientForm
             getclientDetails={(val) => setclientDetails(val)}
             initialClientState={initialClientState}
+            loginuser={loginuser}
           />
         </Box>
       </Stack>

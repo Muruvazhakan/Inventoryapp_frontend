@@ -45,12 +45,19 @@ const AddStocks = () => {
       .toFixed(2);
     console.log("totalamount" + totalamount);
     let clientidtemp;
-    if (clientDetails.clientid === null) {
+    if (clientDetails.clientid === undefined) {
       clientidtemp = uuidv4();
+      console.log(" clientidtemp " + clientidtemp);
       setclientDetails({ ...clientDetails, clientid: clientidtemp });
     } else {
       clientidtemp = clientDetails.clientid;
     }
+    console.log(
+      " clientidtemp2 " +
+        clientidtemp +
+        " clientDetails.clientid " +
+        clientDetails.clientid
+    );
     let datas = {
       authorization: header,
       stockid: props.id,
@@ -155,6 +162,7 @@ const AddStocks = () => {
           <ClientForm
             getclientDetails={(val) => setclientDetails(val)}
             initialClientState={initialClientState}
+            loginuser={loginuser}
           />
         </Box>
       </Stack>

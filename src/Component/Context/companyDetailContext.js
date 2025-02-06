@@ -12,7 +12,6 @@ import * as companyDetailsDB from "../DBconnection/companyDetailsDB";
 import * as stockDetailBD from "../DBconnection/stockDetailBD";
 import { Stocks } from "./StocksContex";
 import { isbackendconnect, imageBaseUrl } from "../DBconnection/dbproperties";
-import axios from "axios";
 export const CompanyDetail = createContext();
 
 const CompanyDetailContext = ({ children }) => {
@@ -52,11 +51,6 @@ const CompanyDetailContext = ({ children }) => {
   const [companydetailtitle, setcompanydetailtitle] = useState("");
   const [companydetaildesc, setcompanydetaildesc] = useState("");
   const [companydetailIsVisible, setcompanydetailIsVisible] = useState(false);
-
-  const [companyBankdetailtitle, setcompanyBankdetailtitle] = useState("");
-  const [companyBankdetailvalue, setcompanyBankdetailvalue] = useState("");
-  const [companyBankdetailIsVisible, setcompanyBankdetailIsVisible] =
-    useState(false);
   // const [loginuser, setloginuser] = useState(localStorage.getItem('loginuser').length> 0 ? localStorage.getItem('loginuser'): '');
   const [loginuser, setloginuser] = useState("");
   const [loginuserid, setloginuserid] = useState("");
