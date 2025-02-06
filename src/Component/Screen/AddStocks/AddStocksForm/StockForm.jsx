@@ -6,6 +6,7 @@ import {
   FormGroup,
   Stack,
   TextField,
+  createFilterOptions,
 } from "@mui/material";
 import React, { useContext, useState, useEffect } from "react";
 import { Stocks } from "../../../Context/StocksContex";
@@ -16,6 +17,7 @@ import Card from "../../../Style/Card/Card";
 import * as localstorage from "../../../Context/localStorageData";
 import * as stockDb from "../../../DBconnection/stockDetailBD";
 
+const filter = createFilterOptions();
 const initialState = {
   productid: "",
   desc: "",
@@ -23,6 +25,7 @@ const initialState = {
   rate: 0,
   sellingRate: 0,
   amt: 0,
+  availablequantity: 0,
 };
 
 const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
@@ -33,11 +36,15 @@ const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
   const [stockidcount, setstockidcount] = useState(1000);
   const [salestockid, setsalestockid] = useState("");
   const [salestockidcount, setsalestockidcount] = useState(1000);
+  const [value, setValue] = useState(null);
+  const [tit, setit] = useState([]);
   // console.log(stock, tabledet);
 
   useEffect(() => {
     if (screen === "Stocks") getStockIdCounter(loginuser);
     else getSalesStockIdCounter(loginuser);
+
+    autocompleTitle();
   }, [tabledet.loginuser]);
 
   const getStockIdCounter = async (loginuserid) => {
@@ -112,6 +119,104 @@ const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
     setstockid("");
     setstockstockdate("");
   };
+
+  const filterProdIdAndGetDesc = (prodid) => {
+    let filterdata = tabledet.allStockData.find((data) => {
+      return data.productid == prodid;
+    });
+    console.log(filterdata);
+    if (filterdata) {
+      if (screen === "Stocks") {
+        setStock({
+          ...stock,
+          desc: filterdata.desc,
+          productid: filterdata.productid,
+        });
+      } else {
+        setStock({
+          ...stock,
+          desc: filterdata.desc,
+          productid: filterdata.productid,
+          availablequantity: filterdata.quantity,
+          rate: filterdata.rate,
+        });
+      }
+    }
+  };
+
+  const autocompleTitle = () => {
+    if (tabledet.allStockData !== null && tabledet.allStockData.length > 0) {
+      // console.log('autocompleTitle title');
+      let productid = tabledet.allStockData.map((row) => {
+        return { productid: row.productid };
+      });
+      // console.log(productid);
+      productid = [].concat.apply([], productid);
+      setit(productid);
+    }
+  };
+  const onChangeOnAutoComplete = (event, newValue, type) => {
+    if (newValue && newValue.inputValue) {
+      // Create a new value from the user input
+      setValue({
+        productid: newValue.inputValue,
+      });
+      tabledet.setproductid(newValue.inputValue);
+    } else {
+      if (newValue.productid != null) {
+        setValue(newValue.productid);
+        tabledet.setproductid(newValue.productid);
+        filterProdIdAndGetDesc(newValue.productid);
+      }
+    }
+  };
+
+  const filterOptionOnAutoComplete = (options, params) => {
+    const filtered = filter(options, params);
+    const { inputValue } = params;
+    // Suggest the creation of a new value
+    const isExisting = options.some((option) => inputValue === option.title);
+    // console.log(isExisting);
+    if (inputValue !== "" && !isExisting) {
+      filtered.push({
+        inputValue,
+        productid: `Add "${inputValue}"`,
+      });
+    }
+
+    return filtered;
+  };
+
+  const getOptionLabelOnAutoComplete = (option) => {
+    // Value selected with enter, right from the input
+    if (typeof option == "string") {
+      return option;
+    }
+    // Add "xxx" option created dynamically
+    if (option.inputValue) {
+      return option.inputValue;
+    }
+    // Regular option
+    return option.productid;
+  };
+  const renderOptionOnAutoComplete = (props, option) => {
+    const { key, ...optionProps } = props;
+    return (
+      <li key={key} {...optionProps}>
+        {option.productid}
+      </li>
+    );
+  };
+
+  useEffect(() => {
+    let amout = (stock.rate * stock.quantity * 1).toFixed(2);
+    if (amout > 0) {
+      setStock({
+        ...stock,
+        amt: amout,
+      });
+    }
+  }, [stock.rate, stock.quantity]);
   return (
     <FormGroup>
       {/* <Card> */}
@@ -134,11 +239,23 @@ const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
             >
               <Autocomplete
                 value={stock.productid}
+                onChange={(event, newValue) =>
+                  onChangeOnAutoComplete(event, newValue)
+                }
+                filterOptions={(options, params) =>
+                  filterOptionOnAutoComplete(options, params)
+                }
                 selectOnFocus
                 clearOnBlur
                 handleHomeEndKeys
                 id="free-solo-with-text"
-                options={[]}
+                options={tit}
+                getOptionLabel={(option) =>
+                  getOptionLabelOnAutoComplete(option)
+                }
+                renderOption={(props, option) =>
+                  renderOptionOnAutoComplete(props, option)
+                }
                 freeSolo
                 renderInput={(params) => (
                   <TextField
@@ -159,7 +276,16 @@ const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
                 value={stock.desc}
                 onChange={(e) => setStock({ ...stock, desc: e.target.value })}
               />
-
+              {screen !== "Stocks" && (
+                <TextField
+                  required
+                  id="outlined-required"
+                  label="Available Quantity"
+                  value={stock.availablequantity}
+                  type="number"
+                  disabled
+                />
+              )}
               <TextField
                 required
                 id="outlined-required"
@@ -179,16 +305,18 @@ const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
                 type="number"
                 onChange={(e) => setStock({ ...stock, rate: e.target.value })}
               />
-              <TextField
-                required
-                id="outlined-required"
-                label="Selling Rate"
-                value={stock.sellingRate}
-                type="number"
-                onChange={(e) =>
-                  setStock({ ...stock, sellingRate: e.target.value })
-                }
-              />
+              {screen === "Stocks" && (
+                <TextField
+                  required
+                  id="outlined-required"
+                  label="Selling Rate"
+                  value={stock.sellingRate}
+                  type="number"
+                  onChange={(e) =>
+                    setStock({ ...stock, sellingRate: e.target.value })
+                  }
+                />
+              )}
 
               <TextField
                 required
