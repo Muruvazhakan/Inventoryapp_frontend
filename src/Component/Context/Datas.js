@@ -2,6 +2,8 @@ import companyperson from "../../Image/mycompanyf.png";
 import mystock from "../../Image/mystocks.png";
 import profit from "../../Image/profit.png";
 import mysalesf from "../../Image/mysalesf.png";
+import { MdLogin, MdLockReset } from "react-icons/md";
+import { RiUserAddLine } from "react-icons/ri";
 export const navigationbarcontent = [
   {
     screenname: "Home",
@@ -9,13 +11,7 @@ export const navigationbarcontent = [
     altname: "/",
     displays: true,
   },
-  {
-    screenname: "Company Detail",
-    links: "/yourdetail",
-    altname: "yourdetail",
-    displays: true,
-    image: companyperson,
-  },
+
   {
     screenname: "Stocks",
     links: "/stocks",
@@ -37,6 +33,13 @@ export const navigationbarcontent = [
     displays: true,
     image: profit,
   },
+  {
+    screenname: "Company Detail",
+    links: "/yourdetail",
+    altname: "yourdetail",
+    displays: true,
+    image: companyperson,
+  },
 ];
 
 export const userLogin = [
@@ -45,18 +48,21 @@ export const userLogin = [
     links: "login",
     altname: "login",
     displays: true,
+    iconname: MdLogin,
   },
   {
     screenname: "Siginup",
     links: "/siginup",
     altname: "signup",
     displays: true,
+    iconname: RiUserAddLine,
   },
   {
     screenname: "Reset Password",
     links: "/passwordreset",
     altname: "passwordreset",
     displays: true,
+    iconname: MdLockReset,
   },
 ];
 

@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { IconContext } from "react-icons/lib";
 import * as Datas from "../../Context/Datas";
 import icon from "../../../Image/favicon.ico";
-import { FaBars, FaTimes } from "react-icons/fa";
-import { PiInvoiceThin } from "react-icons/pi";
+import { FaBars, FaTimes, FaRegUserCircle } from "react-icons/fa";
+import { IoHome, IoLogOutSharp } from "react-icons/io5";
 import "./NavigationBar.css";
 import { CompanyDetail } from "../../Context/companyDetailContext";
 
@@ -74,7 +74,13 @@ const NavigationBar = (props) => {
                             smooth
                             onClick={closeMobileMenu}
                           >
-                            {item.screenname}
+                            {item.screenname === "Home" ? (
+                              <IoHome size={20} />
+                            ) : item.screenname === "Company Detail" ? (
+                              <FaRegUserCircle size={22} />
+                            ) : (
+                              item.screenname
+                            )}
                           </Link>
                         </li>
                       </div>
@@ -101,7 +107,7 @@ const NavigationBar = (props) => {
                           }
                         }}
                       >
-                        Logout
+                        <IoLogOutSharp size={22} />
                       </div>
                     </li>
                   </div>
@@ -122,6 +128,7 @@ const NavigationBar = (props) => {
                             smooth
                           >
                             {item.screenname}
+                            <item.iconname size={20} className="icon" />
                           </Link>
                         </li>
                       </div>
