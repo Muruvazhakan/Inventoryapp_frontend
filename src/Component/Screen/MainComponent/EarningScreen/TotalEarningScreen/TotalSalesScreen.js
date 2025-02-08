@@ -51,7 +51,7 @@ const TotalSalesScreen = (props) => {
                     />
                   </Avatar> */}
           <Typography variant="subtitle2" color="textSecondary">
-            Sales Profit
+            Net Profit
           </Typography>
           <Typography variant="h5">₹ {props.data.totalprofiramt}</Typography>
           {/* <Linechart
@@ -62,7 +62,7 @@ const TotalSalesScreen = (props) => {
           /> */}
 
           <PieChart
-            chartLabel={"Profit per product"}
+            chartLabel={"Net Profit per product"}
             labels={chartLabels}
             datas={chartDatas}
             style={{ height: "300px" }}

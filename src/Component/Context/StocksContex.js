@@ -1073,7 +1073,8 @@ const StocksContext = ({ children }) => {
         console.log("innerrows");
         console.log(innerrows);
         let found = false;
-        totalsaleamt = totalsaleamt * 1 + innerrows.amount * 1;
+        totalsaleamt =
+          totalsaleamt * 1 + (innerrows.amount ? innerrows.amount : 0) * 1;
         if (accumalatevalue.length > 0) {
           for (let i = 0; i < accumalatevalue.length; i++) {
             if (accumalatevalue[i].productid === innerrows.productid) {
@@ -1108,7 +1109,7 @@ const StocksContext = ({ children }) => {
     console.log("deriveSaleStockFromHistory");
     console.log(accumalatevalue);
     setallStockSalesList(accumalatevalue);
-    setallstockssalestotalamt(totalsaleamt);
+    setallstockssalestotalamt(totalsaleamt.toFixed(2));
 
     // allstockssalestotalamt
   };
@@ -1134,7 +1135,7 @@ const StocksContext = ({ children }) => {
             let profits =
               obj1.quantity * 1 * (obj1.rate * 1) -
               obj1.quantity * 1 * (obj2.rate * 1);
-            profitsum = profitsum + profits;
+            profitsum = profitsum + (profits ? profits : 0);
             return {
               productid: obj2.productid,
               desc: obj2.desc,

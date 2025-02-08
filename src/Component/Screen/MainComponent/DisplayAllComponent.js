@@ -1,16 +1,28 @@
 import React, { useContext, useEffect } from "react";
-import { CircularProgress, Stack } from "@mui/material";
+import { Box, CircularProgress, Stack } from "@mui/material";
 import * as Datas from "../../Context/Datas";
 import Card from "../../Style/Card/Card";
 import { Link } from "react-router-dom";
 
 import "./DisplayAllComponent.css";
 import { CompanyDetail } from "../../Context/companyDetailContext";
-import YourProfits from "./YourProfits/YourProfits";
+import { Stocks } from "../../Context/StocksContex";
+import Dashboard from "./Dashboard/Dashboard";
 
 const DisplayAllComponent = () => {
   const logindet = useContext(CompanyDetail);
-
+  const stockdet = useContext(Stocks);
+  let totaltransaction = 0;
+  const paymentModeCount = stockdet.allStockSalesList.reduce(
+    (acc, { paymentmode }) => {
+      totaltransaction = totaltransaction + 1;
+      // If paymentmode is empty, we treat it as 'No Payment Mode'
+      const mode = paymentmode || "No Payment Mode";
+      acc[mode] = (acc[mode] || 0) + 1;
+      return acc;
+    },
+    {}
+  );
   return (
     <div style={{ width: "calc(100vw - 20px)" }}>
       {!logindet.isloaded && (
@@ -23,11 +35,10 @@ const DisplayAllComponent = () => {
           <CircularProgress color="success" size={30} />
         </Stack>
       )}
-      <Link className="linkdecor" to={{ pathname: "/profits" }}>
-        <YourProfits />
-      </Link>
-
-      <div
+      {stockdet.allStockSalesList.length > 0 && (
+        <Dashboard data={stockdet} totaltransaction={totaltransaction} />
+      )}
+      <Box
         className=" displayelements"
         style={{
           display: "flex",
@@ -60,7 +71,7 @@ const DisplayAllComponent = () => {
             );
           } else return null;
         })}
-      </div>
+      </Box>
     </div>
   );
 };

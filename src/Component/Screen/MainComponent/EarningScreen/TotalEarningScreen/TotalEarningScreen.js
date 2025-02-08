@@ -23,7 +23,7 @@ const TotalEarningScreen = (props) => {
       <Card variant="elevation">
         <CardContent>
           <Typography variant="subtitle2" color="textSecondary">
-            Total Earning
+            Total Revenue
           </Typography>
           <Typography variant="h5">
             ₹ {props.data.allstockssalestotalamt}
@@ -42,7 +42,7 @@ const TotalEarningScreen = (props) => {
               labels={totalMonthArray}
               datas={totalProfitArray}
               chartLabel={"Bar Chart"}
-              chartTitle={"Total Earning per month"}
+              chartTitle={"Total Revenue per month"}
               style={{ height: "300px" }}
               enableLineChart={true}
               lineChartLabel={"Line Chart"}
