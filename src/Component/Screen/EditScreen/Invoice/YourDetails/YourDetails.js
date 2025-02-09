@@ -125,8 +125,8 @@ const YourDetails = () => {
                 onChange={(e) =>
                   dispatch(updateUser({ companyTagLine: e.target.value }))
                 }
-                // color={setboxColors(compayDet.companyTagLine, "color")}
-                // error={setboxColors(compayDet.companyTagLine, "error")}
+                color={userState.companyTagLine !== "" && "success"}
+                error={userState.companyTagLine === ""}
               />
 
               <TextField
@@ -137,10 +137,10 @@ const YourDetails = () => {
                 multiline
                 value={userState.companyAddress}
                 onChange={(e) =>
-                  dispatch(updateUser({ companyAddress: e.target.value }))
+                  dispatch(updateUser({ companyTagLine: e.target.value }))
                 }
-                // color={setboxColors(compayDet.companyAddress, "color")}
-                // error={setboxColors(compayDet.companyAddress, "error")}
+                color={userState.companyTagLine !== "" && "success"}
+                error={userState.companyTagLine === ""}
               />
 
               <TextField
@@ -152,8 +152,8 @@ const YourDetails = () => {
                 onChange={(e) =>
                   dispatch(updateUser({ companyPhno: e.target.value }))
                 }
-                // color={setboxColors(compayDet.companyPhno, "color")}
-                // error={setboxColors(compayDet.companyPhno, "error")}
+                color={userState.companyPhno !== "" && "success"}
+                error={userState.companyPhno === ""}
               />
 
               <TextField
@@ -165,8 +165,8 @@ const YourDetails = () => {
                 onChange={(e) =>
                   dispatch(updateUser({ companymailid: e.target.value }))
                 }
-                // color={setboxColors(compayDet.companymailid, "color")}
-                // error={setboxColors(compayDet.companymailid, "error")}
+                color={userState.companymailid !== "" && "success"}
+                error={userState.companymailid === ""}
               />
 
               <TextField
@@ -178,8 +178,8 @@ const YourDetails = () => {
                 onChange={(e) =>
                   dispatch(updateUser({ companyOwner: e.target.value }))
                 }
-                // color={setboxColors(compayDet.companyOwner, "color")}
-                // error={setboxColors(compayDet.companyOwner, "error")}
+                color={userState.companyOwner !== "" && "success"}
+                error={userState.companyOwner === ""}
               />
 
               <TextField
@@ -190,8 +190,6 @@ const YourDetails = () => {
                 onChange={(e) =>
                   dispatch(updateUser({ companyGstin: e.target.value }))
                 }
-                //  color ={setboxColors(compayDet.companyGstin,'color')}
-                //  error={setboxColors(compayDet.companyGstin,'error')}
               />
               <TextField
                 className="alltextfiled"
@@ -204,8 +202,6 @@ const YourDetails = () => {
                     updateUser({ companyGstinStatename: e.target.value })
                   )
                 }
-                //  color ={setboxColors(compayDet.companyGstinStatename,'color')}
-                //  error={setboxColors(compayDet.companyGstinStatename,'error')}
               />
 
               <h5>System will automatically update..</h5>

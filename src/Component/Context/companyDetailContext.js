@@ -208,7 +208,7 @@ const CompanyDetailContext = ({ children }) => {
           //console.log(userExsist.data);
           setloginstatus(true);
           // window.location.href = '/';
-          getAlldataOnLogin();
+
           return true;
         } else if (userExsist.status === 224) {
           // toastwarning("User Not Found");
@@ -322,47 +322,6 @@ const CompanyDetailContext = ({ children }) => {
     let refreshdata = false;
     stockDetail.setisloading(true);
     if (loginuserid !== null && loginuserid !== "") {
-      let companyBasicDetailslocal = localstore.getCompanyHandler();
-      let companyBasicDetailsfromdb =
-        await companyDetailsDB.getCompanyBasicDetails(loginuserid);
-      console.log("companyBasicDetailsfromdb ");
-      console.log(companyBasicDetailsfromdb);
-
-      if (companyBasicDetailsfromdb.status === 200) {
-        if (
-          !companyBasicDetailslocal ||
-          (companyBasicDetailsfromdb &&
-            companyBasicDetailsfromdb.data[0].companyAddress !==
-              companyBasicDetailslocal.companyAddress)
-        ) {
-          localstore.addOrUpdateCompanyHandler(
-            companyBasicDetailsfromdb.data[0],
-            "save",
-            companyBasicDetailsfromdb.data[0].estimateidcount
-          );
-          console.log("company basic details updated");
-          console.log(companyBasicDetailsfromdb);
-          refreshdata = true;
-        }
-        // let getCompanyImage = await localstore.addOrGetCompanyImage('', "get");
-        // console.log('getCompanyImage');
-        // console.log(getCompanyImage);
-        // if(getCompanyImage){
-        //     setcompanyImage(getCompanyImage);
-        // }
-      } else if (companyBasicDetailsfromdb.status === 250) {
-        // toast.warning(
-        //   "Sorry! Your account Expired, You will be logout in 5 sec"
-        // );
-        // useTimeout(()=>{
-        //     logoutHandler();
-        // }, 5000)
-        handletimeoutLogin(5000);
-        return false;
-      } else {
-        // toastwarning(companyBasicDetailsfromdb.data);
-      }
-
       let stockidcounter = localstore.addOrGetStockid("", "get");
       console.log(stockidcounter + " addOrGetStockid");
       let getStockfromDb = await stockDetailBD.getStockidDB(loginuserid);
@@ -387,37 +346,7 @@ const CompanyDetailContext = ({ children }) => {
         refreshdata = true;
       }
     }
-
-    if (refreshdata === true) {
-      getAlldataOnLogin();
-    }
-
     setisloaded(true);
-  };
-
-  const getAlldataOnLogin = () => {
-    let companydetail = localstore.getCompanyHandler();
-    console.log("companydetail getAlldataOnLogin");
-    console.log(companydetail);
-    // console.log('companydetail local2 ' + companydetail.companyImage);
-    // console.log('companydetail uploadimg ' + companydetail.uploadimg);
-    if (companydetail !== null) {
-      setcompanyName(companydetail.companyName);
-      setcompanyImage(companydetail.companyImage);
-      setuploadimg(companydetail.uploadimg);
-      setcompanyAddress(companydetail.companyAddress);
-
-      setcompanyDeleration(companydetail.companyDeleration);
-      setcompanyGstin(companydetail.companyGstin);
-      setcompanyGstinStatename(companydetail.companyGstinStatename);
-      setcompanyOwner(companydetail.companyOwner);
-      setcompanyPhno(companydetail.companyPhno);
-      setcompanyTagLine(companydetail.companyTagLine);
-      setcompanydetaildesc(companydetail.companydetaildesc);
-      setcompanymailid(companydetail.companymailid);
-      setcompanythankyou(companydetail.companythankyou);
-    }
-    setisloaded(false);
   };
 
   const companyOtherDetailHandeler = (item, type) => {
@@ -490,7 +419,6 @@ const CompanyDetailContext = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    getAlldataOnLogin();
     if (isbackendconnect) {
       getAlldataFromDB();
     }
@@ -550,7 +478,6 @@ const CompanyDetailContext = ({ children }) => {
     setloginuserid,
     saveHandler,
     getAlldataFromDB,
-    getAlldataOnLogin,
     isloaded,
     setisloaded,
     companyImage,

@@ -6,16 +6,23 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./Login.css";
-import { MdLogin } from "react-icons/md";
 import { GoSignIn } from "react-icons/go";
 
 import Card from "../../Style/Card/Card";
-import { CompanyDetail } from "../../Context/companyDetailContext";
 
 const SignUp = (props) => {
-  const logindet = useContext(CompanyDetail);
+  const [user, setUser] = useState({
+    loginuser: "",
+    loginUserPassword: "",
+    loginUserConfirmPassword: "",
+    tokenid: "",
+    role: "",
+    oraganisationName: "",
+    type: "temp",
+    load: false,
+  });
   return (
     <div className="displaycontent">
       <Card className="logincard displaycontent">
@@ -29,66 +36,62 @@ const SignUp = (props) => {
               required
               id="outlined-required"
               label="User Name"
-              value={logindet.loginuser}
-              onChange={(e) => logindet.setval(e, logindet.setloginuser)}
-              color={logindet.setboxColors(logindet.loginuser, "color")}
-              error={logindet.setboxColors(logindet.loginuser, "error")}
+              value={user.loginuser}
+              onChange={(e) => setUser({ ...user, loginuser: e.target.value })}
+              color={user.loginuser !== "" && "success"}
+              error={user.loginuser === ""}
             />
           </div>
           <TextField
             required
             id="outlined-required"
             label="Password"
-            value={logindet.loginUserPassword}
+            value={user.loginUserPassword}
             type="password"
-            onChange={(e) => logindet.setval(e, logindet.setloginUserPassword)}
-            color={logindet.setboxColors(logindet.loginUserPassword, "color")}
-            error={logindet.setboxColors(logindet.loginUserPassword, "error")}
+            onChange={(e) =>
+              setUser({ ...user, loginUserPassword: e.target.value })
+            }
+            color={user.loginUserPassword !== "" && "success"}
+            error={user.loginUserPassword === ""}
           />
           <div>
             <TextField
               required
               id="outlined-required"
               label="Confirm Password"
-              value={logindet.loginUserConfirmPassword}
+              value={user.loginUserConfirmPassword}
               type="password"
               onChange={(e) =>
-                logindet.setval(e, logindet.setloginUserConfirmPassword)
+                setUser({ ...user, loginUserConfirmPassword: e.target.value })
               }
-              color={logindet.setboxColors(
-                logindet.loginUserConfirmPassword,
-                "color"
-              )}
-              error={logindet.setboxColors(
-                logindet.loginUserConfirmPassword,
-                "error"
-              )}
+              color={user.loginUserConfirmPassword !== "" && "success"}
+              error={user.loginUserConfirmPassword === ""}
             />
           </div>
           <TextField
             required
             id="outlined-required"
             label="Token id"
-            value={logindet.tokenid}
-            onChange={(e) => logindet.setval(e, logindet.settokenid)}
-            color={logindet.setboxColors(logindet.tokenid, "color")}
-            error={logindet.setboxColors(logindet.tokenid, "error")}
+            value={user.tokenid}
+            onChange={(e) => setUser({ ...user, tokenid: e.target.value })}
+            color={user.tokenid !== "" && "success"}
+            error={user.tokenid === ""}
           />
           <div>
             <TextField
               required
               id="outlined-required"
               label="Role"
-              value={logindet.role}
-              onChange={(e) => logindet.setval(e, logindet.setrole)}
-              color={logindet.setboxColors(logindet.role, "color")}
-              error={logindet.setboxColors(logindet.role, "error")}
+              value={user.role}
+              onChange={(e) => setUser({ ...user, role: e.target.value })}
+              color={user.role !== "" && "success"}
+              error={user.role === ""}
             />
           </div>
-          {/* <TextField required id="outlined-required" label="Role" value={logindet.type}
-                    onChange={(e) => logindet.setval(e, logindet.setrole)}
-                    color={logindet.setboxColors(logindet.role, 'color')}
-                    error={logindet.setboxColors(logindet.role, 'error')}
+          {/* <TextField required id="outlined-required" label="Role" value={user.type}
+                    onChange={(e) => user.setval(e, user.setrole)}
+                    color={user.setboxColors(user.role, 'color')}
+                    error={user.setboxColors(user.role, 'error')}
                 /> */}
 
           <div>
@@ -96,12 +99,12 @@ const SignUp = (props) => {
               required
               id="outlined-required"
               label="Oraganisation Name"
-              value={logindet.oraganisationName}
+              value={user.oraganisationName}
               onChange={(e) =>
-                logindet.setval(e, logindet.setoraganisationName)
+                setUser({ ...user, oraganisationName: e.target.value })
               }
-              color={logindet.setboxColors(logindet.oraganisationName, "color")}
-              error={logindet.setboxColors(logindet.oraganisationName, "error")}
+              color={user.oraganisationName !== "" && "success"}
+              error={user.oraganisationName === ""}
             />
           </div>
           <div>
@@ -109,9 +112,9 @@ const SignUp = (props) => {
             <Select
               labelId="Type"
               id="Type"
-              value={logindet.type}
+              value={user.type}
               label="Type"
-              onChange={(e) => logindet.setval(e, logindet.settype)}
+              onChange={(e) => setUser({ ...user, type: e.target.value })}
             >
               <MenuItem value={"temp"}>Temperary</MenuItem>
               <MenuItem value={"perm"}>Permanent</MenuItem>
@@ -122,7 +125,7 @@ const SignUp = (props) => {
               variant="contained"
               color="success"
               endIcon={<GoSignIn />}
-              onClick={(e) => logindet.loginHandler("sigin")}
+              onClick={(e) => user.loginHandler("sigin")}
             >
               SignUp
             </Button>

@@ -1,28 +1,59 @@
-// import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-// const initialState = {
-//   userid: "",
-//   companyName: "",
-//   companyTagLine: "",
-//   companyAddress: "",
-//   companyPhno: "",
-//   companymailid: "",
-//   companyGstin: "",
-//   companyGstinStatename: "",
-//   companyOwner: "",
-//   companyImage: "",
-// };
+const initialStockState = {
+  stock: {
+    stockidcount: 1000,
+    stockid: "",
+    stocklist: [],
+    stockdate: "",
+    allStockAddedList: [],
+    stockHistoryData: [],
+    allStockList: [],
+    allProfitStockList: [],
+    allStockSalesList: [],
+    allStockData: [],
+    saleslist: [],
+    productIdList: [],
+    clientList: [],
+    salesStockHistoryData: [],
+    totalamt: 0,
+    totalsalesamt: 0,
+    totalprofiramt: 0,
+    allstockstotalamt: 0,
+    totalsubamt: 0,
+    alladdedstockstotalamt: 0,
+    allstockssalestotalamt: 0,
+    availablestock: 0,
+    editprodid: false,
+    salestockid: "",
+    salestockidcount: 1000,
+    salestockdate: "",
+    isEditStock: false,
+    segregatedMonthData: {},
+    id: 1,
+    productid: "",
+    desc: "",
+    quantity: 0,
+    rate: 0,
+    salerate: 0,
+    amount: 0,
+    clientid: "",
+    clientAdd: "",
+    clientName: "",
+    clientPhno: "",
+  },
+};
 
-// export const userSlice = createSlice({
-//   name: "user",
-//   initialState,
-//   reducers: {
-//     updateUser: (state, action) => {
-//       state = { ...state, ...action.payload };
-//     },
-//   },
-// });
+export const stockSlice = createSlice({
+  name: "stock",
+  initialStockState,
+  reducers: {
+    updateStock: (state, action) => {
+      state.stock = { ...state.stock, ...action.payload };
+    },
+  },
+});
 
-// export const { updateUser } = userSlice.actions;
+export const { updateStock } = stockSlice.actions;
 
-// export default userSlice.reducer;
+export default stockSlice.reducer;

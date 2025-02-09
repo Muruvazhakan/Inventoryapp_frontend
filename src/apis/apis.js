@@ -58,7 +58,7 @@ export const getStockidDB = async (userid) => {
 export const getAllStocksDB = async (userid) => {
   try {
     const data = await axios.get(`${url}/stock/getallstocks/${userid}`);
-    return data;
+    return data.data;
   } catch (error) {
     return error;
   }

@@ -12,8 +12,18 @@ import StockChart from "../AllSaleStocks/StockChart";
 
 import CurrentStocksTable from "./CurrentStocksTable";
 import AllStocksTable from "./AllStocksTable";
+import { getAllStocksDB, getStockidDB } from "../../../../apis/apis";
+import { updateStock } from "../../../../redux/productSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const AllStocks = () => {
+  const userState = useSelector((state) => state.user.user);
+  // const stockState = useSelector((state) => state.stock.stock);
+  // const stockDispatch = useDispatch();
+  const [user, setUser] = useState({
+    load: false,
+  });
+
   const tabledet = useContext(Stocks);
   const [viewAllAddedStock, setviewAllAddedStock] = useState(false);
   const paths = [`addstock`, `listofaddedstocks`];
@@ -23,6 +33,7 @@ const AllStocks = () => {
 
   useEffect(() => {
     console.log(" useEffect AllStocks ");
+    getAllStockData();
     tabledet.getAllStocks("allstocks");
   }, [
     tabledet.allStockData,
@@ -32,6 +43,50 @@ const AllStocks = () => {
   ]);
 
   //chart data
+
+  const getAllStockData = async () => {
+    // let allStockData = localstorage.addOrGetAllStockData("", "get");
+
+    try {
+      setUser({ ...user, load: true });
+      await getAllStocksDB(userState.userid)
+        .then((res) => {
+          console.log("getAllStockData !!!!!");
+          console.log(res);
+          localStorage.setItem("allStockData", res);
+          let localsum = calculateSum(res);
+          // stockDispatch(
+          //   updateStock({
+          //     allStockData: res,
+          //     allStockList: res,
+          //     allstockstotalamt: localsum,
+          //   })
+          // );
+        })
+        .finally(() => {
+          setUser({ ...user, load: false });
+        });
+      // console.log(stockState + "stockState");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const calculateSum = (alllistdata) => {
+    let localsum = 0,
+      sum = 0;
+    let val;
+    let singleval = alllistdata;
+    if (singleval.length > 0) {
+      for (let i = 0; i < singleval.length; i++) {
+        val = singleval[i].rate * singleval[i].quantity * 1;
+        localsum = localsum + val;
+      }
+
+      return localsum;
+    }
+  };
+
   let displaylist = tabledet.allStockList.filter(
     (item) =>
       !(
@@ -40,7 +95,6 @@ const AllStocks = () => {
         item.status === "Deleted"
       )
   );
-
   return (
     <>
       <Box className="allstocksdisplaytable">

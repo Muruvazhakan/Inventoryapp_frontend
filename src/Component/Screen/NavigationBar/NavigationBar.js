@@ -8,6 +8,7 @@ import { FaBars, FaTimes, FaRegUserCircle } from "react-icons/fa";
 import { IoHome, IoLogOutSharp } from "react-icons/io5";
 import "./NavigationBar.css";
 import { CompanyDetail } from "../../Context/companyDetailContext";
+import { useSelector } from "react-redux";
 
 const NavigationBar = (props) => {
   const navigate = useNavigate();
@@ -30,7 +31,8 @@ const NavigationBar = (props) => {
   // const [state, setState] = useState(initialState);
   const [click, setClick] = useState(false);
   const handleClick = () => setClick(!click);
-
+  const userState = useSelector((state) => state.user.user);
+  console.log("userState ", userState);
   return (
     <>
       <IconContext.Provider value={{ color: "#rrr" }}>
@@ -49,7 +51,7 @@ const NavigationBar = (props) => {
             <ul
               className={click ? "nav-menu  nav-active  active" : "nav-menu "}
             >
-              {logindet.loginstatus ? (
+              {userState.userid ? (
                 <>
                   {Datas.navigationbarcontent.map((item, index) => {
                     let pathnameurl =

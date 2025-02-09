@@ -77,8 +77,8 @@ const Login = () => {
               label="User Name"
               value={user.userName}
               onChange={(e) => setUser({ ...user, userName: e.target.value })}
-              // color={logindet.setboxColors(logindet.loginuser, "color")}
-              // error={logindet.setboxColors(logindet.loginuser, "error")}
+              color={user.userName !== "" && "success"}
+              error={user.userName === ""}
             />
           </div>
           <TextField
@@ -88,8 +88,8 @@ const Login = () => {
             value={user.password}
             type="password"
             onChange={(e) => setUser({ ...user, password: e.target.value })}
-            // color={logindet.setboxColors(logindet.loginUserPassword, "color")}
-            // error={logindet.setboxColors(logindet.loginUserPassword, "error")}
+            color={user.password !== "" && "success"}
+            error={user.password === ""}
           />
           <div className="loginbutton">
             <Button
