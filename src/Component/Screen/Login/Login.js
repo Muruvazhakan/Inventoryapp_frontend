@@ -1,35 +1,66 @@
 import { Box, Button, CircularProgress, Stack, TextField } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import { MdLogin } from "react-icons/md";
 
 import Card from "../../Style/Card/Card";
-import { CompanyDetail } from "../../Context/companyDetailContext";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../../apis/apis";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../../../redux/userSlice";
 
-const Login = (props) => {
-  const logindet = useContext(CompanyDetail);
+const Login = () => {
+  const [user, setUser] = useState({
+    userName: "",
+    password: "",
+    load: false,
+  });
+  const userDispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    const isLogin = await logindet.loginHandler("login");
-    if (isLogin) {
-      navigate("/");
-    }
+  //need to change
+  const crypt = (salt, text) => {
+    const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
+    const byteHex = (n) => ("0" + Number(n).toString(16)).substr(-2);
+    const applySaltToChar = (code) =>
+      textToChars(salt).reduce((a, b) => a ^ b, code);
+
+    return text
+      .split("")
+      .map(textToChars)
+      .map(applySaltToChar)
+      .map(byteHex)
+      .join("");
   };
 
-  if (!logindet.isloaded) {
-    return (
-      <Stack
-        sx={{ color: "grey.500" }}
-        spacing={2}
-        alignItems={"center"}
-        className="spinnerstyle"
-      >
-        <CircularProgress color="success" size={30} />
-      </Stack>
-    );
-  }
+  const handleLogin = async () => {
+    try {
+      setUser({ ...user, load: true });
+      const encrypted_pass = crypt("salt", user.password);
+      await loginUser(user.userName, encrypted_pass)
+        .then((res) => {
+          localStorage.setItem("invUser", res);
+          userDispatch(updateUser({ userid: res }));
+          navigate("/");
+        })
+        .finally(() => {
+          setUser({ ...user, load: false });
+        });
+    } catch (error) {}
+  };
+
+  // if (user.load) {
+  //   return (
+  //     <Stack
+  //       sx={{ color: "grey.500" }}
+  //       spacing={2}
+  //       alignItems={"center"}
+  //       className="spinnerstyle"
+  //     >
+  //       <CircularProgress color="success" size={30} />
+  //     </Stack>
+  //   );
+  // }
 
   return (
     <div className="displaycontent">
@@ -44,21 +75,21 @@ const Login = (props) => {
               required
               id="outlined-required"
               label="User Name"
-              value={logindet.loginuser}
-              onChange={(e) => logindet.setval(e, logindet.setloginuser)}
-              color={logindet.setboxColors(logindet.loginuser, "color")}
-              error={logindet.setboxColors(logindet.loginuser, "error")}
+              value={user.userName}
+              onChange={(e) => setUser({ ...user, userName: e.target.value })}
+              // color={logindet.setboxColors(logindet.loginuser, "color")}
+              // error={logindet.setboxColors(logindet.loginuser, "error")}
             />
           </div>
           <TextField
             required
             id="outlined-required"
             label="Password"
-            value={logindet.loginUserPassword}
+            value={user.password}
             type="password"
-            onChange={(e) => logindet.setval(e, logindet.setloginUserPassword)}
-            color={logindet.setboxColors(logindet.loginUserPassword, "color")}
-            error={logindet.setboxColors(logindet.loginUserPassword, "error")}
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
+            // color={logindet.setboxColors(logindet.loginUserPassword, "color")}
+            // error={logindet.setboxColors(logindet.loginUserPassword, "error")}
           />
           <div className="loginbutton">
             <Button
@@ -72,6 +103,19 @@ const Login = (props) => {
           </div>
         </Box>
       </Card>
+      {user.load && (
+        <CircularProgress
+          color="success"
+          size={30}
+          sx={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            zIndex: 999,
+            color: "grey.500",
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -26,6 +26,7 @@ import ResetPassword from "../Screen/Login/ResetPassword";
 import Stocks from "../Screen/MainComponent/AllStocks/Stocks";
 import Home from "./Home";
 import NoData from "../Screen/NoData/NoData";
+import { useSelector } from "react-redux";
 
 const ScreenRoute = () => {
   return (
@@ -73,9 +74,9 @@ const ScreenRoute = () => {
 };
 
 const ProtectedRoute = () => {
-  const logindet = useContext(CompanyDetail);
+  const userState = useSelector((state) => state.user.user);
 
-  if (!logindet.loginstatus) {
+  if (!userState.userid) {
     return <Navigate to={"login"} />;
   }
 

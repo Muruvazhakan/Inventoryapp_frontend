@@ -190,7 +190,7 @@ export const loginUser = async (username, userpassword) => {
   try {
     response = await axios.post(userLoginUrl, data, config);
     //console.log(response);
-    return response;
+    return response.data;
   } catch (err) {
     console.log(err);
     return err;
@@ -244,44 +244,25 @@ export const passwordReset = async (username, userpassword, tokenid) => {
 };
 
 export const getCompanyBasicDetails = async (userid) => {
-  //console.log(`${getCompanyBasicDetailsUrl}/${userid}` + 'getCompanyBasicDetails');
   let response;
   try {
     response = await axios.get(
       `${getCompanyBasicDetailsUrl}/${userid}`,
       config
     );
-    //console.log(response);
-    return response;
+    return response.data;
   } catch (err) {
     console.log(err);
     return err;
   }
 };
 
-export const saveCompanyBasicDetails = async (basicdetail, userid) => {
-  //console.log(`${saveCompanyBasicDetailsUrl}/${userid}` + ' getCompanyBasicDetails');
-  //console.log(basicdetail);
-  const data = {
-    companyName: basicdetail.companyName,
-    companyImage: basicdetail.companyImage,
-    uploadimg: basicdetail.uploadimg,
-    companyTagLine: basicdetail.companyTagLine,
-    companyAddress: basicdetail.companyAddress,
-    companyPhno: basicdetail.companyPhno,
-    companymailid: basicdetail.companymailid,
-    companyGstin: basicdetail.companyGstin,
-    companyGstinStatename: basicdetail.companyGstinStatename,
-    companyOwner: basicdetail.companyOwner,
-    companyDeleration: basicdetail.companyDeleration,
-    companythankyou: basicdetail.companythankyou,
-  };
-  //console.log(data);
+export const saveCompanyBasicDetails = async (userid, companyDetails) => {
   let response;
   try {
     response = await axios.post(
       `${saveCompanyBasicDetailsUrl}/${userid}`,
-      data,
+      companyDetails,
       config
     );
     //console.log(response);

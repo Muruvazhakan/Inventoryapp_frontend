@@ -1,54 +1,55 @@
-import React, { useContext } from "react";
-import {
-  FormGroup,
-  FormControl,
-  TextField,
-  Box,
-  Button,
-  ImageList,
-  ImageListItem,
-  withStyles,
-} from "@mui/material";
+import React, { useEffect } from "react";
+import { FormGroup, FormControl, TextField, Box, Button } from "@mui/material";
 
 import { MdOutlineSaveAlt } from "react-icons/md";
-
-import { CompanyDetail } from "../../../../Context/companyDetailContext";
-import * as companyDetailsDB from "../../../../DBconnection/companyDetailsDB";
 import "./YourDetails.css";
 import Card from "../../../../Style/Card/Card";
 import StyleHeader from "../../../Header/StyleHeader";
-import * as localstorage from "../../../../Context/localStorageData";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../../../../redux/userSlice";
+import {
+  getCompanyBasicDetails,
+  saveCompanyBasicDetails,
+} from "../../../../../apis/apis";
 
 const YourDetails = () => {
-  const compayDet = useContext(CompanyDetail);
-  const setval = (e, fun) => {
-    fun(e.target.value);
-  };
+  const userState = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
-  const setboxColors = (item, field) => {
-    if (field === "color") {
-      return item === undefined || item.length > 0 ? "success" : "error";
-    } else {
-      return item === undefined || item.length > 0 ? false : true;
+  useEffect(() => {
+    async function getCompanyDetails() {
+      await getCompanyBasicDetails(userState.userid).then((res) => {
+        dispatch(updateUser(res[0]));
+      });
     }
-  };
-
-  const saveCompanyDetails = async (item) => {
-    console.log(item);
-    localstorage.addOrUpdateCompanyHandler(item, "save");
-
-    let companyBasicDetails = await companyDetailsDB.saveCompanyBasicDetails(
-      item,
-      localstorage.addOrGetUserdetail("", "userid", "get")
-    );
-    console.log("companyBasicDetails");
-    console.log(companyBasicDetails);
-    if (
-      companyBasicDetails.status !== 201 &&
-      companyBasicDetails.status !== 200
-    ) {
-      // toast.error(companyBasicDetails.data + " in saving DB");
+    if (userState.userid) {
+      getCompanyDetails();
     }
+  }, [userState.userid]);
+
+  const saveCompanyDetails = async () => {
+    // localstorage.addOrUpdateCompanyHandler(item, "save");
+
+    try {
+      //need to return saved data
+      await saveCompanyBasicDetails(userState.userid, userState).then(() => {
+        console.log("success");
+      });
+    } catch (error) {
+      console.log("error", error);
+    }
+
+    // let companyBasicDetails = await companyDetailsDB.saveCompanyBasicDetails(
+    //   item,
+    //   localstorage.addOrGetUserdetail("", "userid", "get")
+    // );
+
+    // if (
+    //   companyBasicDetails.status !== 201 &&
+    //   companyBasicDetails.status !== 200
+    // ) {
+    //   // toast.error(companyBasicDetails.data + " in saving DB");
+    // }
   };
 
   return (
@@ -56,29 +57,20 @@ const YourDetails = () => {
       <FormGroup>
         <FormControl>
           <Card>
-            {/* <h3>Company Details</h3> */}
             <StyleHeader>Company Details</StyleHeader>
             <Box
               component="form"
               className="alltextfiled"
               sx={{ "& .MuiTextField-root": { m: 1, width: "35ch" } }}
             >
-              {/* companyImage, setcompanyImage */}
-
-              {/* {compayDet.companyImage ?
-                <div> change</div>
-               
-            } */}
-
               <div>
-                {compayDet.companyImage ? (
+                {userState.companyImage ? (
                   <>
                     <img
                       className={"img-style"}
                       alt="Company Images"
-                      src={compayDet.companyImage}
+                      src={userState.companyImage}
                       loading="lazy"
-                      // src={`${state.newimgurl }`}
                     />
 
                     <div>
@@ -86,7 +78,10 @@ const YourDetails = () => {
                         variant="outlined"
                         color="info"
                         endIcon={<MdOutlineSaveAlt />}
-                        onClick={() => compayDet.uploadImage("upload")}
+                        onClick={
+                          () => {}
+                          //  compayDet.uploadImage("upload")
+                        }
                       >
                         Upload Image
                       </Button>
@@ -96,41 +91,28 @@ const YourDetails = () => {
               </div>
 
               <div className={"img-container"}>
-                {compayDet.companyImage
+                {userState.companyImage
                   ? "Replace the Company Logo: "
                   : "Select Company Logo: "}
                 <input
                   type="file"
                   name="image"
                   className="imageselector"
-                  onChange={compayDet.selectCompanyImg}
+                  onChange={userState.selectCompanyImg}
                 />
               </div>
-
-              {/* <ImageList >
-              <ImageListItem key={compayDet.companyImage} >
-               <div>
-                  {compayDet.companyImage ?
-                    <img
-                    className={"img-style"}
-                      alt="Company Images"
-                      src={compayDet.companyImage}
-                      loading="lazy"
-                    // src={`${state.newimgurl }`} 
-                    /> : null}
-              </div>
-              </ImageListItem>
-            </ImageList> */}
 
               <TextField
                 className="alltextfiled"
                 required
                 id="outlined-required"
                 label="Company Name"
-                value={compayDet.companyName}
-                onChange={(e) => setval(e, compayDet.setcompanyName)}
-                color={setboxColors(compayDet.companyName, "color")}
-                error={setboxColors(compayDet.companyName, "error")}
+                value={userState.companyName}
+                onChange={(e) =>
+                  dispatch(updateUser({ companyName: e.target.value }))
+                }
+                color={userState.companyName !== "" && "success"}
+                error={userState.companyName === ""}
               />
 
               <TextField
@@ -139,10 +121,12 @@ const YourDetails = () => {
                 id="outlined-required"
                 label="Company Tag Line"
                 multiline
-                value={compayDet.companyTagLine}
-                onChange={(e) => setval(e, compayDet.setcompanyTagLine)}
-                color={setboxColors(compayDet.companyTagLine, "color")}
-                error={setboxColors(compayDet.companyTagLine, "error")}
+                value={userState.companyTagLine}
+                onChange={(e) =>
+                  dispatch(updateUser({ companyTagLine: e.target.value }))
+                }
+                // color={setboxColors(compayDet.companyTagLine, "color")}
+                // error={setboxColors(compayDet.companyTagLine, "error")}
               />
 
               <TextField
@@ -151,10 +135,12 @@ const YourDetails = () => {
                 id="outlined-required"
                 label="Company Address"
                 multiline
-                value={compayDet.companyAddress}
-                onChange={(e) => setval(e, compayDet.setcompanyAddress)}
-                color={setboxColors(compayDet.companyAddress, "color")}
-                error={setboxColors(compayDet.companyAddress, "error")}
+                value={userState.companyAddress}
+                onChange={(e) =>
+                  dispatch(updateUser({ companyAddress: e.target.value }))
+                }
+                // color={setboxColors(compayDet.companyAddress, "color")}
+                // error={setboxColors(compayDet.companyAddress, "error")}
               />
 
               <TextField
@@ -162,10 +148,12 @@ const YourDetails = () => {
                 required
                 id="outlined-required"
                 label="Company Phone Number"
-                value={compayDet.companyPhno}
-                onChange={(e) => setval(e, compayDet.setcompanyPhno)}
-                color={setboxColors(compayDet.companyPhno, "color")}
-                error={setboxColors(compayDet.companyPhno, "error")}
+                value={userState.companyPhno}
+                onChange={(e) =>
+                  dispatch(updateUser({ companyPhno: e.target.value }))
+                }
+                // color={setboxColors(compayDet.companyPhno, "color")}
+                // error={setboxColors(compayDet.companyPhno, "error")}
               />
 
               <TextField
@@ -173,10 +161,12 @@ const YourDetails = () => {
                 required
                 id="outlined-required"
                 label="Company Mailid"
-                value={compayDet.companymailid}
-                onChange={(e) => setval(e, compayDet.setcompanymailid)}
-                color={setboxColors(compayDet.companymailid, "color")}
-                error={setboxColors(compayDet.companymailid, "error")}
+                value={userState.companymailid}
+                onChange={(e) =>
+                  dispatch(updateUser({ companymailid: e.target.value }))
+                }
+                // color={setboxColors(compayDet.companymailid, "color")}
+                // error={setboxColors(compayDet.companymailid, "error")}
               />
 
               <TextField
@@ -184,23 +174,22 @@ const YourDetails = () => {
                 required
                 id="outlined-required"
                 label="Company Owner Name"
-                value={compayDet.companyOwner}
-                onChange={(e) => setval(e, compayDet.setcompanyOwner)}
-                color={setboxColors(compayDet.companyOwner, "color")}
-                error={setboxColors(compayDet.companyOwner, "error")}
+                value={userState.companyOwner}
+                onChange={(e) =>
+                  dispatch(updateUser({ companyOwner: e.target.value }))
+                }
+                // color={setboxColors(compayDet.companyOwner, "color")}
+                // error={setboxColors(compayDet.companyOwner, "error")}
               />
-
-              {/* <TextField className="alltextfiled" required id="outlined-required" label="Thanksyou words" value={compayDet.companythankyou} multiline rows={2}
-              onChange={(e) => setval(e, compayDet.setcompanythankyou)}
-              color={setboxColors(compayDet.companythankyou, 'color')}
-              error={setboxColors(compayDet.companythankyou, 'error')} /> */}
 
               <TextField
                 className="alltextfiled"
                 id="outlined-required"
                 label="Company Gstin"
-                value={compayDet.companyGstin}
-                onChange={(e) => setval(e, compayDet.setcompanyGstin)}
+                value={userState.companyGstin}
+                onChange={(e) =>
+                  dispatch(updateUser({ companyGstin: e.target.value }))
+                }
                 //  color ={setboxColors(compayDet.companyGstin,'color')}
                 //  error={setboxColors(compayDet.companyGstin,'error')}
               />
@@ -208,24 +197,23 @@ const YourDetails = () => {
                 className="alltextfiled"
                 id="outlined-required"
                 label="Company Gstin state"
-                value={compayDet.companyGstinStatename}
+                value={userState.companyGstinStatename}
                 multiline
-                onChange={(e) => setval(e, compayDet.setcompanyGstinStatename)}
+                onChange={(e) =>
+                  dispatch(
+                    updateUser({ companyGstinStatename: e.target.value })
+                  )
+                }
                 //  color ={setboxColors(compayDet.companyGstinStatename,'color')}
                 //  error={setboxColors(compayDet.companyGstinStatename,'error')}
               />
 
-              {/* <TextField className="alltextfiled" id="outlined-required" label="Company Declaration" value={compayDet.companyDeleration} multiline rows={3}
-              onChange={(e) => setval(e, compayDet.setcompanyDeleration)}
-              color={setboxColors(compayDet.companyDeleration, 'color')}
-              error={setboxColors(compayDet.companyDeleration, 'error')}
-            /> */}
               <h5>System will automatically update..</h5>
               <Button
                 variant="contained"
                 color="info"
                 endIcon={<MdOutlineSaveAlt />}
-                onClick={() => saveCompanyDetails(compayDet)}
+                onClick={saveCompanyDetails}
               >
                 Save the Changes
               </Button>
