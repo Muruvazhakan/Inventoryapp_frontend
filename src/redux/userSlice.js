@@ -22,9 +22,12 @@ export const userSlice = createSlice({
     updateUser: (state, action) => {
       state.user = { ...state.user, ...action.payload };
     },
+    logoutUser: (state, action) => {
+      state.user = {};
+    },
   },
 });
 
-export const { updateUser } = userSlice.actions;
+export const { updateUser, logoutUser } = userSlice.actions;
 
 export default userSlice.reducer;

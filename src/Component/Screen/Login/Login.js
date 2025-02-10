@@ -49,74 +49,73 @@ const Login = () => {
     } catch (error) {}
   };
 
-  // if (user.load) {
-  //   return (
-  //     <Stack
-  //       sx={{ color: "grey.500" }}
-  //       spacing={2}
-  //       alignItems={"center"}
-  //       className="spinnerstyle"
-  //     >
-  //       <CircularProgress color="success" size={30} />
-  //     </Stack>
-  //   );
-  // }
-
   return (
-    <div className="displaycontent">
-      <Card className="logincard displaycontent">
-        <Box
-          component="form"
-          sx={{ "& .MuiTextField-root": { m: 1.5, width: "35ch" } }}
+    <>
+      {user.load && (
+        <Stack
+          sx={{ color: "grey.500" }}
+          spacing={2}
+          alignItems={"center"}
+          className="spinnerstyle"
         >
-          <h2 className="logintext">Login</h2>
-          <div>
+          <CircularProgress color="success" size={30} />
+        </Stack>
+      )}
+      <div className="displaycontent">
+        <Card className="logincard displaycontent">
+          <Box
+            component="form"
+            sx={{ "& .MuiTextField-root": { m: 1.5, width: "35ch" } }}
+          >
+            <h2 className="logintext">Login</h2>
+            <div>
+              <TextField
+                required
+                id="outlined-required"
+                label="User Name"
+                value={user.userName}
+                onChange={(e) => setUser({ ...user, userName: e.target.value })}
+                color={user.userName !== "" && "success"}
+                error={user.userName === ""}
+              />
+            </div>
             <TextField
               required
               id="outlined-required"
-              label="User Name"
-              value={user.userName}
-              onChange={(e) => setUser({ ...user, userName: e.target.value })}
-              color={user.userName !== "" && "success"}
-              error={user.userName === ""}
+              label="Password"
+              value={user.password}
+              type="password"
+              onChange={(e) => setUser({ ...user, password: e.target.value })}
+              color={user.password !== "" && "success"}
+              error={user.password === ""}
             />
-          </div>
-          <TextField
-            required
-            id="outlined-required"
-            label="Password"
-            value={user.password}
-            type="password"
-            onChange={(e) => setUser({ ...user, password: e.target.value })}
-            color={user.password !== "" && "success"}
-            error={user.password === ""}
+            <div className="loginbutton">
+              <Button
+                variant="contained"
+                color="success"
+                endIcon={<MdLogin />}
+                onClick={handleLogin}
+              >
+                Login
+              </Button>
+            </div>
+          </Box>
+        </Card>
+        {user.load && (
+          <CircularProgress
+            color="success"
+            size={30}
+            sx={{
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              zIndex: 999,
+              color: "grey.500",
+            }}
           />
-          <div className="loginbutton">
-            <Button
-              variant="contained"
-              color="success"
-              endIcon={<MdLogin />}
-              onClick={handleLogin}
-            >
-              Login
-            </Button>
-          </div>
-        </Box>
-      </Card>
-      {user.load && (
-        <CircularProgress
-          color="success"
-          size={30}
-          sx={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            zIndex: 999,
-            color: "grey.500",
-          }}
-        />
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -7,8 +7,8 @@ import icon from "../../../Image/favicon.ico";
 import { FaBars, FaTimes, FaRegUserCircle } from "react-icons/fa";
 import { IoHome, IoLogOutSharp } from "react-icons/io5";
 import "./NavigationBar.css";
-import { CompanyDetail } from "../../Context/companyDetailContext";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../../redux/userSlice";
 
 const NavigationBar = (props) => {
   const navigate = useNavigate();
@@ -27,12 +27,29 @@ const NavigationBar = (props) => {
     window.addEventListener("resize", showButton);
     return window.removeEventListener("resize", showButton);
   }, []);
-  const logindet = useContext(CompanyDetail);
   // const [state, setState] = useState(initialState);
   const [click, setClick] = useState(false);
   const handleClick = () => setClick(!click);
   const userState = useSelector((state) => state.user.user);
   console.log("userState ", userState);
+  const userDispatch = useDispatch();
+  const logoutHandler = () => {
+    //need to add localstore
+    // localstore.addOrGetUserdetail("", "loginuser", "remove");
+    // localstore.addOrGetUserdetail("", "userid", "remove");
+    // localstore.addOrUpdateCompanyHandler("", "remove");
+    // localstore.addOrGetstockHistoryData("", "remove");
+    // localstore.addOrGetSaleStockHistoryData("", "remove");
+    // localstore.addOrGetAllStockData("", "remove");
+    // localstore.addOrGetAllHistoryStockData("", "remove");
+    // localstore.addOrGetAllHistorySalesStockData("", "remove");
+
+    userDispatch(logoutUser({}));
+
+    // toast.success("You have successfully logedout");
+    return true;
+  };
+
   return (
     <>
       <IconContext.Provider value={{ color: "#rrr" }}>
@@ -103,7 +120,7 @@ const NavigationBar = (props) => {
                         offset={-50}
                         smooth
                         onClick={() => {
-                          const isLougedout = logindet.logoutHandler();
+                          const isLougedout = logoutHandler();
                           if (isLougedout) {
                             navigate("login", { replace: true });
                           }
