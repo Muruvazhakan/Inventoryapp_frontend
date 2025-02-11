@@ -14,8 +14,9 @@ import { BsSave } from "react-icons/bs";
 import { FaFileInvoice, FaRegIdCard } from "react-icons/fa";
 import { GrClearOption } from "react-icons/gr";
 import Card from "../../../Style/Card/Card";
-import * as localstorage from "../../../Context/localStorageData";
-import * as stockDb from "../../../DBconnection/stockDetailBD";
+import { getSalesStockidDB, getStockidDB } from "../../../../apis/apis";
+import { updateStock } from "../../../../redux/productSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const filter = createFilterOptions();
 const initialState = {
@@ -29,12 +30,12 @@ const initialState = {
 };
 
 const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
-  const tabledet = useContext(Stocks);
+  const stockState = useSelector((state) => state.stock.stock);
+  const stockDispatch = useDispatch();
   const [stock, setStock] = useState(initialState);
   const [stockid, setstockid] = useState("");
   const [stockdate, setstockstockdate] = useState("");
   const [stockidcount, setstockidcount] = useState(1000);
-  const [salestockid, setsalestockid] = useState("");
   const [salestockidcount, setsalestockidcount] = useState(1000);
   const [value, setValue] = useState(null);
   const [tit, setit] = useState([]);
@@ -45,32 +46,41 @@ const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
     else getSalesStockIdCounter(loginuser);
 
     autocompleTitle();
-  }, [tabledet.loginuser]);
+  }, []);
 
   const getStockIdCounter = async (loginuserid) => {
     console.log(loginuserid + " :loginuserid");
-    let stockidcounter = localstorage.addOrGetStockid("", "get");
-    console.log(stockidcounter + " addOrGetStockid");
-    let getStockfromDb = await stockDb.getStockidDB(loginuserid);
-    console.log("getStockfromDb.data");
-    console.log(getStockfromDb);
-    if (getStockfromDb.status === 200) {
-      localstorage.addOrGetStockid(getStockfromDb.data, "save");
-      setstockidcount(getStockfromDb.data * 1);
-      console.log("saving setinvoiceidount " + getStockfromDb.data);
+    // let stockidcounter = localstorage.addOrGetStockid("", "get");
+    // console.log(stockidcounter + " addOrGetStockid");
+    try {
+      await getStockidDB(loginuserid).then((res) => {
+        localStorage.setItem("stockid", res);
+        stockDispatch(
+          updateStock({
+            stockid: res,
+          })
+        );
+        setstockidcount(res * 1);
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const getSalesStockIdCounter = async (loginuserid) => {
-    let salesstockidcounter = localstorage.addOrGetSaleStockid("", "get");
-    console.log(salesstockidcounter + " addOrGetStockid");
-    let getSalesStockfromDb = await stockDb.getSalesStockidDB(loginuserid);
-    console.log("getSalesStockfromDb.data");
-    console.log(getSalesStockfromDb);
-    if (getSalesStockfromDb.status === 200) {
-      localstorage.addOrGetSaleStockid(getSalesStockfromDb.data, "save");
-      setsalestockidcount(getSalesStockfromDb.data);
-      console.log("saving setinvoiceidount " + getSalesStockfromDb.data);
+    try {
+      await getSalesStockidDB(loginuserid).then((res) => {
+        // console.log(stockidcounter + " addOrGetStockid");
+        localStorage.setItem("salestockid", res);
+        stockDispatch(
+          updateStock({
+            salestockid: res,
+          })
+        );
+        setsalestockidcount(res * 1);
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -121,10 +131,11 @@ const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
   };
 
   const filterProdIdAndGetDesc = (prodid) => {
-    let filterdata = tabledet.allStockData.find((data) => {
+    let filterdata = stockState.allStockData.find((data) => {
       return data.productid == prodid;
     });
     console.log(filterdata);
+    console.log(prodid);
     if (filterdata) {
       if (screen === "Stocks") {
         setStock({
@@ -145,12 +156,19 @@ const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
   };
 
   const autocompleTitle = () => {
-    if (tabledet.allStockData !== null && tabledet.allStockData.length > 0) {
-      // console.log('autocompleTitle title');
-      let productid = tabledet.allStockData.map((row) => {
+    if (
+      stockState.allStockData !== null &&
+      stockState.allStockData.length > 0
+    ) {
+      console.log("autocompleTitle title");
+      console.log(stockState.allStockData);
+      let allStockData = stockState.allStockData.filter(
+        (data) => data != undefined
+      );
+      let productid = allStockData.map((row) => {
         return { productid: row.productid };
       });
-      // console.log(productid);
+      console.log(productid);
       productid = [].concat.apply([], productid);
       setit(productid);
     }
@@ -161,11 +179,20 @@ const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
       setValue({
         productid: newValue.inputValue,
       });
-      tabledet.setproductid(newValue.inputValue);
+      stockDispatch(
+        updateStock({
+          prodid: newValue.inputValue,
+        })
+      );
     } else {
       if (newValue.productid != null) {
         setValue(newValue.productid);
-        tabledet.setproductid(newValue.productid);
+        stockDispatch(
+          updateStock({
+            prodid: newValue.productid,
+          })
+        );
+
         filterProdIdAndGetDesc(newValue.productid);
       }
     }

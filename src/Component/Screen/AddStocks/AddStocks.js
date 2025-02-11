@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, CircularProgress, Stack } from "@mui/material";
 import StyleHeader from "../Header/StyleHeader";
 import AddedStockListTable from "./AddedStockListTable";
 import StockForm from "./AddStocksForm/StockForm";
 import ClientForm from "./ClientForm";
 import collect from "collect.js";
 import { v4 as uuidv4 } from "uuid";
-import * as localstorage from "../../Context/localStorageData";
-import * as stockDb from "../../DBconnection/stockDetailBD";
-import { useSelector } from "react-redux";
-import { saveStockBD } from "../../../apis/apis";
+import { useDispatch, useSelector } from "react-redux";
+import { getStockidDB, saveStockBD } from "../../../apis/apis";
+import { updateStock } from "../../../redux/productSlice";
 const AddStocks = () => {
   const userState = useSelector((state) => state.user.user);
+  const stockState = useSelector((state) => state.stock.stock);
   const [tableData, setTableData] = useState([]);
+  const stockDispatch = useDispatch();
   let loginuser = userState.userid;
   const initialClientState = {
     clientid: null,
@@ -31,6 +32,8 @@ const AddStocks = () => {
 
   const saveStock = async (props) => {
     // setisloading(true);
+    console.log("props");
+    setclientDetails({ ...clientDetails, load: true });
     console.log("saveStock");
     console.log("loginuserid + loginuserid");
     console.log(tableData);
@@ -76,22 +79,32 @@ const AddStocks = () => {
     console.log(datas);
 
     // saveLocalStock(datas, "add");
-
-    let savedataresponse = await saveStockBD(datas, loginuser);
-    if (savedataresponse.status !== 200) {
-      // toast.warn("Issue in saving Stock");
-      return;
+    try {
+      await saveStockBD(datas, loginuser)
+        .then((res) => {
+          console.log("res");
+          console.log(res);
+        })
+        .finally(() => {
+          setclientDetails({ ...clientDetails, load: false });
+        });
+    } catch (error) {
+      console.log(error);
     }
-    console.log("savedataresponse");
-    console.log(savedataresponse);
-    // getAllClientList(loginuser, "add");
-
-    // getAllHistoryStockData(loginuser);
-    // toast.success("New Stock saved");
   };
 
   return (
     <Box sx={{ padding: "10px" }}>
+      {clientDetails.load && (
+        <Stack
+          sx={{ color: "grey.500" }}
+          spacing={2}
+          alignItems={"center"}
+          className="spinnerstyle"
+        >
+          <CircularProgress color="success" size={30} />
+        </Stack>
+      )}
       <StyleHeader>Add Stocks</StyleHeader>
       <Stack direction={"row"} width={"100%"} flexWrap={"wrap"}>
         <Box

@@ -1,6 +1,4 @@
-import React, { useContext } from "react";
-import { Stocks } from "../../../Context/StocksContex";
-import { CompanyDetail } from "../../../Context/companyDetailContext";
+import React from "react";
 import ReactTable from "../../../table/ReactTable";
 
 const basiccolumns = [
@@ -39,15 +37,12 @@ const basiccolumns = [
 ];
 
 const CurrentStocksTable = (props) => {
-  const logindet = useContext(CompanyDetail);
-  const tabledetails = useContext(Stocks);
   console.log("before props ^^ ");
   console.log(props);
   let displ = Object.assign({}, props);
   console.log("displ tableList ^^ ");
   console.log(displ);
-  let sum1 = 0,
-    amt = 0;
+
   let tableList = displ.displaylist;
   // tableList = displ.displaylist
   //   .map((item, index) => {

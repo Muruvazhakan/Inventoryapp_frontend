@@ -49,7 +49,7 @@ export const getStockidDB = async (userid) => {
   try {
     response = await axios.post(`${getStockidUrl}/${userid}`, config);
 
-    return response;
+    return response.data;
   } catch (err) {
     return err;
   }
@@ -128,7 +128,7 @@ export const getSalesStockidDB = async (userid) => {
   try {
     response = await axios.post(`${getSalesStockidUrl}/${userid}`, config);
     // console.log(response);
-    return response;
+    return response.data;
   } catch (err) {
     //console.log(err);
     return err;

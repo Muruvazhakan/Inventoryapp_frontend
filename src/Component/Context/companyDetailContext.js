@@ -324,27 +324,27 @@ const CompanyDetailContext = ({ children }) => {
     if (loginuserid !== null && loginuserid !== "") {
       let stockidcounter = localstore.addOrGetStockid("", "get");
       console.log(stockidcounter + " addOrGetStockid");
-      let getStockfromDb = await stockDetailBD.getStockidDB(loginuserid);
-      console.log("getStockfromDb.data");
-      console.log(getStockfromDb);
-      if (
-        getStockfromDb.status === 200 &&
-        stockidcounter < getStockfromDb.data
-      ) {
-        localstore.addOrGetStockid(getStockfromDb.data, "save");
-        stockDetail.setstockidcount(getStockfromDb.data);
-        console.log("saving setinvoiceidount " + getStockfromDb.data);
-      }
+      // let getStockfromDb = await stockDetailBD.getStockidDB(loginuserid);
+      // console.log("getStockfromDb.data");
+      // console.log(getStockfromDb);
+      // if (
+      //   getStockfromDb.status === 200 &&
+      //   stockidcounter < getStockfromDb.data
+      // ) {
+      //   localstore.addOrGetStockid(getStockfromDb.data, "save");
+      //   stockDetail.setstockidcount(getStockfromDb.data);
+      //   console.log("saving setinvoiceidount " + getStockfromDb.data);
+      // }
 
-      let results = stockDetail.getAllStockData(loginuserid);
-      if (results) {
-        refreshdata = true;
-      }
+      // let results = stockDetail.getAllStockData(loginuserid);
+      // if (results) {
+      //   refreshdata = true;
+      // }
 
-      let resultsgetAllSalesCount = stockDetail.getAllSalesCount(loginuserid);
-      if (resultsgetAllSalesCount) {
-        refreshdata = true;
-      }
+      // let resultsgetAllSalesCount = stockDetail.getAllSalesCount(loginuserid);
+      // if (resultsgetAllSalesCount) {
+      //   refreshdata = true;
+      // }
     }
     setisloaded(true);
   };
