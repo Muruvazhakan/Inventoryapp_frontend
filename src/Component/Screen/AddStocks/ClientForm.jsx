@@ -11,46 +11,51 @@ import React, { useEffect, useState } from "react";
 import { GrClearOption } from "react-icons/gr";
 import Card from "../../Style/Card/Card";
 import { FaRegIdCard } from "react-icons/fa";
-import * as localstorage from "../../Context/localStorageData";
-import * as stockDb from "../../DBconnection/stockDetailBD";
+
+import { useDispatch } from "react-redux";
+import { getClientDB } from "../../../apis/apis";
+import { updateStock } from "../../../redux/productSlice";
 const filter = createFilterOptions();
 const ClientForm = (props) => {
   const [clientData, setClientData] = useState(props.initialClientState);
   const [clientList, setclientList] = useState([]);
+  const [user, setUser] = useState({
+    load: false,
+  });
   const [value, setValue] = useState(null);
 
+  const stockDispatch = useDispatch();
   const [tit, setit] = useState([]);
 
   useEffect(() => {
     getAllClientList(props.loginuser);
   }, []);
-  const getAllClientList = async (loginuserid, type, stockdetail) => {
-    // setisloading(true);
-    let allClientData = localstorage.addOrGetAllClientData("", "get");
-    console.log("loginuserid &&&& " + loginuserid);
-    let getallClientDatafromdb = await stockDb.getClientDB(loginuserid);
-    console.log("allClientData " + allClientData);
-    // setclientList(allClientData);
-    console.log("**** getallClientDatafromdb &&&& ");
-    console.log(getallClientDatafromdb);
-    // setisloading(false);
-    if (getallClientDatafromdb.status === 200) {
-      // localstorage.addOrGetAllClientData(getallClientDatafromdb.data, 'save');
-      setclientList(getallClientDatafromdb.data);
-      console.log("getallClientDatafromdb ****");
-      console.log(clientList);
-      autocompleTitle(getallClientDatafromdb.data);
-      // if (type === "add") {
-      //   getAllHistoryStockData(loginuserid, getallClientDatafromdb.data);
-      // } else {
-      //   // getAllHistorySalesStockData(loginuserid, getallClientDatafromdb.data);
-      //   getAllHistoryStockData(
-      //     loginuserid,
-      //     getallClientDatafromdb.data,
-      //     stockdetail
-      //   );
-      // }
+
+  const getAllClientList = async (loginuserid) => {
+    // let allClientData = localstorage.addOrGetAllClientData("", "get");
+    try {
+      setUser({ ...user, load: true });
+      await getClientDB(loginuserid)
+        .then((res) => {
+          console.log("getAllStockData !!!!!");
+          console.log(res);
+          // localStorage.setItem("allStockData", res);
+          stockDispatch(
+            updateStock({
+              clientList: res,
+            })
+          );
+          autocompleTitle(res);
+          setclientList(res);
+        })
+        .finally(() => {
+          setUser({ ...user, load: false });
+        });
+    } catch (error) {
+      console.log(error);
     }
+
+    // getAllHistoryStockData(loginuserid, getallClientDatafromdb.data);
   };
 
   const filterProdIdAndGetDesc = (clname) => {

@@ -5,6 +5,6 @@ import stockSlice from "../productSlice";
 export const store = configureStore({
   reducer: {
     user: userSlice,
-    // stock: stockSlice,
+    stock: stockSlice,
   },
 });

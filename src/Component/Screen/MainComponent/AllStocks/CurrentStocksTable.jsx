@@ -38,13 +38,18 @@ const basiccolumns = [
   },
 ];
 
-const CurrentStocksTable = () => {
+const CurrentStocksTable = (props) => {
   const logindet = useContext(CompanyDetail);
   const tabledetails = useContext(Stocks);
-
-  let sum1 = 0;
+  console.log("before props ^^ ");
+  console.log(props);
+  let displ = Object.assign({}, props);
+  console.log("displ tableList ^^ ");
+  console.log(displ);
+  let sum1 = 0,
+    amt = 0;
   let tableList = [];
-  tableList = tabledetails.allStockList
+  tableList = displ.displaylist
     .map((item, index) => {
       item.amt = (item.quantity * 1 * item.rate).toFixed(2);
       item.id = index + 1;
@@ -58,7 +63,7 @@ const CurrentStocksTable = () => {
         return item;
       }
     })
-    .filter((data) => data !== undefined);
+    .filter(({ ...data }) => data !== undefined);
   console.log("tableList ^^ ");
   console.log(tableList);
 
@@ -70,7 +75,7 @@ const CurrentStocksTable = () => {
   return (
     <>
       <ReactTable
-        loading={tabledetails.isloading && logindet.isloaded}
+        loading={props.isloading}
         columns={basiccolumns}
         data={tableList}
         pageSize={10}

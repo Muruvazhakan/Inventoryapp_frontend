@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Stack } from "@mui/material";
 import StyleHeader from "../Header/StyleHeader";
 import AddedStockListTable from "./AddedStockListTable";
@@ -8,9 +8,12 @@ import collect from "collect.js";
 import { v4 as uuidv4 } from "uuid";
 import * as localstorage from "../../Context/localStorageData";
 import * as stockDb from "../../DBconnection/stockDetailBD";
+import { useSelector } from "react-redux";
+import { saveStockBD } from "../../../apis/apis";
 const AddStocks = () => {
+  const userState = useSelector((state) => state.user.user);
   const [tableData, setTableData] = useState([]);
-  let loginuser = localstorage.addOrGetUserdetail("", "userid", "get");
+  let loginuser = userState.userid;
   const initialClientState = {
     clientid: null,
     clientName: "",
@@ -74,7 +77,7 @@ const AddStocks = () => {
 
     // saveLocalStock(datas, "add");
 
-    let savedataresponse = await stockDb.saveStockBD(datas, loginuser);
+    let savedataresponse = await saveStockBD(datas, loginuser);
     if (savedataresponse.status !== 200) {
       // toast.warn("Issue in saving Stock");
       return;
@@ -85,51 +88,6 @@ const AddStocks = () => {
 
     // getAllHistoryStockData(loginuser);
     // toast.success("New Stock saved");
-
-    // else {
-    //   if (salestockid == "" || saleslist.length == 0) {
-    //     // toast.warn("Please add the sale stock or Generate the Sale Stockid");
-    //     return;
-    //   }
-    //   let clientidtemp;
-    //   if (clientid == null) {
-    //     clientidtemp = uuidv4();
-    //     setclientid(clientidtemp);
-    //   } else {
-    //     clientidtemp = clientid;
-    //   }
-    //   let datas = {
-    //     authorization: header,
-    //     salestockid: salestockid,
-    //     salestocklist: saleslist,
-    //     clientid: clientidtemp,
-    //     totalsalesamt: totalsalesamt,
-    //     clientAdd: clientAdd,
-    //     clientName: clientName,
-    //     clientPhno: clientPhno,
-    //     salestockidcount: salestockidcount,
-    //     salestockdate: salestockdate,
-    //   };
-    //   console.log("sales datas");
-    //   console.log(datas);
-
-    //   saveLocalStock(datas, "sale");
-
-    //   let savedataresponse = await stockDb.saveSalesStockBD(datas, loginuser);
-    //   if (savedataresponse.status !== 200) {
-    //     // toast.warn("Issue in saving Stock");
-    //     return;
-    //   }
-    //   console.log("savedataresponse");
-    //   console.log(savedataresponse);
-    //   // getAllClientList(loginuser, "sale");
-    //   // getAllStockData(loginuser);
-    //   // getAllHistorySalesStockData(loginuser);
-
-    //   // toast.success("New Sale Stock saved");
-    // }
-    // getAllStockData(loginuser, screen);
-    // setisloading(false);
   };
 
   return (

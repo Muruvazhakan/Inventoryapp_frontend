@@ -83,7 +83,7 @@ export const getAllHistoryStockDB = async (userid) => {
   try {
     response = await axios.get(`${getAllHistoryStockUrl}/${userid}`, config);
     // console.log(response);
-    return response;
+    return response.data;
   } catch (err) {
     console.log(err);
     return err;
@@ -172,7 +172,7 @@ export const getClientDB = async (userid) => {
   try {
     response = await axios.get(`${getAllClientUrl}/${userid}`, config);
     // console.log(response);
-    return response;
+    return response.data;
   } catch (err) {
     console.log(err);
     return err;

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialStockState = {
+const initialState = {
   stock: {
     stockidcount: 1000,
     stockid: "",
@@ -46,7 +46,7 @@ const initialStockState = {
 
 export const stockSlice = createSlice({
   name: "stock",
-  initialStockState,
+  initialState,
   reducers: {
     updateStock: (state, action) => {
       state.stock = { ...state.stock, ...action.payload };
