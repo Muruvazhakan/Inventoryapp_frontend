@@ -48,22 +48,22 @@ const CurrentStocksTable = (props) => {
   console.log(displ);
   let sum1 = 0,
     amt = 0;
-  let tableList = [];
-  tableList = displ.displaylist
-    .map((item, index) => {
-      item.amt = (item.quantity * 1 * item.rate).toFixed(2);
-      item.id = index + 1;
-      if (
-        item.quantity === 0 ||
-        item.status === "deleted" ||
-        item.status === "Deleted"
-      ) {
-      } else {
-        sum1 = sum1 + item.quantity * 1 * item.rate;
-        return item;
-      }
-    })
-    .filter(({ ...data }) => data !== undefined);
+  let tableList = displ.displaylist;
+  // tableList = displ.displaylist
+  //   .map((item, index) => {
+  //     item.amt = (item.quantity * 1 * item.rate).toFixed(2);
+  //     item.id = index + 1;
+  //     if (
+  //       item.quantity === 0 ||
+  //       item.status === "deleted" ||
+  //       item.status === "Deleted"
+  //     ) {
+  //     } else {
+  //       sum1 = sum1 + item.quantity * 1 * item.rate;
+  //       return item;
+  //     }
+  //   })
+  //   .filter(({ ...data }) => data !== undefined);
   console.log("tableList ^^ ");
   console.log(tableList);
 

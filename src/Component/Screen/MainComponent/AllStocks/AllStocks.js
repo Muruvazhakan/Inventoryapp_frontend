@@ -51,10 +51,26 @@ const AllStocks = () => {
       setUser({ ...user, load: true });
       await getAllStocksDB(userState.userid)
         .then((res) => {
-          console.log("getAllStockData !!!!!");
-          console.log(res);
           localStorage.setItem("allStockData", res);
           let localsum = calculateSum(res);
+          res = res.filter((data) => data != undefined);
+          console.log("getAllStockData !!!!!");
+          console.log(res);
+          res = res.map((item, index) => {
+            item.amt = (item.quantity * 1 * item.rate).toFixed(2);
+            item.id = index + 1;
+            if (
+              item.quantity === 0 ||
+              item.status === "deleted" ||
+              item.status === "Deleted"
+            ) {
+            } else {
+              // sum1 = sum1 + item.quantity * 1 * item.rate;
+              return item;
+            }
+          });
+          console.log("after getAllStockData !!!!!");
+          console.log(res);
           stockDispatch(
             updateStock({
               allStockData: res,
@@ -183,11 +199,15 @@ const AllStocks = () => {
     stockState.allStockList.filter(
       (item) =>
         !(
+          item === undefined ||
           item.quantity === 0 ||
           item.status === "deleted" ||
           item.status === "Deleted"
         )
     );
+
+  console.log("displaylist &&&");
+  console.log(displaylist);
   return (
     <>
       <Box className="allstocksdisplaytable">
