@@ -77,9 +77,14 @@ const AllSaleStocks = () => {
           deriveSaleStockFromHistory(deriveClientDetailValue);
           console.log("after getAllSaleStockData !!!!!");
           console.log(deriveClientDetailValue);
+          const resultsegregateDataByMonth = segregateDataByMonth(
+            deriveClientDetailValue
+          );
+
           stockDispatch(
             updateStock({
               salesStockHistoryData: deriveClientDetailValue,
+              segregatedMonthData: resultsegregateDataByMonth,
             })
           );
         })
@@ -89,6 +94,85 @@ const AllSaleStocks = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const segregateDataByMonth = (data) => {
+    console.log("segregateDataByMonth");
+    console.log(data);
+    let valudata = [];
+    data = data.filter((data) => data.salestockdate !== "");
+    data.reduce((acc, item) => {
+      // Get the month and year from the salestockdate
+      console.log("item segra");
+      console.log(item);
+      if (item.salestockdate && item.salestockdate !== "") {
+        const monthYear = new Date(item.salestockdate).toLocaleString(
+          "default",
+          { month: "short", year: "numeric" }
+        );
+        console.log("item monthYear");
+        console.log(monthYear);
+
+        if (monthYear) {
+          console.log(acc[monthYear]);
+          // Initialize the month entry if not exists
+          if (!acc[monthYear]) {
+            acc[monthYear] = {
+              totalSalesAmount: 0,
+              totalProfit: 0,
+            };
+          }
+          console.log("item acc");
+          console.log(acc);
+          // Add the totalsalesamt to the respective month
+          acc[monthYear].totalSalesAmount += item.totalsalesamt * 1;
+          // Assuming profit is the same as totalsalesamt for simplicity; adjust as necessary
+          acc[monthYear].totalProfit += item.totalsalesamt * 1;
+          console.log("item acc");
+          console.log(acc);
+          valudata = acc;
+          return acc;
+        }
+      }
+    }, {});
+
+    console.log("after resultsegregateDataByMonth");
+    console.log(valudata);
+
+    valudata = sortBydate(valudata);
+    console.log("sortedDates valudata");
+    return valudata;
+  };
+
+  const sortBydate = (data) => {
+    return Object.fromEntries(
+      Object.entries(data).sort((a, b) => {
+        const [monthA, yearA] = a[0].split(" ");
+        const [monthB, yearB] = b[0].split(" ");
+
+        const months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        const monthAIndex = months.indexOf(monthA);
+        const monthBIndex = months.indexOf(monthB);
+
+        if (yearA !== yearB) {
+          return yearA - yearB; // Sort by year
+        }
+        return monthAIndex - monthBIndex; // Sort by month if years are the same
+      })
+    );
   };
 
   const deriveClientDetail = (details, clientdata) => {

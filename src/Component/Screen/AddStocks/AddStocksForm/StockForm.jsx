@@ -9,7 +9,6 @@ import {
   createFilterOptions,
 } from "@mui/material";
 import React, { useContext, useState, useEffect } from "react";
-import { Stocks } from "../../../Context/StocksContex";
 import { BsSave } from "react-icons/bs";
 import { FaFileInvoice, FaRegIdCard } from "react-icons/fa";
 import { GrClearOption } from "react-icons/gr";

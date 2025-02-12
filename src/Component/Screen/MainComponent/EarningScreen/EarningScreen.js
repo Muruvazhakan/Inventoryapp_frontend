@@ -9,14 +9,19 @@ import MonthlyEarningScreen from "./TotalEarningScreen/MonthlyEarningScreen";
 import { Stack } from "@mui/material";
 import StockChart from "../AllSaleStocks/StockChart";
 import Dashboard from "../Dashboard/Dashboard";
+import { useSelector } from "react-redux";
 
 // import Flash from 'react-reveal/Flash';
 // import Spinner from '../../Spinner/Spinner';
 
 const EarningScreen = (props) => {
   const stockdet = useContext(Stocks);
+
+  const userState = useSelector((state) => state.user.user);
+  const stockState = useSelector((state) => state.stock.stock);
+
   let totaltransaction = 0;
-  const paymentModeCount = stockdet.allStockSalesList.reduce(
+  const paymentModeCount = stockState.allStockSalesList.reduce(
     (acc, { paymentmode }) => {
       totaltransaction = totaltransaction + 1;
       // If paymentmode is empty, we treat it as 'No Payment Mode'
@@ -28,22 +33,22 @@ const EarningScreen = (props) => {
   );
   return (
     <>
-      {stockdet.allStockSalesList.length > 0 && (
-        <Dashboard data={stockdet} totaltransaction={totaltransaction} />
+      {stockState.allStockSalesList.length > 0 && (
+        <Dashboard data={stockState} totaltransaction={totaltransaction} />
       )}
       <Stack direction="row" mt={1} alignItems="center">
-        <TotalEarningScreen data={stockdet} />
-        <TotalSalesScreen data={stockdet} />
+        <TotalEarningScreen data={stockState} />
+        <TotalSalesScreen data={stockState} />
 
-        {stockdet.allStockSalesList.length > 0 && (
+        {stockState.allStockSalesList.length > 0 && (
           <StockChart
-            data={stockdet.allStockSalesList}
+            data={stockState.allStockSalesList}
             title="Sold units"
             chartlable="Sold per product"
           />
         )}
 
-        {/* <MonthlyEarningScreen data={stockdet} /> */}
+        {/* <MonthlyEarningScreen data={stockState} /> */}
       </Stack>
     </>
   );

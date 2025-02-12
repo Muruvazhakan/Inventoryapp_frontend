@@ -47,11 +47,12 @@ const profitcolumns = [
   },
 ];
 
-const ProfitTable = () => {
+const ProfitTable = (props) => {
   const logindet = useContext(CompanyDetail);
   const tabledetails = useContext(Stocks);
-
-  let tableList = tabledetails.allProfitStockList;
+  console.log("props.allProfitStockList");
+  console.log(props.allProfitStockList);
+  let tableList = JSON.parse(JSON.stringify(props.allProfitStockList));
   tableList = tableList.map((item, index) => {
     item.profit = (item.profit * 1).toFixed(2);
     // item.amt = (item.quantity * 1 * item.rate).toFixed(2);
@@ -61,7 +62,7 @@ const ProfitTable = () => {
   return (
     <div>
       <ReactTable
-        loading={tabledetails.isloading && logindet.isloaded}
+        // loading={tabledetails.isloading && logindet.isloaded}
         columns={profitcolumns}
         data={tableList}
         pageSize={10}
