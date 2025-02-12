@@ -6,19 +6,20 @@ import AddedStockListTable from "../AddStocks/AddedStockListTable";
 import ClientForm from "../AddStocks/ClientForm";
 import collect from "collect.js";
 import { v4 as uuidv4 } from "uuid";
-import * as localstorage from "../../Context/localStorageData";
 import StockForm from "../AddStocks/AddStocksForm/StockForm";
-import { Stocks } from "../../Context/StocksContex";
-import * as stockDb from "../../DBconnection/stockDetailBD";
+import { saveSalesStockBD } from "../../../apis/apis";
+import { useSelector } from "react-redux";
 const SalesStocks = () => {
-  const tabledetails = useContext(Stocks);
-  const [tableData, setTableData] = useState(tabledetails.saleslist ?? []);
-  let loginuser = localstorage.addOrGetUserdetail("", "userid", "get");
+  const userState = useSelector((state) => state.user.user);
+  const stockState = useSelector((state) => state.stock.stock);
+  const [tableData, setTableData] = useState(stockState.saleslist ?? []);
+
   const initialClientState = {
     clientid: null,
     clientName: "",
     clientPhno: 0,
     clientAdd: "",
+    load: false,
   };
   const [header, setheader] = useState("stockrequest");
   const [clientDetails, setclientDetails] = useState(initialClientState);
@@ -33,7 +34,7 @@ const SalesStocks = () => {
   const saveSalesStock = async (props) => {
     // setisloading(true);
     console.log("saveStock");
-    console.log("loginuserid + loginuserid");
+    console.log("userState.userid + loginuserid");
     console.log(tableData);
     // if(screen ==="add"){
 
@@ -71,14 +72,19 @@ const SalesStocks = () => {
     console.log(datas);
 
     //   saveLocalStock(datas, "sale");
-
-    let savedataresponse = await stockDb.saveSalesStockBD(datas, loginuser);
-    if (savedataresponse.status !== 200) {
+    try {
+      await saveSalesStockBD(datas, userState.userid)
+        .then((res) => {
+          console.log("res");
+          console.log(res);
+        })
+        .finally(() => {
+          setclientDetails({ ...clientDetails, load: false });
+        });
+    } catch (error) {
       // toast.warn("Issue in saving Stock");
-      return;
+      console.log(error);
     }
-    console.log("savedataresponse");
-    console.log(savedataresponse);
     // getAllClientList(loginuser, "add");
     // getAllHistoryStockData(loginuser);
     // getAllStockData(loginuser, screen);
@@ -109,12 +115,12 @@ const SalesStocks = () => {
             screen="Sale Stocks"
             getStock={(val) => setTableData([...tableData, val])}
             onSubmit={handelSaveSalesStock}
-            loginuser={loginuser}
+            loginuser={userState.userid}
           />
           <ClientForm
             getclientDetails={(val) => setclientDetails(val)}
             initialClientState={initialClientState}
-            loginuser={loginuser}
+            loginuser={userState.userid}
           />
         </Box>
       </Stack>

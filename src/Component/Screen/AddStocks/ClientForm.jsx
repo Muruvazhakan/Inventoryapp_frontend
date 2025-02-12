@@ -12,13 +12,14 @@ import { GrClearOption } from "react-icons/gr";
 import Card from "../../Style/Card/Card";
 import { FaRegIdCard } from "react-icons/fa";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getClientDB } from "../../../apis/apis";
 import { updateStock } from "../../../redux/productSlice";
 const filter = createFilterOptions();
 const ClientForm = (props) => {
   const [clientData, setClientData] = useState(props.initialClientState);
   const [clientList, setclientList] = useState([]);
+  const userState = useSelector((state) => state.user.user);
   const [user, setUser] = useState({
     load: false,
   });
@@ -28,14 +29,14 @@ const ClientForm = (props) => {
   const [tit, setit] = useState([]);
 
   useEffect(() => {
-    getAllClientList(props.loginuser);
+    getAllClientList();
   }, []);
 
-  const getAllClientList = async (loginuserid) => {
+  const getAllClientList = async () => {
     // let allClientData = localstorage.addOrGetAllClientData("", "get");
     try {
       setUser({ ...user, load: true });
-      await getClientDB(loginuserid)
+      await getClientDB(userState.userid)
         .then((res) => {
           console.log("getAllStockData !!!!!");
           console.log(res);

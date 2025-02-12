@@ -61,7 +61,7 @@ const Login = () => {
           <CircularProgress color="success" size={30} />
         </Stack>
       )}
-      <div className="displaycontent">
+      <Box className="displaycontent">
         <Card className="logincard displaycontent">
           <Box
             component="form"
@@ -101,20 +101,7 @@ const Login = () => {
             </div>
           </Box>
         </Card>
-        {user.load && (
-          <CircularProgress
-            color="success"
-            size={30}
-            sx={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              zIndex: 999,
-              color: "grey.500",
-            }}
-          />
-        )}
-      </div>
+      </Box>
     </>
   );
 };

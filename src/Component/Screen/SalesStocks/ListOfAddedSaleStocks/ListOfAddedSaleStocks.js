@@ -8,16 +8,18 @@ import { RiEditCircleFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { BsFiletypeXlsx } from "react-icons/bs";
 import StyleHeader from "../../Header/StyleHeader";
+import { useSelector } from "react-redux";
 
 const ListOfAddedSaleStocks = (props) => {
   const stocksdet = useContext(Stocks);
+  const stockState = useSelector((state) => state.stock.stock);
   const digit2options = { maximumFractionDigits: 2 };
 
   useEffect(() => {
     console.log("ListOfAddedSaleStocks");
 
-    console.log(stocksdet.salesStockHistoryData);
-  }, [stocksdet.salesStockHistoryData]);
+    console.log(stockState.salesStockHistoryData);
+  }, [stockState.salesStockHistoryData]);
 
   if (stocksdet.isloading) {
     return (
@@ -37,8 +39,8 @@ const ListOfAddedSaleStocks = (props) => {
         {/* <Header name="Current Stocks" /> */}
         List Of Added Sales Stocks
       </StyleHeader>
-      {stocksdet.salesStockHistoryData === null ||
-      stocksdet.salesStockHistoryData.length === 0 ? (
+      {stockState.salesStockHistoryData === null ||
+      stockState.salesStockHistoryData.length === 0 ? (
         <>
           <NoData details="Sales Stock Found" />
         </>
@@ -62,7 +64,7 @@ const ListOfAddedSaleStocks = (props) => {
               justifyContent: "center",
             }}
           >
-            {stocksdet.salesStockHistoryData.map((item, index) => {
+            {stockState.salesStockHistoryData.map((item, index) => {
               return (
                 <Box sx={{ width: "340px" }}>
                   <Card className="  allestimatedisplay" key={index}>

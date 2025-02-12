@@ -8,16 +8,18 @@ import { RiEditCircleFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { BsFiletypeXlsx } from "react-icons/bs";
 import StyleHeader from "../../Header/StyleHeader";
+import { useSelector } from "react-redux";
 
 const ListOfAddedStocks = () => {
   const stocksdet = useContext(Stocks);
+  const stockState = useSelector((state) => state.stock.stock);
   const digit2options = { maximumFractionDigits: 2 };
 
   useEffect(() => {
     console.log("ListOfAddedStocks");
 
-    console.log(stocksdet.stockHistoryData);
-  }, []);
+    console.log(stockState.stockHistoryData);
+  }, [stockState.stockHistoryData]);
 
   if (stocksdet.isloading) {
     return (
@@ -38,8 +40,8 @@ const ListOfAddedStocks = () => {
         {/* <Header name="Current Stocks" /> */}
         List Of Added Stocks
       </StyleHeader>
-      {stocksdet.stockHistoryData === null ||
-      stocksdet.stockHistoryData.length === 0 ? (
+      {stockState.stockHistoryData === null ||
+      stockState.stockHistoryData.length === 0 ? (
         <>
           <NoData details="Stock Found" />
         </>
@@ -59,9 +61,16 @@ const ListOfAddedStocks = () => {
           <div
             style={{ display: "flex", flexWrap: "wrap", marginLeft: "30px" }}
           >
-            {stocksdet.stockHistoryData.map((item, index) => {
+            {stockState.stockHistoryData.map((item, index) => {
               return (
-                <Box sx={{ width: "300px" }}>
+                <Box
+                  sx={{
+                    width: "350px",
+                    // padding: "1px",
+                    // margin: "1px",
+                    // gap: "10px",
+                  }}
+                >
                   <Card key={index}>
                     <ul className="details invoicedetails details ">
                       <li>
@@ -69,11 +78,13 @@ const ListOfAddedStocks = () => {
                           Stock ID: {item.stockid}
                         </div>
                       </li>
-                      <li>
-                        <div className="companyname">
-                          Date: {item.stockdate}
-                        </div>
-                      </li>
+                      {item.stockdate && (
+                        <li>
+                          <div className="companyname">
+                            Stock Date: {item.stockdate}
+                          </div>
+                        </li>
+                      )}
                     </ul>
                     {item.clientName && (
                       <ul className="details marginTop">

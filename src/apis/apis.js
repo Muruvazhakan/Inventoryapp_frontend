@@ -14,7 +14,10 @@ const imageconfig = {
   },
 };
 
-const url = process.env.REACT_APP_BACKEND_URL ?? "http://localhost:4000";
+const url =
+  process.env.REACT_APP === "Prod"
+    ? process.env.REACT_APP_BACKEND_URL
+    : "http://localhost:4000";
 
 export const userLoginUrl = `${url}/user/login`;
 export const userSigninUrl = `${url}/user/signin`;
@@ -94,7 +97,8 @@ export const saveStockBD = async (stock, userid) => {
   const data = {
     stock,
   };
-  //console.log(data);
+  console.log("saveStockBD data");
+  console.log(data);
   let response;
   try {
     response = await axios.post(`${saveStockUrl}/${userid}`, data, config);
@@ -143,7 +147,7 @@ export const getAllHistorySalesStockDB = async (userid) => {
       config
     );
     // console.log(response);
-    return response;
+    return response.data;
   } catch (err) {
     console.log(err);
     return err;
