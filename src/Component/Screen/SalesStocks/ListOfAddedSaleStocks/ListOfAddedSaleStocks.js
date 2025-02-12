@@ -8,31 +8,56 @@ import { RiEditCircleFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { BsFiletypeXlsx } from "react-icons/bs";
 import StyleHeader from "../../Header/StyleHeader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateStock } from "../../../../redux/productSlice";
 
 const ListOfAddedSaleStocks = (props) => {
   const stocksdet = useContext(Stocks);
   const stockState = useSelector((state) => state.stock.stock);
   const digit2options = { maximumFractionDigits: 2 };
-
+  const stockDispatch = useDispatch();
   useEffect(() => {
     console.log("ListOfAddedSaleStocks");
 
     console.log(stockState.salesStockHistoryData);
   }, [stockState.salesStockHistoryData]);
 
-  if (stocksdet.isloading) {
-    return (
-      <Stack
-        sx={{ color: "grey.500" }}
-        spacing={2}
-        alignItems={"center"}
-        className="spinnerstyle"
-      >
-        <CircularProgress color="success" size={30} />
-      </Stack>
+  // if (stocksdet.isloading) {
+  //   return (
+  //     <Stack
+  //       sx={{ color: "grey.500" }}
+  //       spacing={2}
+  //       alignItems={"center"}
+  //       className="spinnerstyle"
+  //     >
+  //       <CircularProgress color="success" size={30} />
+  //     </Stack>
+  //   );
+  // }
+
+  const allSaleStockHistoryEdit = (item) => {
+    console.log("allSaleStockHistoryEdit ");
+    console.log(item);
+    // console.log("clientList");
+    // console.log(clientList);
+    // let salesStockhistorydetail = props;
+    stockDispatch(
+      updateStock({
+        totalamt: item.totalsalesamt,
+        clientid: item.clientid,
+        stockdate: item.salestockdate,
+        saleslist: item.rows,
+
+        clientName: item.clientName,
+        clientPhno: item.clientPhno,
+        clientAdd: item.clientAdd,
+        stockid: item.salestockid,
+        isEditStock: true,
+        editprodid: true,
+      })
     );
-  }
+  };
+
   return (
     <>
       <StyleHeader>
@@ -106,13 +131,13 @@ const ListOfAddedSaleStocks = (props) => {
                     </ul>
                     <Link
                       to={{
-                        pathname: `/salestock`,
+                        pathname: `/sales/salestock`,
                       }}
                     >
                       <Button
                         className="gen-stocks"
                         variant="outlined"
-                        onClick={() => stocksdet.allSaleStockHistoryEdit(item)}
+                        onClick={() => allSaleStockHistoryEdit(item)}
                         endIcon={<RiEditCircleFill />}
                       >
                         Edit Sales Stocks

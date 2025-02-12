@@ -7,19 +7,19 @@ import ClientForm from "./ClientForm";
 import collect from "collect.js";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
-import { getStockidDB, saveStockBD } from "../../../apis/apis";
-import { updateStock } from "../../../redux/productSlice";
+import { saveStockBD } from "../../../apis/apis";
+
 const AddStocks = () => {
   const userState = useSelector((state) => state.user.user);
   const stockState = useSelector((state) => state.stock.stock);
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState(stockState.stocklist);
   const stockDispatch = useDispatch();
   let loginuser = userState.userid;
   const initialClientState = {
-    clientid: null,
-    clientName: "",
-    clientPhno: 0,
-    clientAdd: "",
+    clientid: stockState.clientid,
+    clientName: stockState.clientName,
+    clientPhno: stockState.clientPhno,
+    clientAdd: stockState.clientAdd,
   };
   const [header, setheader] = useState("stockrequest");
   const [clientDetails, setclientDetails] = useState(initialClientState);
@@ -128,6 +128,7 @@ const AddStocks = () => {
             getStock={(val) => setTableData([...tableData, val])}
             onSubmit={handelSaveStock}
             loginuser={loginuser}
+            defaultValue={stockState}
           />
 
           <ClientForm

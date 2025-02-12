@@ -8,32 +8,62 @@ import { RiEditCircleFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { BsFiletypeXlsx } from "react-icons/bs";
 import StyleHeader from "../../Header/StyleHeader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateStock } from "../../../../redux/productSlice";
 
 const ListOfAddedStocks = () => {
   const stocksdet = useContext(Stocks);
   const stockState = useSelector((state) => state.stock.stock);
   const digit2options = { maximumFractionDigits: 2 };
-
+  const stockDispatch = useDispatch();
   useEffect(() => {
     console.log("ListOfAddedStocks");
 
     console.log(stockState.stockHistoryData);
   }, [stockState.stockHistoryData]);
 
-  if (stocksdet.isloading) {
-    return (
-      <Stack
-        sx={{ color: "grey.500" }}
-        spacing={2}
-        alignItems={"center"}
-        className="spinnerstyle"
-      >
-        <CircularProgress color="success" size={30} />
-      </Stack>
-    );
-  }
+  // if (stocksdet.isloading) {
+  //   return (
+  //     <Stack
+  //       sx={{ color: "grey.500" }}
+  //       spacing={2}
+  //       alignItems={"center"}
+  //       className="spinnerstyle"
+  //     >
+  //       <CircularProgress color="success" size={30} />
+  //     </Stack>
+  //   );
+  // }
 
+  const allStockHistoryEdit = (item) => {
+    console.log(item);
+
+    stockDispatch(
+      updateStock({
+        totalamt: item.totalamt,
+        clientid: item.clientid,
+        stockdate: item.stockdate,
+        stocklist: item.rows,
+
+        clientName: item.clientName,
+        clientPhno: item.clientPhno,
+        clientAdd: item.clientAdd,
+        stockid: item.stockid,
+        isEditStock: true,
+        editprodid: true,
+      })
+    );
+    // let clientdetail = clientList.find((data) => {
+    //   console.log("data.clientid");
+    //   console.log(data.clientid + " //// " + props.clientid);
+    //   if (data.clientid === props.clientid) return data;
+    // });
+    // console.log("clientList");
+    // console.log(clientList);
+
+    // console.log("clientdetail");
+    // console.log(clientdetail);
+  };
   return (
     <>
       <StyleHeader>
@@ -112,13 +142,13 @@ const ListOfAddedStocks = () => {
                     </ul>
                     <Link
                       to={{
-                        pathname: `/addstock`,
+                        pathname: `/stocks/addstock`,
                       }}
                     >
                       <Button
                         className="gen-stocks"
                         variant="outlined"
-                        onClick={() => stocksdet.allStockHistoryEdit(item)}
+                        onClick={() => allStockHistoryEdit(item)}
                         endIcon={<RiEditCircleFill />}
                       >
                         Edit Stocks

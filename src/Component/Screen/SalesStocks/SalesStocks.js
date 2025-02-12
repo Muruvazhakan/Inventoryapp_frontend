@@ -15,10 +15,10 @@ const SalesStocks = () => {
   const [tableData, setTableData] = useState(stockState.saleslist ?? []);
 
   const initialClientState = {
-    clientid: null,
-    clientName: "",
-    clientPhno: 0,
-    clientAdd: "",
+    clientid: stockState.clientid,
+    clientName: stockState.clientName,
+    clientPhno: stockState.clientPhno,
+    clientAdd: stockState.clientAdd,
     load: false,
   };
   const [header, setheader] = useState("stockrequest");
@@ -116,6 +116,7 @@ const SalesStocks = () => {
             getStock={(val) => setTableData([...tableData, val])}
             onSubmit={handelSaveSalesStock}
             loginuser={userState.userid}
+            defaultValue={stockState}
           />
           <ClientForm
             getclientDetails={(val) => setclientDetails(val)}

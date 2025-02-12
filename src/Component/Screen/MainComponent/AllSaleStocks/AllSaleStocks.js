@@ -132,26 +132,31 @@ const AllSaleStocks = () => {
     console.log("props");
     // console.log(salesStockHistoryData);
     let accumalatevalue = [];
+
     let totalsaleamt = 0;
     let propsdata = JSON.parse(JSON.stringify(props));
     let listofsales = propsdata.map((data) => {
       let singllistofsales = data.rows.map((innerrows) => {
-        console.log("innerrows");
+        console.log("innerrows deriveSaleStockFromHistory");
         console.log(innerrows);
         // innerrows.status = innerrows.status ? innerrows.status : "Active";
         let found = false;
         totalsaleamt =
-          totalsaleamt * 1 + (innerrows.amount ? innerrows.amount : 0) * 1;
+          totalsaleamt * 1 + (innerrows.amt ? innerrows.amt : 0) * 1;
         if (accumalatevalue.length > 0) {
           for (let i = 0; i < accumalatevalue.length; i++) {
             if (accumalatevalue[i].productid === innerrows.productid) {
               found = true;
               accumalatevalue[i].quantity =
-                accumalatevalue[i].quantity * 1 + innerrows.quantity * 1;
-              accumalatevalue[i].amount =
-                accumalatevalue[i].amount * 1 + innerrows.amount * 1;
+                (accumalatevalue[i].quantity
+                  ? accumalatevalue[i].quantity * 1
+                  : 0) +
+                innerrows.quantity * 1;
+              accumalatevalue[i].amt =
+                (accumalatevalue[i].amt ? accumalatevalue[i].amt * 1 : 0) +
+                innerrows.amt * 1;
               accumalatevalue[i].rate = (
-                (accumalatevalue[i].amount * 1) /
+                (accumalatevalue[i].amt * 1) /
                 (accumalatevalue[i].quantity * 1)
               ).toFixed(2);
               console.log(" found &&&");

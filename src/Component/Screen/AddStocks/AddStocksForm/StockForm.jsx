@@ -29,12 +29,12 @@ const initialState = {
   availablequantity: 0,
 };
 
-const StockForm = ({ getStock, screen, onSubmit, loginuser }) => {
+const StockForm = ({ getStock, screen, onSubmit, loginuser, defaultValue }) => {
   const stockState = useSelector((state) => state.stock.stock);
   const stockDispatch = useDispatch();
   const [stock, setStock] = useState(initialState);
-  const [stockid, setstockid] = useState("");
-  const [stockdate, setstockstockdate] = useState("");
+  const [stockid, setstockid] = useState(defaultValue.stockid);
+  const [stockdate, setstockstockdate] = useState(defaultValue.stockdate);
   const [stockidcount, setstockidcount] = useState(1000);
   const [salestockidcount, setsalestockidcount] = useState(1000);
   const [value, setValue] = useState(null);
